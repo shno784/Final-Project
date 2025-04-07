@@ -1,12 +1,11 @@
-import React from "react";
-import { View } from "react-native";
-import BackButton from "@/components/BackButton";
+import { View, Text } from "react-native";
+import AppButton from "@/components/AppButton";
 
 const history = () => {
   return (
     <View>
-      <div>history</div>
-      <BackButton />
+      <Text>history</Text>
+      <AppButton label="Back" variant="back" />
     </View>
   );
 };

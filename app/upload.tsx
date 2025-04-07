@@ -1,12 +1,11 @@
-import BackButton from "@/components/BackButton";
-import React from "react";
-import { View } from "react-native";
+import AppButton from "@/components/AppButton";
+import { View, Text } from "react-native";
 
 const upload = () => {
   return (
     <View>
-      <BackButton />
-      <div>Upload</div>
+      <AppButton label="Back" variant="back" />
+      <Text>Upload</Text>
     </View>
   );
 };
