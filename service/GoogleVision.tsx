@@ -1,0 +1,38 @@
+import axios from "axios";
+import axiosClient from "./Reconnect";
+
+export async function identifyFood(base64Image: string) {
+  const apiKey = process.env.EXPO_PUBLIC_GOOGLE_VISION_API_KEY;
+
+  if (!apiKey) {
+    console.log("Google Vision API key is missing");
+  }
+  try {
+    const endpoint = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
+
+    const response = await axiosClient.post(endpoint, {
+      requests: [
+        {
+          image: { content: base64Image },
+          features: [{ type: "LABEL_DETECTION", maxResults: 5 }],
+        },
+      ],
+    });
+
+    //Get results
+    const labels = response.data.responses[0].labelAnnotations.map(
+      (label: { description: any }) => label.description
+    );
+    console.log("Labels: ", labels);
+  } catch (error) {
+    // Handle Axios errors
+    if (axios.isAxiosError(error)) {
+      const code = error.response?.status;
+      const message = error.response?.data?.error?.message || error.message;
+      console.error("Axios Error Details: ", { code, message });
+      throw new Error(`Request failed with status ${code}: ${message}`);
+    } else {
+      throw error;
+    }
+  }
+}

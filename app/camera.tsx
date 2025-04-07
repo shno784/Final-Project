@@ -16,16 +16,15 @@ import {
 } from "react-native";
 import pickImage from "@/utils/ImagePicker";
 import ProcessImage from "@/utils/ProcessImage";
+import { BarcodeProps } from "@/types/CameraTypes";
+import { BarcodeScan } from "@/service/OpenFoodFacts";
 
 const camera = () => {
-  const [facing, setfacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
-  const [uri, setUri] = useState<string | null>(null);
-
   const [torch, setTorch] = useState<boolean>(false);
-  const [cameraIsReady, setCameraIsReady] = useState<boolean>(false);
-
   const ref = useRef<CameraView>(null);
+  const [hasScanned, setHasScanned] = useState(false);
+  let scanning = false;
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -46,8 +45,28 @@ const camera = () => {
   const takePicture = async () => {
     console.log("pressed take picture");
     const photo = await ref.current?.takePictureAsync();
-    setUri(photo?.uri ?? null);
-    ProcessImage({ uri: photo.uri });
+    if (photo) {
+      ProcessImage({ uri: photo.uri });
+    }
+  };
+
+  const handlePress = (action: () => void) => {
+    return () => {
+      setTorch(false);
+      action();
+    };
+  };
+
+  const handleBarcodeScanned = ({ type, data }: BarcodeProps) => {
+    if (scanning || hasScanned) return;
+    scanning = true; // immediately block future calls
+
+    if (!hasScanned) {
+      setHasScanned(true);
+      BarcodeScan(data);
+      // Do something with the barcode data, like:
+      // navigate to another screen, process it, etc.
+    }
   };
   return (
     <CameraView
@@ -55,7 +74,17 @@ const camera = () => {
       facing={"back"}
       ref={ref}
       enableTorch={torch}
+      barcodeScannerSettings={{
+        barcodeTypes: ["ean13", "ean8", "upc_a", "code39", "code128", "itf14"],
+      }}
+      onBarcodeScanned={hasScanned ? undefined : handleBarcodeScanned}
     >
+      {/* Only show if scanner hasn't scanned */}
+      {!hasScanned && (
+        <View style={styles.scannerIndicator}>
+          <Text style={styles.scannerText}>Scanning for barcode...</Text>
+        </View>
+      )}
       {/* Overlay container for buttons */}
       <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
         <View style={styles.container}>
@@ -72,13 +101,13 @@ const camera = () => {
               label="Add an Image"
               style={styles.button}
               textStyle={styles.text}
-              onPress={pickImage}
+              onPress={handlePress(pickImage)}
             />
             {/* Take Picture */}
             <AppButton
               label="Take Picture"
               textStyle={styles.text}
-              onPress={takePicture}
+              onPress={handlePress(takePicture)}
             />
           </View>
           <AppButton label="Back" variant="back" />
@@ -123,5 +152,19 @@ const styles = StyleSheet.create({
     fontSize: 16, // smaller font size
     fontWeight: "bold",
     color: "white",
+  },
+  scannerIndicator: {
+    position: "absolute",
+    bottom: 50,
+    alignSelf: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+
+  scannerText: {
+    color: "#fff",
+    fontSize: 16,
   },
 });

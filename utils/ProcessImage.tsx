@@ -1,10 +1,16 @@
+import { identifyFood } from "@/service/GoogleVision";
 import { ProcessImageProps } from "@/types/CameraTypes";
+import * as FileSystem from "expo-file-system";
 
 const ProcessImage = async ({ uri }: ProcessImageProps) => {
   //   setIsModelReady(false); // Start loading
   const fileName = uri.split("/").pop();
   console.log("File name:", uri);
 
+  const base64 = await FileSystem.readAsStringAsync(uri, {
+    encoding: FileSystem.EncodingType.Base64,
+  });
+  identifyFood(base64);
   //Get the name from the ai model
   //   try {
   //     // Create a permanent copy of the image

@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import AppButton from "@/components/AppButton";
 import ImagePicker from "@/utils/ImagePicker";
 
@@ -16,9 +16,17 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = () => {
-    // Perform search logic here
-    console.log("Searching for:", searchQuery);
-    // router.navigate("/search", { query: searchQuery });
+    try {
+      if (searchQuery.trim() === "") {
+        throw new Error("Search query cannot be empty");
+      }
+      // router.navigate("/search", { query: searchQuery });
+      console.log("Searching for:", searchQuery);
+      // Empty the search input after searching
+      setSearchQuery("");
+    } catch (error) {
+      console.error("Error:", (error as Error)?.message);
+    }
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
@@ -37,6 +45,11 @@ export default function Home() {
             onChangeText={setSearchQuery}
             onSubmitEditing={handleSearch}
             returnKeyType="search"
+          />
+          <AppButton
+            label="Search"
+            style={styles.searchButton}
+            onPress={handleSearch}
           />
         </View>
 
@@ -100,17 +113,26 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   searchContainer: {
+    flexDirection: "row",
     width: "100%",
+    alignItems: "center",
     marginBottom: 50,
   },
   searchInput: {
+    flex: 1,
     backgroundColor: "#f0f0f0",
     borderRadius: 8,
     paddingVertical: 14,
     paddingHorizontal: 12,
     fontSize: 16,
     color: "#333",
-    width: "100%",
+  },
+  searchButton: {
+    marginLeft: 10,
+    backgroundColor: "#007bff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
   },
   row: {
     flexDirection: "row",
