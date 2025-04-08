@@ -1,7 +1,8 @@
 import * as ImagePicker from "expo-image-picker";
-import ProcessImage from "@/utils/ProcessImage";
+import { ProcessImage } from "@/utils/ProcessImage";
+import { FoodItem } from "@/types/DatabaseTypes";
 
-const pickImage = async () => {
+const pickImage = async (insertFoodItem: (food: FoodItem) => Promise<void>) => {
   let result = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ["images"],
     allowsEditing: true,
@@ -12,7 +13,7 @@ const pickImage = async () => {
 
   if (!result.canceled) {
     const newResult = result.assets[0].uri;
-    ProcessImage({ uri: newResult });
+    ProcessImage(newResult, insertFoodItem);
   }
 };
 

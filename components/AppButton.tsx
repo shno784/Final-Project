@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   back: {
     backgroundColor: "#777",
     position: "absolute",
-    top: 40,
+    top: -5,
     left: 20,
     zIndex: 10,
   },

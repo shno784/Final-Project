@@ -14,8 +14,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import pickImage from "@/utils/ImagePicker";
-import ProcessImage from "@/utils/ProcessImage";
+import ImagePicker from "@/utils/ImagePicker";
+import { ProcessImage } from "@/utils/ProcessImage";
+import { useFoodDatabase } from "@/utils/FoodDatabase";
 import { BarcodeProps } from "@/types/CameraTypes";
 import { BarcodeScan } from "@/service/OpenFoodFacts";
 
@@ -24,6 +25,7 @@ const camera = () => {
   const [torch, setTorch] = useState<boolean>(false);
   const ref = useRef<CameraView>(null);
   const [hasScanned, setHasScanned] = useState(false);
+  const { insertFoodItem } = useFoodDatabase();
   let scanning = false;
 
   if (!permission) {
@@ -46,7 +48,8 @@ const camera = () => {
     console.log("pressed take picture");
     const photo = await ref.current?.takePictureAsync();
     if (photo) {
-      ProcessImage({ uri: photo.uri });
+      console.log("Processing image...");
+      await ProcessImage(photo.uri, insertFoodItem);
     }
   };
 
@@ -101,7 +104,9 @@ const camera = () => {
               label="Add an Image"
               style={styles.button}
               textStyle={styles.text}
-              onPress={handlePress(pickImage)}
+              onPress={handlePress(() => {
+                ImagePicker(insertFoodItem);
+              })}
             />
             {/* Take Picture */}
             <AppButton

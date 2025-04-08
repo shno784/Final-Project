@@ -1,9 +1,10 @@
 import axios from "axios";
 import axiosClient from "./Reconnect";
+import getBestMeaningfulLabel from "@/utils/FoodLabels";
+
+const apiKey = process.env.EXPO_PUBLIC_GOOGLE_VISION_API_KEY;
 
 export async function identifyFood(base64Image: string) {
-  const apiKey = process.env.EXPO_PUBLIC_GOOGLE_VISION_API_KEY;
-
   if (!apiKey) {
     console.log("Google Vision API key is missing");
   }
@@ -18,12 +19,11 @@ export async function identifyFood(base64Image: string) {
         },
       ],
     });
-
-    //Get results
-    const labels = response.data.responses[0].labelAnnotations.map(
-      (label: { description: any }) => label.description
-    );
-    console.log("Labels: ", labels);
+    // Get labels
+    const labels = response.data.responses[0].labelAnnotations;
+    //Filter label by common words like "food", "fruit", etc.
+    const label = getBestMeaningfulLabel(labels);
+    return label;
   } catch (error) {
     // Handle Axios errors
     if (axios.isAxiosError(error)) {

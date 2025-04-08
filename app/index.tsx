@@ -10,17 +10,20 @@ import {
 import { useRouter } from "expo-router";
 import AppButton from "@/components/AppButton";
 import ImagePicker from "@/utils/ImagePicker";
+import { fetchFoodData } from "@/service/Usda";
+import { useFoodDatabase } from "@/utils/FoodDatabase";
 
 export default function Home() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+  const { insertFoodItem } = useFoodDatabase();
 
   const handleSearch = () => {
     try {
       if (searchQuery.trim() === "") {
         throw new Error("Search query cannot be empty");
       }
-      // router.navigate("/search", { query: searchQuery });
+      fetchFoodData(searchQuery);
       console.log("Searching for:", searchQuery);
       // Empty the search input after searching
       setSearchQuery("");
@@ -60,7 +63,10 @@ export default function Home() {
         />
         <AppButton
           label="Add An Image"
-          onPress={ImagePicker}
+          onPress={() => {
+            // call the async function safely
+            ImagePicker(insertFoodItem);
+          }}
           style={styles.fullWidthButton}
         />
 

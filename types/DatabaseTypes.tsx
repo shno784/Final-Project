@@ -1,12 +1,14 @@
 export interface FoodItem {
-  id: number;
   name: string;
   imageUri?: string;
   recipe?: string;
+  ingredients?: string;
   nutrients: string;
 }
-
 export interface FoodRow {
   id: number;
-  value: string;
+  name: string;
+  imageUri: string;
+  recipe: string | null;
+  nutrients: string;
 }
