@@ -1,7 +1,7 @@
 // services/usdaFoodService.ts
 import axios from "axios";
 import axiosClient from "./Reconnect";
-import { FoodItem } from "@/types/DatabaseTypes";
+import { FoodItem } from "@/types/FoodTypes";
 
 const usdaKey = process.env.EXPO_PUBLIC_USDA_API_KEY;
 const usdaBaseURL = "https://api.nal.usda.gov/fdc/v1";

@@ -1,5 +1,5 @@
 import { useSQLiteContext, type SQLiteDatabase } from "expo-sqlite";
-import { FoodItem, FoodItemWithId, FoodRow } from "@/types/DatabaseTypes";
+import { FoodItem, FoodItemWithId, FoodRow } from "@/types/FoodTypes";
 
 export function useFoodDatabase() {
   const db = useSQLiteContext() as SQLiteDatabase;

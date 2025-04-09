@@ -12,7 +12,7 @@ import {
 import AppButton from "@/components/AppButton";
 import FoodCard from "@/components/FoodCard";
 import { useFoodDatabase } from "@/utils/FoodDatabase";
-import { FoodRow } from "@/types/DatabaseTypes";
+import { FoodRow } from "@/types/FoodTypes";
 import { useRouter } from "expo-router";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import * as ImagePicker from "expo-image-picker";
@@ -148,9 +148,13 @@ const History = () => {
           "Tap a card to view details.\nHold a card to edit or delete it."
         }
       />
-      <ScrollView className="flex-1 p-[15px] bg-white dark:bg-black">
-        <Text className="text-2xl mb-4 text-center">History</Text>
-        <AppButton label="Back" variant="back" />
+      <ScrollView className="flex-1 p-[15px] pt-20 bg-white  dark:bg-black">
+        <View className="flex-row items-center gap-5">
+          <AppButton label="Back" variant="back" />
+          <Text className="text-[28px] font-bold mb-3 text-center text-text-light dark:text-text-dark">
+            History
+          </Text>
+        </View>
 
         <View className="flex flex-row flex-wrap justify-between">
           {foodItems.map((food) => (

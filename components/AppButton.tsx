@@ -38,8 +38,7 @@ export default function AppButton({
       break;
     case "back":
       // Adjust the absolute positioning values as needed
-      variantClasses =
-        "bg-back-light dark:bg-back-dark absolute top-8 left-5 z-10";
+      variantClasses = "bg-back-light dark:bg-back-dark";
       break;
     default:
       break;

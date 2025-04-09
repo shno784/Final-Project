@@ -1,7 +1,7 @@
 import * as FileSystem from "expo-file-system";
 import { identifyFood } from "@/service/GoogleVision";
 import { fetchFoodData } from "@/service/Usda";
-import { FoodItem } from "@/types/DatabaseTypes";
+import { FoodItem } from "@/types/FoodTypes";
 
 export async function ProcessImage(
   uri: string,

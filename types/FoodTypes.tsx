@@ -1,0 +1,44 @@
+export interface FoodItem {
+  name: string;
+  imageUri?: string;
+  recipe?: string;
+  ingredients?: string;
+  nutrients: string;
+}
+export interface FoodItemWithId extends FoodItem {
+  id: number;
+}
+export interface FoodRow {
+  id: number;
+  name: string;
+  imageUri: string;
+  recipe: string | null;
+  nutrients: string;
+}
+
+export interface Micronutrient {
+  name: string;
+  value: number;
+  dv: number;
+}
+
+export interface Macronutrient {
+  name: string;
+  population: number;
+  color: string;
+  legendFontColor: string;
+  legendFontSize: number;
+}
+export interface NutritionCarouselProps {
+  screenWidth: number;
+  macroData: {
+    name: string;
+    population: number;
+    color: string;
+    legendFontColor: string;
+    legendFontSize: number;
+  }[];
+  micronutrients: Micronutrient[];
+  tags: string[];
+  chartConfig: any;
+}

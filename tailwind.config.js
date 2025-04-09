@@ -31,10 +31,16 @@ module.exports = {
         'back-light': '#D55E00',
         'back-dark': '#EF7C5B',
         // You can also add background / text colors here:
-        'bg-light': '#F7F7F7',
-        'bg-dark': '#1F1F1F',
-        'text-light': '#000000',
-        'text-dark': '#F5F5F5',
+        'bg-light': '#e4e4e7',
+        'bg-dark': '#1a1a1a',
+
+        // Text colors
+        'heading-light': '#111827', 
+        'heading-dark': '#F5F5F5', 
+        'body-light': '#1f2937',
+        'body-dark': 'F5F5F5',
+        'buttontext-light': '1f2937',  
+        'buttontext-dark': 'F5F5F5', 
       },
     },
   },

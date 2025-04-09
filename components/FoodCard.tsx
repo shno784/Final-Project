@@ -13,7 +13,7 @@ const FoodCard = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`bg-white dark:bg-black rounded-lg shadow-md shadow-slate-600 p-4 ${className}`}
+      className={`bg-bg-light dark:bg-bg-dark backdrop-blur-md border border-white/10 rounded-2xl p-4 ${className}`}
       onLongPress={onLongPress}
     >
       <Image

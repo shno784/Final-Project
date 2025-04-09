@@ -1,19 +1,7 @@
 import AppButton from "@/components/AppButton";
-import {
-  CameraView,
-  CameraType,
-  useCameraPermissions,
-  FlashMode,
-} from "expo-camera";
-import { useState, useRef, useEffect } from "react";
-import {
-  Button,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { CameraView, useCameraPermissions } from "expo-camera";
+import { useState, useRef } from "react";
+import { Button, Text, View } from "react-native";
 import ImagePicker from "@/utils/ImagePicker";
 import { ProcessImage } from "@/utils/ProcessImage";
 import { useFoodDatabase } from "@/utils/FoodDatabase";
@@ -33,21 +21,22 @@ const camera = () => {
   let scanning = false;
 
   if (!permission) {
-    // Camera permissions are still loading.
+    // Still loading permissions
     return <View />;
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet.
+    // Permissions not yet granted
     return (
-      <View style={styles.container}>
-        <Text style={styles.message}>
+      <View className="flex-1 justify-center">
+        <Text className="text-center pb-3">
           We need your permission to show the camera
         </Text>
         <Button title="Grant permission" onPress={requestPermission} />
       </View>
     );
   }
+
   const takePicture = async () => {
     console.log("pressed take picture");
     const photo = await ref.current?.takePictureAsync();
@@ -67,20 +56,19 @@ const camera = () => {
 
   const handleBarcodeScanned = ({ type, data }: BarcodeProps) => {
     if (scanning || hasScanned) return;
-    scanning = true; // immediately block future calls
+    scanning = true; // block future calls
 
     if (!hasScanned) {
       setHasScanned(true);
       BarcodeScan(data);
       router.push("/History");
-      // Do something with the barcode data, like:
-      // navigate to another screen, process it, etc.
     }
   };
+
   return (
     <CameraView
-      style={styles.camera}
-      facing={"back"}
+      className="flex-1"
+      facing="back"
       ref={ref}
       enableTorch={torch}
       barcodeScannerSettings={{
@@ -93,36 +81,36 @@ const camera = () => {
         title="Scan Mode"
         message="Point your camera at food and take a picture to start analysis."
       />
-      {/* Only show if scanner hasn't scanned */}
+      {/* Show scanning indicator when barcode has not been scanned */}
       {!hasScanned && (
-        <View style={styles.scannerIndicator}>
-          <Text style={styles.scannerText}>Scanning for barcode...</Text>
+        <View className="absolute bottom-[50px] self-center bg-black/60 px-4 py-2 rounded">
+          <Text className="text-white text-[16px]">
+            Scanning for barcode...
+          </Text>
         </View>
       )}
       {/* Overlay container for buttons */}
-      <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
-        <View style={styles.container}>
-          <View style={styles.buttonContainer}>
-            {/* Use a button to toggle flashlight on/off */}
+      <View className="absolute inset-0" pointerEvents="box-none">
+        <View className="flex-1 justify-center">
+          <View className="absolute top-[60px] right-[20px] items-center">
+            {/* Toggle flashlight */}
             <AppButton
               label={torch ? "Turn Flashlight Off" : "Turn Flashlight On"}
-              style={styles.button}
-              textStyle={styles.text}
+              className="w-[120px] h-[200px] bg-black/50 rounded-[8px] justify-center items-center mx-[10px]"
               onPress={() => setTorch((prev: any) => !prev)}
             />
-            {/* Upload an Image */}
+            {/* Upload an image */}
             <AppButton
               label="Add an Image"
-              style={styles.button}
-              textStyle={styles.text}
+              className="w-[120px] h-[200px] bg-black/50 rounded-[8px] justify-center items-center mx-[10px]"
               onPress={handlePress(() => {
                 ImagePicker(insertFoodItem);
               })}
             />
-            {/* Take Picture */}
+            {/* Take picture */}
             <AppButton
               label="Take Picture"
-              textStyle={styles.text}
+              className="w-[120px] h-[200px] bg-black/50 rounded-[8px] justify-center items-center mx-[10px]"
               onPress={handlePress(takePicture)}
             />
           </View>
@@ -134,53 +122,3 @@ const camera = () => {
 };
 
 export default camera;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  message: {
-    textAlign: "center",
-    paddingBottom: 10,
-  },
-  camera: {
-    flex: 1,
-  },
-  // Position the button container absolutely near the top
-  buttonContainer: {
-    position: "absolute",
-    top: 60,
-    right: 20,
-    alignItems: "center",
-  },
-  // Style each button to be smaller and more transparent
-  button: {
-    width: 120, // set a fixed width for smaller buttons
-    height: 200, // fixed height for a compact look
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // black with 50% opacity
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 10,
-  },
-  text: {
-    fontSize: 16, // smaller font size
-    fontWeight: "bold",
-    color: "white",
-  },
-  scannerIndicator: {
-    position: "absolute",
-    bottom: 50,
-    alignSelf: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-
-  scannerText: {
-    color: "#fff",
-    fontSize: 16,
-  },
-});
