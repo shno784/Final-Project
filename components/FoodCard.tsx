@@ -6,42 +6,28 @@ const FoodCard = ({
   name,
   imageUri,
   onPress,
-  style,
-  textStyle,
+  onLongPress,
+  className,
   imageStyle,
 }: FoodCardProps) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.card, style]}>
-      <Image source={{ uri: imageUri }} style={[styles.image, imageStyle]} />
-      <Text style={[styles.text, textStyle]}>{name}</Text>
+    <TouchableOpacity
+      onPress={onPress}
+      className={`bg-white dark:bg-black rounded-lg shadow-md shadow-slate-600 p-4 ${className}`}
+      onLongPress={onLongPress}
+    >
+      <Image
+        source={{ uri: imageUri }}
+        style={[{ width: "100%", height: 150, borderRadius: 8 }, imageStyle]}
+      />
+      <Text
+        className={`text-[15.5px] text-center dark:text-text-dark text-text-light font-bold uppercase pt-3`}
+        numberOfLines={1}
+      >
+        {name}
+      </Text>
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 3, // for Android shadow
-    padding: 10,
-    margin: 5,
-    alignItems: "center",
-  },
-  image: {
-    width: "100%",
-    height: 150,
-    borderRadius: 8,
-  },
-  text: {
-    marginTop: 10,
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-});
 
 export default FoodCard;

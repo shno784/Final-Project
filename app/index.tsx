@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   Keyboard,
   TextInput,
   TouchableWithoutFeedback,
@@ -12,6 +11,7 @@ import AppButton from "@/components/AppButton";
 import ImagePicker from "@/utils/ImagePicker";
 import { fetchFoodData } from "@/service/Usda";
 import { useFoodDatabase } from "@/utils/FoodDatabase";
+import Test from "@/components/Test";
 
 export default function Home() {
   const router = useRouter();
@@ -31,123 +31,72 @@ export default function Home() {
       console.error("Error:", (error as Error)?.message);
     }
   };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.title}>My Nutrition App</Text>
-          <Text style={styles.subtitle}>Scan, Search, and Compare Foods</Text>
-        </View>
+      <View className="flex-1 bg-white dark:bg-black">
+        <Test />
+        {/* Main container: flex-1 with 24px padding (p-6), white background (dark: override) */}
+        <View className="flex-1 p-6 bg-white dark:bg-black justify-start">
+          {/* Header container with margin top 150px and margin bottom 80px, centered items */}
+          <View className="mt-[150px] items-center mb-[80px]">
+            <Text className="text-[28px] font-bold text-center mb-1 text-base text-black dark:text-white">
+              My Nutrition App
+            </Text>
+            <Text className="text-base text-center text-black dark:text-white">
+              Scan, Search, and Compare Foods
+            </Text>
+          </View>
 
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search Food"
-            placeholderTextColor="#999"
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            onSubmitEditing={handleSearch}
-            returnKeyType="search"
+          {/* Search container: row, full width, centered items, margin bottom 50px */}
+          <View className="flex-row w-full items-center mb-[50px]">
+            <TextInput
+              className="flex-1 bg-[#f0f0f0] rounded-[8px] py-[14px] px-[12px] text-base text-[#333333]"
+              placeholder="Search Food"
+              placeholderTextColor="#999"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              onSubmitEditing={handleSearch}
+              returnKeyType="search"
+            />
+            <AppButton
+              label="Search"
+              onPress={handleSearch}
+              className="ml-[10px] bg-[#007bff] py-[10px] px-[20px] rounded-[5px]"
+            />
+          </View>
+
+          {/* Full width buttons */}
+          <AppButton
+            label="Scan Food"
+            onPress={() => router.navigate("/camera")}
+            className={"w-full bg-[#1abc9c] mb-5"}
+            textStyle="text-black dark:text-white font-medium"
           />
           <AppButton
-            label="Search"
-            style={styles.searchButton}
-            onPress={handleSearch}
-          />
-        </View>
-
-        <AppButton
-          label="Scan Food"
-          onPress={() => router.navigate("/camera")}
-          style={styles.fullWidthButton}
-        />
-        <AppButton
-          label="Add An Image"
-          onPress={() => {
-            // call the async function safely
-            ImagePicker(insertFoodItem);
-          }}
-          style={styles.fullWidthButton}
-        />
-
-        {/* Row for Food Results and Options/Settings */}
-        <View style={styles.row}>
-          <AppButton
-            label="View Food History"
-            onPress={() => router.navigate("/History")}
-            style={styles.halfButton}
-            variant="primary"
-          />
-          <AppButton
-            label="Settings"
-            onPress={() => router.navigate("/options")}
-            style={styles.halfButton}
+            label="Add An Image"
+            onPress={() => ImagePicker(insertFoodItem)}
+            className="w-full bg-[#1abc9c] mb-5"
             variant="secondary"
           />
+
+          {/* Row for two half-width buttons */}
+          <View className="flex-row justify-between w-full gap-[10px] mb-5">
+            <AppButton
+              label="Food History"
+              onPress={() => router.navigate("/History")}
+              className="flex-1"
+              variant="tertiary"
+            />
+            <AppButton
+              label="Settings"
+              onPress={() => router.navigate("/options")}
+              className="flex-1"
+              variant="tertiary"
+            />
+          </View>
         </View>
       </View>
     </TouchableWithoutFeedback>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: "#fff",
-    justifyContent: "flex-start", // start at the top
-  },
-  headerContainer: {
-    marginTop: 150, // push header down from the very top
-    alignItems: "center",
-    marginBottom: 80, // push subsequent content further down
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#666",
-    textAlign: "center",
-  },
-  fullWidthButton: {
-    width: "100%",
-    backgroundColor: "#1abc9c",
-    marginBottom: 20,
-  },
-  searchContainer: {
-    flexDirection: "row",
-    width: "100%",
-    alignItems: "center",
-    marginBottom: 50,
-  },
-  searchInput: {
-    flex: 1,
-    backgroundColor: "#f0f0f0",
-    borderRadius: 8,
-    paddingVertical: 14,
-    paddingHorizontal: 12,
-    fontSize: 16,
-    color: "#333",
-  },
-  searchButton: {
-    marginLeft: 10,
-    backgroundColor: "#007bff",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-    gap: 10,
-    marginBottom: 20,
-  },
-  halfButton: {
-    flex: 1,
-  },
-});

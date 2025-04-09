@@ -1,28 +1,35 @@
 export default function getBestMeaningfulLabel(labels: any[]): string {
-    const genericWords = [
-      "Food", "Dish", "Cuisine", "Ingredient", "Snack", "Meal", "Fast food",
-      "Comfort food", "Recipe", "Finger food", "Side dish", "Appetizer",
-      "Main course", "Cooking", "Eat", "Eating", "Delicacy",
-      "Tableware", "Table", "Plate", "Cutlery", "Fork", "Spoon", "Knife", "Bowl",
-      "Tray", "Table setting", "Kitchenware",
-      "Natural foods", "Produce", "Nutrition", "Garnish", "Vegetarian food",
-      "Vegan nutrition", "Organic food",
-      "Still life", "Photography", "Snapshot", "Image", "Art", "Photo",
-      "Picture", "Macro photography", "Close-up",
-    ];
-  
-    const threshold = 0.85;
-  
-    const filtered = labels.filter(
-      (label) =>
-        label.score >= threshold &&
-        !genericWords.includes(label.description)
+  const genericWords = [
+    "food", "dish", "cuisine", "ingredient", "snack", "meal", "fast food",
+    "comfort food", "recipe", "finger food", "side dish", "appetizer",
+    "main course", "cooking", "eat", "eating", "delicacy",
+    "tableware", "table", "plate", "cutlery", "fork", "spoon", "knife", "bowl",
+    "tray", "table setting", "kitchenware",
+    "natural foods", "produce", "nutrition", "garnish", "vegetarian food",
+    "vegan nutrition", "organic food",
+    "still life", "photography", "snapshot", "image", "art", "photo",
+    "photograph", "picture", "still life photography", "object",
+    "still life", "still life image", "still life photo",
+    "picture", "macro photography", "close-up",
+    "cooked", "raw", "prepared", "fresh, roasted", "grilled", "baked",
+    "roast", "grill", "bake", "fry", "boil", "produce"
+  ];
+
+  const threshold = 0.85;
+
+  const filtered = labels.filter((label) => {
+    const desc = label.description.toLowerCase();
+
+    const isGeneric = genericWords.some((word) =>
+      desc.includes(word.toLowerCase())
     );
-  
-    if (filtered.length > 0) {
-      return filtered[0].description;
-    }
-  
-    return labels.length > 0 ? labels[0].description : "Unknown food";
+
+    return label.score >= threshold && !isGeneric;
+  });
+
+  if (filtered.length > 0) {
+    return filtered[0].description;
   }
-  
+
+  return labels.length > 0 ? labels[0].description : "Unknown food";
+}

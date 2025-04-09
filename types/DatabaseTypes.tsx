@@ -5,6 +5,9 @@ export interface FoodItem {
   ingredients?: string;
   nutrients: string;
 }
+export interface FoodItemWithId extends FoodItem {
+  id: number;
+}
 export interface FoodRow {
   id: number;
   name: string;

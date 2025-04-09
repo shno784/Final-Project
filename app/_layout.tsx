@@ -2,24 +2,41 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { SQLiteProvider } from "expo-sqlite";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+import { Asset } from "expo-asset";
+import "@/app/global.css";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const [ready, setReady] = useState(false);
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
   useEffect(() => {
-    if (loaded) {
+    const prepare = async () => {
+      try {
+        // Preload all images (local)
+        await Asset.loadAsync([require("@/assets/images/placeholder.jpg")]);
+      } catch (e) {
+        console.warn("Asset preload failed", e);
+      } finally {
+        setReady(true);
+      }
+    };
+
+    prepare();
+  }, []);
+
+  useEffect(() => {
+    if (ready && loaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [ready, loaded]); // ✅ wait until both are ready
 
-  if (!loaded) {
-    return null;
-  }
+  if (!ready || !loaded) return null;
 
   return (
     <SQLiteProvider
@@ -41,7 +58,9 @@ export default function RootLayout() {
         }
       }}
     >
-      <Stack screenOptions={{ headerShown: false }} />
+      <ActionSheetProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </ActionSheetProvider>
     </SQLiteProvider>
   );
 }

@@ -3,16 +3,17 @@ import { TextStyle, ViewStyle, ImageStyle } from "react-native";
 export interface AppButtonProps {
   label: string;
   onPress?: () => void;
-  variant?: "primary" | "secondary" | "back";
+  variant?: "primary" | "secondary" | "tertiary" | "back";
   style?: ViewStyle;
-  textStyle?: TextStyle;
+  textStyle?: string;
+  className?: string;
 }
 
 export interface FoodCardProps {
   name: string;
   imageUri: string;
   onPress?: () => void;
-  style?: ViewStyle;
-  textStyle?: TextStyle;
+  onLongPress?: () => void;
+  className?: string;
   imageStyle?: ImageStyle;
 }

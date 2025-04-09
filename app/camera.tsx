@@ -19,6 +19,8 @@ import { ProcessImage } from "@/utils/ProcessImage";
 import { useFoodDatabase } from "@/utils/FoodDatabase";
 import { BarcodeProps } from "@/types/CameraTypes";
 import { BarcodeScan } from "@/service/OpenFoodFacts";
+import { useRouter } from "expo-router";
+import OneTimeTip from "@/components/OneTimeTip";
 
 const camera = () => {
   const [permission, requestPermission] = useCameraPermissions();
@@ -26,6 +28,8 @@ const camera = () => {
   const ref = useRef<CameraView>(null);
   const [hasScanned, setHasScanned] = useState(false);
   const { insertFoodItem } = useFoodDatabase();
+
+  const router = useRouter();
   let scanning = false;
 
   if (!permission) {
@@ -50,6 +54,7 @@ const camera = () => {
     if (photo) {
       console.log("Processing image...");
       await ProcessImage(photo.uri, insertFoodItem);
+      router.push("/History");
     }
   };
 
@@ -67,6 +72,7 @@ const camera = () => {
     if (!hasScanned) {
       setHasScanned(true);
       BarcodeScan(data);
+      router.push("/History");
       // Do something with the barcode data, like:
       // navigate to another screen, process it, etc.
     }
@@ -82,6 +88,11 @@ const camera = () => {
       }}
       onBarcodeScanned={hasScanned ? undefined : handleBarcodeScanned}
     >
+      <OneTimeTip
+        tipKey="camera"
+        title="Scan Mode"
+        message="Point your camera at food and take a picture to start analysis."
+      />
       {/* Only show if scanner hasn't scanned */}
       {!hasScanned && (
         <View style={styles.scannerIndicator}>

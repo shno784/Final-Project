@@ -1,6 +1,6 @@
 // app/components/CustomBackButton.tsx
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import { AppButtonProps } from "@/types/globalTypes";
 import { useRouter } from "expo-router";
 
@@ -8,12 +8,13 @@ export default function AppButton({
   label,
   onPress,
   variant = "primary",
-  style,
-  textStyle,
+  style, // Additional inline style if needed
+  textStyle, // Tailwind classes for the text (renamed from textStyle)
+  className, // Tailwind classes for the container
 }: AppButtonProps) {
   const router = useRouter();
 
-  // Handle back button press
+  // Handle back button press if variant is "back"
   const handlePress = () => {
     if (variant === "back") {
       router.back();
@@ -22,42 +23,44 @@ export default function AppButton({
     }
   };
 
+  // Choose variant-specific classes for background color and position
+  let variantClasses = "";
+  switch (variant) {
+    case "primary":
+      variantClasses = "bg-primary-light dark:bg-primary-dark";
+      break;
+    case "secondary":
+      variantClasses = "bg-secondary-light dark:bg-secondary-dark";
+      break;
+    case "tertiary":
+      // Adjust the absolute positioning values as needed
+      variantClasses = "bg-tertiary-light dark:bg-tertiary-dark";
+      break;
+    case "back":
+      // Adjust the absolute positioning values as needed
+      variantClasses =
+        "bg-back-light dark:bg-back-dark absolute top-8 left-5 z-10";
+      break;
+    default:
+      break;
+  }
+
   return (
     <TouchableOpacity
-      style={[styles.button, styles[variant], style]}
       onPress={handlePress}
       activeOpacity={0.7}
+      // Tailwind classes for padding, margin, min-width, rounded corners, etc.
+      className={`py-[14px] px-[16px] rounded-[8px] my-[6px] min-w-[100px] items-center justify-center ${variantClasses} ${
+        className ?? ""
+      }`}
+      style={style} // Optional inline style override if desired
     >
-      <Text style={[styles.text, textStyle]}>{label}</Text>
+      <Text
+        className={`text-[15.5px] text-center text-text-light dark:text-text-dark font-bold uppercase`}
+        numberOfLines={1}
+      >
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    marginVertical: 6,
-    alignItems: "center",
-    justifyContent: "center",
-    minWidth: 100,
-  },
-  text: {
-    fontSize: 16,
-    color: "#fff",
-  },
-  primary: {
-    backgroundColor: "#3498db",
-  },
-  secondary: {
-    backgroundColor: "#2ecc71",
-  },
-  back: {
-    backgroundColor: "#777",
-    position: "absolute",
-    top: -5,
-    left: 20,
-    zIndex: 10,
-  },
-});

@@ -29,7 +29,7 @@ export async function fetchFoodData(query: string) {
 
     // Pick the first result
     const firstFood = foods[0];
-
+    console.log("Nutrients: ", firstFood.fdcId, firstFood.description);
     // Fetch food details from USDA
     const detailsResponse = await axiosClient.get(
       `${usdaBaseURL}/food/${firstFood.fdcId}`,

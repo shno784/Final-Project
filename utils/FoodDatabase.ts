@@ -1,5 +1,5 @@
 import { useSQLiteContext, type SQLiteDatabase } from "expo-sqlite";
-import { FoodItem, FoodRow } from "@/types/DatabaseTypes";
+import { FoodItem, FoodItemWithId, FoodRow } from "@/types/DatabaseTypes";
 
 export function useFoodDatabase() {
   const db = useSQLiteContext() as SQLiteDatabase;
@@ -44,13 +44,14 @@ export function useFoodDatabase() {
     }
   };
 
-  const updateFoodItem = async (food: FoodItem) => {
+  const updateFoodItem = async (food: FoodItemWithId) => {
     try {
       await db.runAsync(
         `UPDATE foods
          SET name = $name, imageUri = $image, recipe = $recipe, nutrients = $nutrients
          WHERE id = $id`,
         {
+          $id: food.id,
           $name: food.name,
           $image: food.imageUri ?? null,
           $recipe: food.recipe ?? null,
