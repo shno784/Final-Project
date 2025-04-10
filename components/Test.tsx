@@ -3,18 +3,17 @@ import {
   Modal,
   View,
   Text,
-  StyleSheet,
-  FlatList,
   Image,
   Dimensions,
-  Button,
   Switch,
   TouchableOpacity,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Carousel from "react-native-reanimated-carousel";
+import AppButton from "./AppButton";
+import { ReduceMotion } from "react-native-reanimated";
 
 const STORAGE_KEY = "hide_onboarding";
-
 const { width } = Dimensions.get("window");
 
 const slides = [
@@ -42,7 +41,7 @@ export default function OnboardingModal() {
   const [visible, setVisible] = useState(false);
   const [dontShow, setDontShow] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const flatListRef = useRef<FlatList>(null);
+  const carouselRef = useRef<any>(null);
 
   useEffect(() => {
     const check = async () => {
@@ -63,17 +62,28 @@ export default function OnboardingModal() {
 
   const handleNext = () => {
     if (currentSlide < slides.length - 1) {
-      flatListRef.current?.scrollToIndex({ index: currentSlide + 1 });
+      carouselRef.current?.scrollTo({
+        index: currentSlide + 1,
+        animated: true,
+      });
     } else {
       handleClose();
     }
   };
 
-  const renderItem = ({ item }: any) => (
-    <View style={styles.slide}>
-      <Text style={styles.title}>{item.title}</Text>
-      <Image source={item.image} style={styles.image} resizeMode="contain" />
-      <Text style={styles.text}>{item.text}</Text>
+  const renderItem = ({ item }: { item: (typeof slides)[0] }) => (
+    <View className="items-center justify-center">
+      <Text className="text-lg text-text-head dark:text-text-d-head font-bold mb-2 text-center">
+        {item.title}
+      </Text>
+      <Image
+        source={item.image}
+        className="w-[250px] h-[200px] mx-auto"
+        resizeMode="contain"
+      />
+      <Text className="text-base text-center mt-3 mb-3 text-text-main dark:text-text-d-main">
+        {item.text}
+      </Text>
     </View>
   );
 
@@ -81,34 +91,39 @@ export default function OnboardingModal() {
 
   return (
     <Modal transparent animationType="fade">
-      <View style={styles.backdrop}>
-        <View style={styles.modal}>
-          <FlatList
-            ref={flatListRef}
+      <View className="flex-1 bg-black/40 justify-center items-center p-5">
+        <View className=" bg-body-light dark:bg-body-dark rounded-[16px] py-5 px-2.5">
+          <Carousel
+            ref={carouselRef}
             data={slides}
-            keyExtractor={(item) => item.key}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
             renderItem={renderItem}
-            onScroll={(e) => {
-              const index = Math.round(e.nativeEvent.contentOffset.x / width);
-              setCurrentSlide(index);
+            width={width - 80}
+            height={300}
+            loop={false}
+            autoPlay={false}
+            onSnapToItem={(index) => setCurrentSlide(index)}
+            withAnimation={{
+              type: "timing",
+              config: {
+                reduceMotion: ReduceMotion.Never,
+              },
             }}
           />
-
-          <View style={styles.footer}>
-            <View style={styles.switchRow}>
+          <View className="px-2.5">
+            <View className="flex-row items-center mb-4">
               <Switch value={dontShow} onValueChange={setDontShow} />
-              <Text style={{ marginLeft: 10 }}>Don't show again</Text>
+              <Text className="ml-2 text-text-main dark:text-text-d-main">
+                Don't show again
+              </Text>
             </View>
-
-            <View style={styles.buttonRow}>
+            <View className="flex-row justify-between items-center">
               <TouchableOpacity onPress={handleClose}>
-                <Text style={styles.skip}>Skip</Text>
+                <Text className="text-base text-text-main dark:text-text-d-main">
+                  Skip
+                </Text>
               </TouchableOpacity>
-              <Button
-                title={
+              <AppButton
+                label={
                   currentSlide === slides.length - 1 ? "Get Started" : "Next"
                 }
                 onPress={handleNext}
@@ -120,63 +135,3 @@ export default function OnboardingModal() {
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.4)",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-  },
-  modal: {
-    width: "100%",
-    maxWidth: 340,
-    height: 450,
-    backgroundColor: "#fff",
-    borderRadius: 16,
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-  },
-  slide: {
-    width: width - 60,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 10,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  text: {
-    fontSize: 16,
-    textAlign: "center",
-    marginTop: 20,
-    paddingHorizontal: 10,
-    color: "#444",
-  },
-  image: {
-    width: 200,
-    height: 200,
-  },
-  footer: {
-    marginTop: 10,
-    paddingHorizontal: 10,
-  },
-  switchRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
-  },
-  buttonRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  skip: {
-    color: "#888",
-    fontSize: 16,
-  },
-});

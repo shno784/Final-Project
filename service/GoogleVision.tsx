@@ -22,6 +22,7 @@ export async function identifyFood(base64Image: string) {
     // Get labels
     const labels = response.data.responses[0].labelAnnotations;
     //Filter label by common words like "food", "fruit", etc.
+    console.log("Labels: ", labels);
     const label = getBestMeaningfulLabel(labels);
     return label;
   } catch (error) {

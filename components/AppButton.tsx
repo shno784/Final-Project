@@ -8,9 +8,8 @@ export default function AppButton({
   label,
   onPress,
   variant = "primary",
-  style, // Additional inline style if needed
-  textStyle, // Tailwind classes for the text (renamed from textStyle)
-  className, // Tailwind classes for the container
+  style,
+  className,
 }: AppButtonProps) {
   const router = useRouter();
 
@@ -27,18 +26,22 @@ export default function AppButton({
   let variantClasses = "";
   switch (variant) {
     case "primary":
-      variantClasses = "bg-primary-light dark:bg-primary-dark";
+      variantClasses = "bg-button-primary dark:bg-button-d-primary";
       break;
     case "secondary":
-      variantClasses = "bg-secondary-light dark:bg-secondary-dark";
+      variantClasses = "bg-button-secondary dark:bg-button-d-secondary";
       break;
     case "tertiary":
       // Adjust the absolute positioning values as needed
-      variantClasses = "bg-tertiary-light dark:bg-tertiary-dark";
+      variantClasses = "bg-button-tertiary dark:bg-button-d-tertiary";
       break;
     case "back":
       // Adjust the absolute positioning values as needed
-      variantClasses = "bg-back-light dark:bg-back-dark";
+      variantClasses =
+        "bg-button-back dark:bg-button-d-backabsolute top-0 left-0 w-1/3";
+      break;
+    case "danger":
+      variantClasses = "bg-button-danger dark:bg-button-d-danger";
       break;
     default:
       break;
@@ -55,7 +58,7 @@ export default function AppButton({
       style={style} // Optional inline style override if desired
     >
       <Text
-        className={`text-[15.5px] text-center text-text-light dark:text-text-dark font-bold uppercase`}
+        className={`text-[15.5px] text-center text-text-head dark:text-text-d-head font-bold uppercase`}
         numberOfLines={1}
       >
         {label}

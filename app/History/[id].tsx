@@ -12,6 +12,7 @@ import { useFoodDatabase } from "@/utils/FoodDatabase";
 import { FoodRow, Macronutrient, Micronutrient } from "@/types/FoodTypes";
 import AppButton from "@/components/AppButton";
 import NutritionCarousel from "@/components/NutritionCarousel";
+import { useColorScheme } from "nativewind";
 
 // Get device width for carousel sizing
 const { width: screenWidth } = Dimensions.get("window");
@@ -22,8 +23,8 @@ const chartConfig = {
   backgroundGradientFrom: "#fff",
   backgroundGradientTo: "#fff",
   decimalPlaces: 0,
-  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-  labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+  labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
   style: {
     borderRadius: 16,
   },
@@ -34,6 +35,7 @@ export default function FoodDetailPage() {
   const { getFoodItemById } = useFoodDatabase();
   const [foodItem, setFoodItem] = useState<FoodRow | null>(null);
   const [selectedGrams, setSelectedGrams] = useState<number>(100);
+  const { colorScheme } = useColorScheme();
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -78,25 +80,25 @@ export default function FoodDetailPage() {
 
   const macroData: Macronutrient[] = [
     {
-      name: "Protein",
+      name: "PROTEIN",
       population: protein,
       color: "#f39c12",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 12,
+      legendFontColor: colorScheme === "dark" ? "#E0E0E0" : "#333333",
+      legendFontSize: 16,
     },
     {
-      name: "Carbs",
+      name: "CARBS",
       population: carbs,
       color: "#27ae60",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 12,
+      legendFontColor: colorScheme === "dark" ? "#E0E0E0" : "#333333",
+      legendFontSize: 16,
     },
     {
-      name: "Fat",
+      name: "FAT",
       population: fat,
       color: "#c0392b",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 12,
+      legendFontColor: colorScheme === "dark" ? "#E0E0E0" : "#333333",
+      legendFontSize: 16,
     },
   ];
 
@@ -127,74 +129,89 @@ export default function FoodDetailPage() {
   if (carbs < 15 && fat > 10) tags.push("🥩 Keto-Friendly");
 
   return (
-    <ScrollView className="pt-20 p-4 dark:bg-bg-dark bg-bg-light">
-      {/* Header row: Back button and title */}
-      <View className="flex-row items-center gap-10">
-        <AppButton label="Back" variant="back" />
-        <Text className="text-[28px] font-bold text-center text-text-light dark:text-text-dark">
-          {foodItem.name}
-        </Text>
-      </View>
-
-      <Image
-        source={{ uri: foodItem.imageUri }}
-        className="w-full h-[200px] rounded-[12px] my-5"
-        resizeMode="cover"
-      />
-
-      {/* Carousel Section */}
-      <View className="mb-5">
-        <NutritionCarousel
-          screenWidth={screenWidth}
-          macroData={macroData}
-          micronutrients={micronutrients}
-          tags={tags}
-          chartConfig={chartConfig}
-        />
-      </View>
-
-      {/* Nutrients Title with Serving Size Selector */}
-      <View className="flex-row justify-between items-center mt-4 mb-2">
-        <Text className="text-[20px] font-semibold">Nutrients</Text>
-        <View className="flex-row gap-2">
-          {[50, 100, 150, 200].map((gram) => (
-            <Text
-              key={gram}
-              onPress={() => setSelectedGrams(gram)}
-              className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                selectedGrams === gram
-                  ? "bg-primary-light text-white"
-                  : "bg-gray-200 text-gray-800"
-              }`}
-            >
-              {gram}g
+    <ScrollView
+      nestedScrollEnabled
+      directionalLockEnabled
+      className="pt-20 p-4 dark:bg-body-dark bg-body-light"
+    >
+      {/* Card Container */}
+      <View className="bg-card-light dark:bg-card-dark rounded-xl shadow-lg p-4">
+        {/* Header row: Back button and title */}
+        <View className="relative w-full">
+          {/* Absolutely positioned button with one third width */}
+          <AppButton label="Back" variant="back" />
+          {/* Container for text placed below the button */}
+          <View className="mt-2 w-full">
+            <Text className="text-[28px] font-bold text-center text-text-main dark:text-text-d-main">
+              {foodItem.name}
             </Text>
-          ))}
+          </View>
         </View>
+
+        <Image
+          source={{ uri: foodItem.imageUri }}
+          className="w-full h-[200px] rounded-[12px] my-5"
+          resizeMode="cover"
+        />
+
+        {/* Carousel Section */}
+        <View className="mb-5">
+          <NutritionCarousel
+            screenWidth={screenWidth}
+            macroData={macroData}
+            micronutrients={micronutrients}
+            tags={tags}
+            chartConfig={chartConfig}
+          />
+        </View>
+
+        {/* Nutrients Title with Serving Size Selector */}
+        <View className="flex-row justify-between items-center mt-4 mb-2">
+          <Text className="text-[20px] font-semibold text-text-head dark:text-text-d-head">
+            Nutrients
+          </Text>
+          <View className="flex-row gap-2">
+            {[50, 100, 150, 200].map((gram) => (
+              <Text
+                key={gram}
+                onPress={() => setSelectedGrams(gram)}
+                className={`px-3 py-1 rounded-full text-sm text-text-main font-semibold ${
+                  selectedGrams === gram
+                    ? "bg-button-primary text-white"
+                    : "bg-card-light text-gray-800"
+                }`}
+              >
+                {gram}g
+              </Text>
+            ))}
+          </View>
+        </View>
+
+        {/* List of Nutrients with Adjusted Values */}
+        {nutrients.map((nutrient, index) => (
+          <View
+            key={index}
+            className="flex-row justify-between py-1 border-b border-b-gray-300"
+          >
+            <Text className="text-[16px] text-[#555] text-text-main dark:text-text-d-main">
+              {nutrient.name}
+            </Text>
+            <Text className="text-[16px] text-text-main dark:text-text-d-main">
+              {(nutrient.value * (selectedGrams / 100)).toFixed(1)}
+            </Text>
+          </View>
+        ))}
+
+        {/* Recipe Section */}
+        {foodItem.recipe && (
+          <>
+            <Text className="text-[20px] font-semibold mt-4 mb-2">Recipe</Text>
+            <Text className="text-[16px] text-[#333] mt-2 leading-[22px]">
+              {foodItem.recipe}
+            </Text>
+          </>
+        )}
       </View>
-
-      {/* List of Nutrients with Adjusted Values */}
-      {nutrients.map((nutrient, index) => (
-        <View
-          key={index}
-          className="flex-row justify-between py-1 border-b border-b-gray-300"
-        >
-          <Text className="text-[16px] text-[#555]">{nutrient.name}</Text>
-          <Text className="text-[16px] font-bold">
-            {(nutrient.value * (selectedGrams / 100)).toFixed(1)}
-          </Text>
-        </View>
-      ))}
-
-      {/* Recipe Section */}
-      {foodItem.recipe && (
-        <>
-          <Text className="text-[20px] font-semibold mt-4 mb-2">Recipe</Text>
-          <Text className="text-[16px] text-[#333] mt-2 leading-[22px]">
-            {foodItem.recipe}
-          </Text>
-        </>
-      )}
     </ScrollView>
   );
 }

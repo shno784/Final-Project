@@ -1,14 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  Modal,
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  Switch,
-  TouchableOpacity,
-} from "react-native";
+import { Modal, View, Text, Switch } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AppButton from "./AppButton";
 
 interface Props {
   tipKey: string;
@@ -34,7 +27,7 @@ export default function OneTimeTip({
       }
     };
     check();
-  }, []);
+  }, [tipKey]);
 
   const dismiss = async () => {
     if (dontShowAgain) {
@@ -47,55 +40,25 @@ export default function OneTimeTip({
 
   return (
     <Modal visible transparent animationType="fade">
-      <View style={styles.backdrop}>
-        <View style={styles.card}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.message}>{message}</Text>
-
+      <View className="flex-1 bg-black/40 justify-center items-center p-6">
+        <View className="w-full max-w-[320px] bg-body-light dark:bg-body-dark rounded-[16px] p-5 items-center">
+          <Text className="text-xl font-semibold mb-[10px] text-text-head dark:text-text-d-head">
+            {title}
+          </Text>
+          <Text className="text-base text-text-main dark:text-text-d-main text-center text-[#444] mb-5">
+            {message}
+          </Text>
           {showSwitch && (
-            <View style={styles.switchRow}>
+            <View className="flex-row items-center mb-[15px]">
               <Switch value={dontShowAgain} onValueChange={setDontShowAgain} />
-              <Text style={{ marginLeft: 10 }}>Don't show again</Text>
+              <Text className="ml-2 text-text-main dark:text-text-d-main">
+                Don't show again
+              </Text>
             </View>
           )}
-
-          <Button title="Got it" onPress={dismiss} />
+          <AppButton label="Got it" onPress={dismiss} className="mt-3" />
         </View>
       </View>
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.4)",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 24,
-  },
-  card: {
-    width: "100%",
-    maxWidth: 320,
-    backgroundColor: "#fff",
-    borderRadius: 16,
-    padding: 20,
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "600",
-    marginBottom: 10,
-  },
-  message: {
-    fontSize: 16,
-    textAlign: "center",
-    color: "#444",
-    marginBottom: 20,
-  },
-  switchRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
-  },
-});

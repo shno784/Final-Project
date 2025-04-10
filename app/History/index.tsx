@@ -115,10 +115,10 @@ const History = () => {
 
   return (
     <View className="flex-1">
+      {/* Edit modal */}
       <Modal visible={ismodalVisible} animationType="slide" transparent>
-        <View className="flex-1 justify-center bg-black/50 p-5">
-          <View className="bg-white rounded-xl p-5">
-            <Text className="text-xl font-semibold mb-3">Edit Food</Text>
+        <View className="flex-1 justify-center bg-body-dark/50 p-5">
+          <View className="bg-card-light dark:bg-card-dark rounded-xl p-5">
             <TextInput
               className="border border-gray-300 rounded-md p-2.5 mb-2.5"
               placeholder="Food name"
@@ -128,32 +128,36 @@ const History = () => {
 
             <Image
               source={{ uri: newImageUri }}
-              className="w-full h-[150px] rounded-md my-2.5"
+              className="w-full h-[200px] rounded-md my-2.5"
             />
 
             <AppButton label="Change Image" onPress={pickNewImage} />
-            <AppButton label="Save" onPress={handleSave} />
-            <Button
-              title="Cancel"
-              color="red"
+            <AppButton label="Save" onPress={handleSave} variant="tertiary" />
+            <AppButton
+              label="Cancel"
+              variant="danger"
               onPress={() => setIsModalVisible(false)}
             />
           </View>
         </View>
       </Modal>
+      {/* One time tip */}
       <OneTimeTip
         tipKey="history"
-        title="View History"
+        title="Tip"
         message={
           "Tap a card to view details.\nHold a card to edit or delete it."
         }
       />
-      <ScrollView className="flex-1 p-[15px] pt-20 bg-white  dark:bg-black">
-        <View className="flex-row items-center gap-5">
+      {/* Main Content */}
+      <ScrollView className="flex-1 p-[15px] pt-20 bg-body-light  dark:bg-body-dark">
+        <View className="relative w-full">
           <AppButton label="Back" variant="back" />
-          <Text className="text-[28px] font-bold mb-3 text-center text-text-light dark:text-text-dark">
-            History
-          </Text>
+          <View className="mt-2 w-full">
+            <Text className="text-[28px] font-bold mb-3 text-center text-text-head dark:text-text-d-head">
+              History
+            </Text>
+          </View>
         </View>
 
         <View className="flex flex-row flex-wrap justify-between">

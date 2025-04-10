@@ -4,6 +4,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { SQLiteProvider } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Asset } from "expo-asset";
 import "@/app/global.css";
 
@@ -39,11 +40,12 @@ export default function RootLayout() {
   if (!ready || !loaded) return null;
 
   return (
-    <SQLiteProvider
-      databaseName={"food.db"}
-      onInit={async (db) => {
-        try {
-          await db.execAsync(`
+    <GestureHandlerRootView>
+      <SQLiteProvider
+        databaseName={"food.db"}
+        onInit={async (db) => {
+          try {
+            await db.execAsync(`
             CREATE TABLE IF NOT EXISTS foods (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               name TEXT,
@@ -52,15 +54,16 @@ export default function RootLayout() {
               nutrients TEXT
             );
           `);
-          console.log("✅ Food table has been created or already exists.");
-        } catch (error) {
-          console.error("❌ Error during table creation:", error);
-        }
-      }}
-    >
-      <ActionSheetProvider>
-        <Stack screenOptions={{ headerShown: false }} />
-      </ActionSheetProvider>
-    </SQLiteProvider>
+            console.log("✅ Food table has been created or already exists.");
+          } catch (error) {
+            console.error("❌ Error during table creation:", error);
+          }
+        }}
+      >
+        <ActionSheetProvider>
+          <Stack screenOptions={{ headerShown: false }} />
+        </ActionSheetProvider>
+      </SQLiteProvider>
+    </GestureHandlerRootView>
   );
 }

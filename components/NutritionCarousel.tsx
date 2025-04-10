@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Dimensions } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { PieChart } from "react-native-chart-kit";
@@ -13,14 +13,14 @@ const NutritionCarousel = ({
   tags,
   chartConfig,
 }: NutritionCarouselProps) => {
-  // Create carousel items array for the three cards
+  // Define your carousel items
   const carouselItems = [
     {
       key: "macros",
       title: "Macronutrients",
       content: (
         <View className="flex items-center justify-center h-full">
-          <Text className="text-[24px] font-semibold mb-2">
+          <Text className="text-[24px] font-semibold mb-2 text-text-head dark:text-text-d-head">
             Macronutrient Breakdown
           </Text>
           <PieChart
@@ -41,17 +41,17 @@ const NutritionCarousel = ({
       title: "Micronutrients",
       content: (
         <View className="px-4 justify-center h-full">
-          <Text className="text-[24px] font-semibold mb-2">
+          <Text className="text-[24px] font-semibold mb-2 text-text-head dark:text-text-d-head">
             Micronutrient Progress
           </Text>
           {micronutrients.map((nutrient, index) => {
             const percent = Math.min((nutrient.value / nutrient.dv) * 100, 100);
             return (
               <View key={index} className="mb-4">
-                <Text className="mb-1 text-base">
+                <Text className="mb-1 text-base text-text-main dark:text-text-d-main">
                   {nutrient.name}: {nutrient.value} ({percent.toFixed(0)}%)
                 </Text>
-                <View className="w-full h-3 bg-gray-300 rounded">
+                <View className="w-full h-3 bg-text-d-subtext dark:bg-body-light rounded">
                   <View
                     className="h-3 rounded"
                     style={{
@@ -76,7 +76,7 @@ const NutritionCarousel = ({
       title: "Highlights",
       content: (
         <View className="px-4 justify-start h-full">
-          <Text className="text-[24px] font-semibold mb-16 mt-5 text-center">
+          <Text className="text-[24px] font-semibold mb-16 mt-5 text-center text-text-head dark:text-text-d-head">
             Highlights
           </Text>
           <View className="flex-row flex-wrap gap-2">
@@ -98,6 +98,10 @@ const NutritionCarousel = ({
     },
   ];
 
+  // Track the current slide index using onProgressChange
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Render each carousel slide item
   const renderCarouselItem = ({
     item,
   }: {
@@ -105,10 +109,10 @@ const NutritionCarousel = ({
   }) => {
     return (
       <View
-        className="bg-gray-100 rounded-lg mb-8 self-center"
+        className="dark:bg-[#262626] bg-[#F0F0F0] rounded-lg mb-8 self-center"
         style={{
           width: screenWidth * 0.9,
-          height: screenWidth * 0.7, // Consistent height for all cards
+          height: screenWidth * 0.7,
           padding: 16,
         }}
       >
@@ -118,9 +122,9 @@ const NutritionCarousel = ({
   };
 
   return (
-    <View className="flex justify-center items-center shadow-md shadow-slate-600">
+    <View className="flex justify-center items-center">
       <Carousel
-        loop={true}
+        loop={false}
         width={screenWidth}
         height={screenWidth * 0.7}
         data={carouselItems}
@@ -129,7 +133,24 @@ const NutritionCarousel = ({
         modeConfig={{
           snapDirection: "left",
         }}
+        // onProgressChange updates the logical index as the carousel swipes
+        onProgressChange={(_, absoluteProgress) => {
+          const idx = Math.round(absoluteProgress);
+          setCurrentIndex(idx);
+        }}
       />
+
+      {/* Pagination Dots */}
+      <View className="flex flex-row justify-center items-center mt-4">
+        {carouselItems.map((_, idx) => (
+          <View
+            key={idx}
+            className={`w-3 h-3 mx-1 rounded-full ${
+              currentIndex === idx ? "bg-blue-500" : "bg-gray-300"
+            }`}
+          />
+        ))}
+      </View>
     </View>
   );
 };

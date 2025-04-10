@@ -13,15 +13,15 @@ const FoodCard = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`bg-bg-light dark:bg-bg-dark backdrop-blur-md border border-white/10 rounded-2xl p-4 ${className}`}
+      className={`bg-card-light dark:bg-card-dark rounded-xl shadow p-2 m-2 items-center w-44 ${className}`}
       onLongPress={onLongPress}
     >
       <Image
         source={{ uri: imageUri }}
-        style={[{ width: "100%", height: 150, borderRadius: 8 }, imageStyle]}
+        className={`w-full h-32 rounded-lg overflow-hidden ${imageStyle}`}
       />
       <Text
-        className={`text-[15.5px] text-center dark:text-text-dark text-text-light font-bold uppercase pt-3`}
+        className={`text-md text-center dark:text-text-d-main text-text-main font-bold uppercase mt-3`}
         numberOfLines={1}
       >
         {name}

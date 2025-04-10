@@ -1,11 +1,11 @@
-import { TextStyle, ViewStyle, ImageStyle } from "react-native";
+import { ReactNode } from "react";
+import { ViewStyle, ImageStyle } from "react-native";
 
 export interface AppButtonProps {
-  label: string;
+  label: string | ReactNode;
   onPress?: () => void;
-  variant?: "primary" | "secondary" | "tertiary" | "back";
+  variant?: "primary" | "secondary" | "tertiary" | "danger" | "back";
   style?: ViewStyle;
-  textStyle?: string;
   className?: string;
 }
 
