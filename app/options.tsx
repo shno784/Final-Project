@@ -1,26 +1,37 @@
 import AppButton from "@/components/AppButton";
-import { useState } from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useColorScheme } from "nativewind";
+import { LinearGradient } from "expo-linear-gradient";
 
 const options = () => {
   const { colorScheme, setColorScheme } = useColorScheme();
-  console.log(colorScheme);
   const toggleTheme = () => {
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
   };
 
-  // Replace "dark" with "light" or "system" as needed
   return (
-    <View className="flex-1 bg-body-light dark:bg-body-dark p-4 justify-center">
-      <Text className="text-base text-text-main dark:text-text-d-main mb-4">
-        Options
-      </Text>
-      <AppButton label="A button" onPress={toggleTheme} />
-      <Text className="text-base text-black dark:text-white mb-4">
-        "MUSTARDDDDDDDDDDDDDDDDD"
-      </Text>
-      <AppButton label="Back" variant="back" />
+    <View style={{ flex: 1 }}>
+      <LinearGradient
+        colors={[
+          "#c2410c", // orange-700
+          "#f97316", // orange-500
+          colorScheme === "dark" ? "#000000" : "#ffffff",
+        ]}
+        start={{ x: 0.5, y: 0 }}
+        end={{ x: 0.5, y: 0.5 }}
+        locations={[0, 0.4, 1]}
+        style={StyleSheet.absoluteFill}
+      />
+      <View style={{ flex: 1, padding: 16, justifyContent: "center" }}>
+        <Text className="text-base text-text-main dark:text-text-d-main mb-4">
+          Options
+        </Text>
+        <AppButton label="A button" onPress={toggleTheme} />
+        <Text className="text-base text-black dark:text-white mb-4">
+          MUSTARDDDDDDDDDDDDDDDDD
+        </Text>
+        <AppButton label="Back" variant="back" />
+      </View>
     </View>
   );
 };

@@ -193,7 +193,7 @@ export default function FoodDetailPage() {
             key={index}
             className="flex-row justify-between py-1 border-b border-b-gray-300"
           >
-            <Text className="text-[16px] text-[#555] text-text-main dark:text-text-d-main">
+            <Text className="text-[16px] text-text-main dark:text-text-d-main">
               {nutrient.name}
             </Text>
             <Text className="text-[16px] text-text-main dark:text-text-d-main">

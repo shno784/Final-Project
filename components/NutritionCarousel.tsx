@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, Dimensions } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
+import type { ICarouselInstance } from "react-native-reanimated-carousel";
 import { PieChart } from "react-native-chart-kit";
 import { NutritionCarouselProps } from "@/types/FoodTypes";
+import { PanGesture } from "react-native-gesture-handler";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -13,6 +15,7 @@ const NutritionCarousel = ({
   tags,
   chartConfig,
 }: NutritionCarouselProps) => {
+  const ref = React.useRef<ICarouselInstance>(null);
   // Define your carousel items
   const carouselItems = [
     {
@@ -124,14 +127,21 @@ const NutritionCarousel = ({
   return (
     <View className="flex justify-center items-center">
       <Carousel
-        loop={false}
+        ref={ref}
+        loop={true}
+        pagingEnabled={true}
+        snapEnabled={true}
         width={screenWidth}
+        onConfigurePanGesture={(panGesture: PanGesture) => {
+          panGesture.activeOffsetX([-10, 10]);
+        }}
         height={screenWidth * 0.7}
         data={carouselItems}
         renderItem={({ item }) => renderCarouselItem({ item })}
-        mode="horizontal-stack"
+        mode={"horizontal-stack"}
         modeConfig={{
           snapDirection: "left",
+          stackInterval: 18,
         }}
         // onProgressChange updates the logical index as the carousel swipes
         onProgressChange={(_, absoluteProgress) => {

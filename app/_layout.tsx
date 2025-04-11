@@ -40,12 +40,11 @@ export default function RootLayout() {
   if (!ready || !loaded) return null;
 
   return (
-    <GestureHandlerRootView>
-      <SQLiteProvider
-        databaseName={"food.db"}
-        onInit={async (db) => {
-          try {
-            await db.execAsync(`
+    <SQLiteProvider
+      databaseName={"food.db"}
+      onInit={async (db) => {
+        try {
+          await db.execAsync(`
             CREATE TABLE IF NOT EXISTS foods (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               name TEXT,
@@ -54,16 +53,17 @@ export default function RootLayout() {
               nutrients TEXT
             );
           `);
-            console.log("✅ Food table has been created or already exists.");
-          } catch (error) {
-            console.error("❌ Error during table creation:", error);
-          }
-        }}
-      >
-        <ActionSheetProvider>
+          console.log("✅ Food table has been created or already exists.");
+        } catch (error) {
+          console.error("❌ Error during table creation:", error);
+        }
+      }}
+    >
+      <ActionSheetProvider>
+        <GestureHandlerRootView>
           <Stack screenOptions={{ headerShown: false }} />
-        </ActionSheetProvider>
-      </SQLiteProvider>
-    </GestureHandlerRootView>
+        </GestureHandlerRootView>
+      </ActionSheetProvider>
+    </SQLiteProvider>
   );
 }
