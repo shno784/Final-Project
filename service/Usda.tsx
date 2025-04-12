@@ -21,7 +21,6 @@ export async function fetchFoodData(query: string) {
         },
       }
     );
-
     const foods = searchResponse.data.foods;
     if (!foods || foods.length === 0) {
       throw new Error("No food found for the query.");
@@ -63,7 +62,9 @@ export async function fetchFoodData(query: string) {
     }
     // Assuming nutrients is the array you provided:
     const nutrients = detailsResponse.data.labelNutrients;
-
+    if (!nutrients) {
+      throw new Error("No nutrients found for the food item.");
+    }
     function extractNutrients(nutrientData: any) {
       if (nutrientData === null || typeof nutrientData !== "object") {
         throw new Error("Provided nutrientData is not an object.");

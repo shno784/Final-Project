@@ -1,35 +1,42 @@
+// pages/index.tsx (or Home.tsx)
 import { useState } from "react";
-import {
-  View,
-  Text,
-  Keyboard,
-  TextInput,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { View, Text, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useRouter } from "expo-router";
 import AppButton from "@/components/AppButton";
 import ImagePicker from "@/utils/ImagePicker";
 import { useFoodDatabase } from "@/utils/FoodDatabase";
 import OnboardingModal from "@/components/OnboardingModal";
-import { ProcessText } from "@/utils/ProcessText";
+import { processText } from "@/utils/ProcessText";
 import Icon from "@/components/Icon";
+import USDAFoodSearch from "@/components/USDAFoodSearch";
+import ErrorCard from "@/components/ErrorCard";
 
 export default function Home() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const { insertFoodItem } = useFoodDatabase();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSearch = async () => {
     try {
-      if (searchQuery.trim() === "") {
-        throw new Error("Search query cannot be empty");
+      if (searchQuery == "") {
+        console.log("Search query cannot be empty");
+        setErrorMessage("Search query cannot be empty");
+        return;
       }
-      await ProcessText(searchQuery.toLowerCase(), insertFoodItem);
+      await processText(searchQuery.toLowerCase(), insertFoodItem);
       router.push("/History");
-      // Empty the search input after searching
+      // Clear the search input after the search
       setSearchQuery("");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error:", (error as Error)?.message);
+      setErrorMessage("Error processing search");
+    }
+  };
+
+  const handleSuggestionSelect = (foodItem: any) => {
+    if (foodItem?.description) {
+      setSearchQuery(foodItem.description);
     }
   };
 
@@ -37,9 +44,7 @@ export default function Home() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
       <View className="flex-1">
         <OnboardingModal />
-        {/* Main container: flex-1 with 24px padding (p-6), white background (dark: override) */}
         <View className="flex-1 p-6 bg-white dark:bg-black justify-start">
-          {/* Header container with margin top 150px and margin bottom 80px, centered items */}
           <View className="mt-[150px] items-center mb-[80px]">
             <Text className="text-3xl font-bold text-center mb-1 text-text-head dark:text-text-d-head">
               My Nutrition App
@@ -48,16 +53,20 @@ export default function Home() {
               Scan, Search, and Compare Foods
             </Text>
           </View>
-
-          {/* Search container: row, full width, centered items, margin bottom 50px */}
+          {errorMessage !== "" && (
+            <ErrorCard
+              message={errorMessage}
+              onDismiss={() => setErrorMessage("")}
+            />
+          )}
+          {/* Search bar and button container */}
           <View className="flex-row w-full items-center mb-8">
-            <TextInput
-              className="flex-1 border-[2px] border-primary rounded-lg py-3 px-5 text-xl placeholder:font-medium placeholder:text-text-head dark:placeholder:text-text-d-head"
-              placeholder="Search Food"
+            <USDAFoodSearch
               value={searchQuery}
               onChangeText={setSearchQuery}
-              onSubmitEditing={handleSearch}
-              returnKeyType="search"
+              onSuggestionSelect={handleSuggestionSelect}
+              placeholder="Search Food"
+              inputClassName="border-[2px] border-primary rounded-lg py-3 px-5 text-xl text-text-head dark:text-text-d-head placeholder:font-medium placeholder:text-text-head dark:placeholder:text-text-d-head"
             />
             <AppButton
               label="Search"
@@ -67,7 +76,7 @@ export default function Home() {
             />
           </View>
 
-          {/* Full width buttons */}
+          {/* Other Buttons */}
           <AppButton
             label="Scan Food"
             onPress={() => router.navigate("/camera")}
@@ -80,8 +89,6 @@ export default function Home() {
             className="w-full mb-5"
             icon={<Icon name="image-outline" size={24} className="mr-2" />}
           />
-
-          {/* Row for two half-width buttons */}
           <View className="flex-row justify-between w-full gap-[10px] mb-5">
             <AppButton
               label="Food History"
@@ -91,10 +98,10 @@ export default function Home() {
             />
             <AppButton
               label="Settings"
-              icon={<Icon name="settings-outline" size={24} className="mr-2" />}
               onPress={() => router.navigate("/options")}
               className="flex-1"
               variant="secondary"
+              icon={<Icon name="settings-outline" size={24} className="mr-2" />}
             />
           </View>
         </View>

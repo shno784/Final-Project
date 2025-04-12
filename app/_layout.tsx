@@ -47,7 +47,7 @@ export default function RootLayout() {
           await db.execAsync(`
             CREATE TABLE IF NOT EXISTS foods (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT,
+              name TEXT UNIQUE,
               imageUri TEXT,
               recipe TEXT,
               nutrients TEXT

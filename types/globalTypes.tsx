@@ -25,3 +25,8 @@ export interface IconProps {
   size: number;
   className?: string;
 }
+
+export interface ErrorCardProps {
+  message: string;
+  onDismiss: () => void;
+}

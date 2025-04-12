@@ -1,3 +1,4 @@
+// FoodDetailPage.tsx
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -14,15 +15,13 @@ import AppButton from "@/components/AppButton";
 import NutritionCarousel from "@/components/NutritionCarousel";
 import { useColorScheme } from "nativewind";
 
-// Get device width for carousel sizing
 const { width: screenWidth } = Dimensions.get("window");
 
-// Configuration for react-native-chart-kit
 const chartConfig = {
   backgroundColor: "#fff",
   backgroundGradientFrom: "#fff",
   backgroundGradientTo: "#fff",
-  decimalPlaces: 0,
+  decimalPlaces: 2, // adjust here for the chart if needed
   color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
   labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
   style: {
@@ -71,62 +70,76 @@ export default function FoodDetailPage() {
     return found ? found.value : 0;
   };
 
-  // ----------------------------
-  // Prepare Data for Carousel
-  // ----------------------------
-  const protein = getValue("Protein");
-  const carbs = getValue("Carbohydrates");
-  const fat = getValue("fat");
+  // Calculate multiplier based on the serving size
+  const multiplier = selectedGrams / 100;
+
+  // Calculate and round macronutrient values to 2dp
+  const proteinRounded = parseFloat(
+    (getValue("Protein") * multiplier).toFixed(2)
+  );
+  const carbsRounded = parseFloat(
+    (getValue("Carbohydrates") * multiplier).toFixed(2)
+  );
+  const fatRounded = parseFloat((getValue("fat") * multiplier).toFixed(2));
 
   const macroData: Macronutrient[] = [
     {
       name: "PROTEIN",
-      population: protein,
+      population: proteinRounded,
       color: "#f39c12",
       legendFontColor: colorScheme === "dark" ? "#E0E0E0" : "#333333",
       legendFontSize: 16,
     },
     {
       name: "CARBS",
-      population: carbs,
+      population: carbsRounded,
       color: "#27ae60",
       legendFontColor: colorScheme === "dark" ? "#E0E0E0" : "#333333",
       legendFontSize: 16,
     },
     {
       name: "FAT",
-      population: fat,
+      population: fatRounded,
       color: "#c0392b",
       legendFontColor: colorScheme === "dark" ? "#E0E0E0" : "#333333",
       legendFontSize: 16,
     },
   ];
 
+  // Calculate and round micronutrient values to 2dp
+  const sodiumRounded = parseFloat(
+    (getValue("Sodium") * multiplier).toFixed(2)
+  );
+  const sugarsRounded = parseFloat(
+    (getValue("sugars") * multiplier).toFixed(2)
+  );
+  const fiberRounded = parseFloat((getValue("Fiber") * multiplier).toFixed(2));
+
   const micronutrients: Micronutrient[] = [
     {
       name: "Sodium, Na",
-      value: getValue("Sodium"),
+      value: sodiumRounded,
       dv: 2300,
     },
     {
       name: "Sugars, total",
-      value: getValue("sugars"),
+      value: sugarsRounded,
       dv: 50,
     },
     {
       name: "Fiber, total dietary",
-      value: getValue("Fiber"),
+      value: fiberRounded,
       dv: 28,
     },
   ];
 
-  // Generate nutrient-based tags
+  // Generate nutrient-based tags using rounded values
   let tags: string[] = [];
-  if (protein >= 15) tags.push("💪 High Protein");
-  if (getValue("Sugars") <= 5) tags.push("🍬 Low Sugar");
-  if (getValue("Fiber") >= 5) tags.push("🌾 High Fiber");
-  if (getValue("fat") <= 5) tags.push("🥗 Low Fat");
-  if (carbs < 15 && fat > 10) tags.push("🥩 Keto-Friendly");
+  if (proteinRounded >= 15) tags.push("💪 High Protein");
+  if (sugarsRounded <= 5) tags.push("🍬 Low Sugar");
+  if (fiberRounded >= 5) tags.push("🌾 High Fiber");
+  if (fatRounded <= 5) tags.push("🥗 Low Fat");
+  if (carbsRounded < 15 && fatRounded > 10) tags.push("🥩 Keto-Friendly");
 
   return (
     <ScrollView
@@ -135,11 +148,8 @@ export default function FoodDetailPage() {
       className="pt-20 p-4 dark:bg-black bg-white"
     >
       {/* Card Container */}
-      <View className=" dark:bg-black rounded-xl shadow-lg p-4">
-        {/* Header row: Back button and title */}
+      <View className="dark:bg-black rounded-xl shadow-lg p-4">
         <View className="relative w-full">
-          {/* Absolutely positioned button with one third width */}
-          {/* Container for text placed below the button */}
           <View className="mt-2 w-full">
             <Text className="text-[28px] font-bold text-center text-text-main dark:text-text-d-main">
               {foodItem.name}
@@ -186,7 +196,7 @@ export default function FoodDetailPage() {
           </View>
         </View>
 
-        {/* List of Nutrients with Adjusted Values */}
+        {/* List of Nutrients with Adjusted and Rounded Values */}
         {nutrients.map((nutrient, index) => (
           <View
             key={index}
@@ -196,7 +206,10 @@ export default function FoodDetailPage() {
               {nutrient.name}
             </Text>
             <Text className="text-[16px] text-text-main dark:text-text-d-main">
-              {(nutrient.value * (selectedGrams / 100)).toFixed(1)}
+              {(
+                parseFloat((nutrient.value * multiplier).toFixed(2)) || 0
+              ).toFixed(1)}
+              g
             </Text>
           </View>
         ))}

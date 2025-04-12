@@ -4,7 +4,7 @@ import AppButton from "@/components/AppButton";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import OneTimeTip from "@/components/OneTimeTip";
 import ImagePicker from "@/utils/ImagePicker";
-import { ProcessImage } from "@/utils/ProcessImage";
+import { processImage } from "@/utils/ProcessImage";
 import { useFoodDatabase } from "@/utils/FoodDatabase";
 import { BarcodeScan } from "@/service/OpenFoodFacts";
 import { useRouter } from "expo-router";
@@ -48,7 +48,7 @@ const CameraScreen = () => {
     const photo = await cameraRef.current?.takePictureAsync();
     if (photo) {
       console.log("Processing image...");
-      await ProcessImage(photo.uri, insertFoodItem);
+      await processImage(photo.uri, insertFoodItem);
       router.push("/History");
     }
   };

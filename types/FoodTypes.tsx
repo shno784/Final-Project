@@ -42,3 +42,17 @@ export interface NutritionCarouselProps {
   tags: string[];
   chartConfig: any;
 }
+
+export interface USDAFood {
+  fdcId: number;
+  description: string;
+  // include additional fields if needed
+}
+
+export interface USDAFoodSearchProps {
+  value: string;
+  onChangeText: (text: string) => void;
+  onSuggestionSelect?: (foodItem: USDAFood) => void;
+  placeholder?: string;
+  inputClassName?: string;
+}
