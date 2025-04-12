@@ -10,6 +10,7 @@ import { BarcodeScan } from "@/service/OpenFoodFacts";
 import { useRouter } from "expo-router";
 import { BarcodeProps } from "@/types/CameraTypes";
 import { Ionicons } from "@expo/vector-icons";
+import Icon from "@/components/Icon";
 
 const CameraScreen = () => {
   const [permission, requestPermission] = useCameraPermissions();
@@ -90,7 +91,6 @@ const CameraScreen = () => {
           }}
           onBarcodeScanned={hasScanned ? undefined : handleBarcodeScanned}
         >
-          <AppButton label="Back" variant="back" className="top-20" />
           <OneTimeTip
             tipKey="camera"
             title="Scan Mode"
@@ -108,33 +108,33 @@ const CameraScreen = () => {
       </View>
 
       {/* Bottom portion: Button container */}
-      <View className="p-4 bg-body-light dark:bg-body-dark rounded-sm">
+      <View className="p-4 bg-white dark:bg-black rounded-sm">
         <View className="flex-row justify-center gap-3 mb-4">
           <AppButton
-            label={
-              <Ionicons
+            icon={
+              <Icon
                 name={torch ? "flashlight" : "flashlight-outline"}
                 size={30}
-                color="white"
+                className="ml-1"
               />
             }
             variant="secondary"
-            className="bg-black/50 -20 w-20 mt-4 rounded-full px-3 py-2"
+            className="w-20 mt-4 rounded-full px-3 py-2"
             onPress={() => setTorch((prev) => !prev)}
           />
           <AppButton
-            label={<Ionicons name="camera-outline" size={32} color="white" />}
-            className="bg-black/50 ml-2 h-24 w-24 mr-2 rounded-full"
+            icon={<Icon name="camera-outline" size={32} className="ml-1" />}
+            className="ml-2 h-24 w-24 mr-2 rounded-full"
             onPress={handlePress(takePicture)}
-            variant="danger"
+            variant="primary"
           />
           <AppButton
-            label={<Ionicons name="image-outline" size={32} color="white" />}
-            className="bg-black/50 h-20 w-20 mt-4 rounded-full px-3 py-2"
-            variant="tertiary"
+            icon={<Icon name="image-outline" size={32} className="ml-1" />}
+            className="h-20 w-20 mt-4 rounded-full px-3 py-2"
             onPress={handlePress(() => {
               ImagePicker(insertFoodItem);
             })}
+            variant="secondary"
           />
         </View>
       </View>

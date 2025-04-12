@@ -132,14 +132,13 @@ export default function FoodDetailPage() {
     <ScrollView
       nestedScrollEnabled
       directionalLockEnabled
-      className="pt-20 p-4 dark:bg-body-dark bg-body-light"
+      className="pt-20 p-4 dark:bg-black bg-white"
     >
       {/* Card Container */}
-      <View className="bg-card-light dark:bg-card-dark rounded-xl shadow-lg p-4">
+      <View className=" dark:bg-black rounded-xl shadow-lg p-4">
         {/* Header row: Back button and title */}
         <View className="relative w-full">
           {/* Absolutely positioned button with one third width */}
-          <AppButton label="Back" variant="back" />
           {/* Container for text placed below the button */}
           <View className="mt-2 w-full">
             <Text className="text-[28px] font-bold text-center text-text-main dark:text-text-d-main">
@@ -155,7 +154,7 @@ export default function FoodDetailPage() {
         />
 
         {/* Carousel Section */}
-        <View className="mb-5">
+        <View className="mb-5 bg-card-light dark:bg-card-dark overflow-hidden rounded-xl">
           <NutritionCarousel
             screenWidth={screenWidth}
             macroData={macroData}
@@ -177,7 +176,7 @@ export default function FoodDetailPage() {
                 onPress={() => setSelectedGrams(gram)}
                 className={`px-3 py-1 rounded-full text-sm text-text-main font-semibold ${
                   selectedGrams === gram
-                    ? "bg-button-primary text-white"
+                    ? "bg-primary text-white"
                     : "bg-card-light text-gray-800"
                 }`}
               >

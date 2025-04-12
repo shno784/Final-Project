@@ -92,7 +92,7 @@ export default function OnboardingModal() {
   return (
     <Modal transparent animationType="fade">
       <View className="flex-1 bg-black/40 justify-center items-center p-5">
-        <View className=" bg-body-light dark:bg-body-dark rounded-[16px] py-5 px-2.5">
+        <View className=" bg-white dark:bg-black rounded-[16px] py-5 px-2.5">
           <Carousel
             ref={carouselRef}
             data={slides}

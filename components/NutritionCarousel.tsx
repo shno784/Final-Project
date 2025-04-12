@@ -54,7 +54,7 @@ const NutritionCarousel = ({
                 <Text className="mb-1 text-base text-text-main dark:text-text-d-main">
                   {nutrient.name}: {nutrient.value} ({percent.toFixed(0)}%)
                 </Text>
-                <View className="w-full h-3 bg-text-d-subtext dark:bg-body-light rounded">
+                <View className="w-full h-3 bg-white dark:bg-black rounded">
                   <View
                     className="h-3 rounded"
                     style={{
@@ -112,7 +112,7 @@ const NutritionCarousel = ({
   }) => {
     return (
       <View
-        className="dark:bg-[#262626] bg-[#F0F0F0] rounded-lg mb-8 self-center"
+        className="dark:bg-card-dark bg-card-light rounded-lg mb-8 self-center"
         style={{
           width: screenWidth * 0.9,
           height: screenWidth * 0.7,
@@ -155,8 +155,8 @@ const NutritionCarousel = ({
         {carouselItems.map((_, idx) => (
           <View
             key={idx}
-            className={`w-3 h-3 mx-1 rounded-full ${
-              currentIndex === idx ? "bg-blue-500" : "bg-gray-300"
+            className={`w-3 h-3 mx-1 mb-2  rounded-full ${
+              currentIndex === idx ? "bg-primary" : "bg-gray-300"
             }`}
           />
         ))}
