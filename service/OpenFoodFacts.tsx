@@ -24,7 +24,7 @@ export async function BarcodeScan(barcode: string) {
         }, {} as Record<string, any>);
 
       //Extract nutrients per serving
-      const nutrientsString = JSON.stringify(nutrientsPer100g, null, 2);
+      const nutrientsString = JSON.stringify(nutrientsPer100g);
       const productName =
         response.data.product.product_name || "Unknown Product";
       const productImage = response.data.product.image_url || null;
@@ -35,7 +35,6 @@ export async function BarcodeScan(barcode: string) {
         nutrients: nutrientsString,
       };
       return productDetails;
-      console.log("Nutrients: ", nutrientsString);
     } else {
       console.error("Product not found.");
       throw new Error("Product not found.");
