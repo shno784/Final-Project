@@ -1,5 +1,5 @@
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack } from "expo-router/stack";
 import * as SplashScreen from "expo-splash-screen";
 import { SQLiteProvider } from "expo-sqlite";
 import { useEffect, useState } from "react";
@@ -47,7 +47,7 @@ export default function RootLayout() {
           await db.execAsync(`
             CREATE TABLE IF NOT EXISTS foods (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT UNIQUE,
+              name TEXT ,
               imageUri TEXT,
               recipe TEXT,
               nutrients TEXT

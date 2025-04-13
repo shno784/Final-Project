@@ -4,13 +4,13 @@ import AppButton from "@/components/AppButton";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import OneTimeTip from "@/components/OneTimeTip";
 import ImagePicker from "@/utils/ImagePicker";
-import { processImage } from "@/utils/ProcessImage";
+import { processData } from "@/utils/ProcessData";
 import { useFoodDatabase } from "@/utils/FoodDatabase";
 import { BarcodeScan } from "@/service/OpenFoodFacts";
 import { useRouter } from "expo-router";
 import { BarcodeProps } from "@/types/CameraTypes";
-import { Ionicons } from "@expo/vector-icons";
 import Icon from "@/components/Icon";
+import ProccessBarcode from "@/utils/ProccessBarcode";
 
 const CameraScreen = () => {
   const [permission, requestPermission] = useCameraPermissions();
@@ -48,8 +48,8 @@ const CameraScreen = () => {
     const photo = await cameraRef.current?.takePictureAsync();
     if (photo) {
       console.log("Processing image...");
-      await processImage(photo.uri, insertFoodItem);
-      router.push("/History");
+      await processData(photo.uri, insertFoodItem);
+      router.replace("/History");
     }
   };
 
@@ -60,13 +60,14 @@ const CameraScreen = () => {
   };
 
   // Barcode scanning callback.
-  const handleBarcodeScanned = ({ type, data }: BarcodeProps) => {
+  const handleBarcodeScanned = ({ data }: BarcodeProps) => {
     if (scanning || hasScanned) return;
     scanning = true; // Block further barcode scans.
     if (!hasScanned) {
       setHasScanned(true);
+      ProccessBarcode;
       BarcodeScan(data);
-      router.push("/History");
+      router.replace("/History");
     }
   };
 

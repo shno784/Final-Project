@@ -6,7 +6,7 @@ import AppButton from "@/components/AppButton";
 import ImagePicker from "@/utils/ImagePicker";
 import { useFoodDatabase } from "@/utils/FoodDatabase";
 import OnboardingModal from "@/components/OnboardingModal";
-import { processText } from "@/utils/ProcessText";
+import { processData } from "@/utils/ProcessData";
 import Icon from "@/components/Icon";
 import USDAFoodSearch from "@/components/USDAFoodSearch";
 import ErrorCard from "@/components/ErrorCard";
@@ -24,7 +24,7 @@ export default function Home() {
         setErrorMessage("Search query cannot be empty");
         return;
       }
-      await processText(searchQuery.toLowerCase(), insertFoodItem);
+      await processData(searchQuery.toLowerCase(), insertFoodItem);
       router.push("/History");
       // Clear the search input after the search
       setSearchQuery("");
@@ -89,11 +89,12 @@ export default function Home() {
             className="w-full mb-5"
             icon={<Icon name="image-outline" size={24} className="mr-2" />}
           />
-          <View className="flex-row justify-between w-full gap-[10px] mb-5">
+          <View className="flex-row justify-between w-full mt-36 gap-[10px] mb-5">
             <AppButton
               label="Food History"
               onPress={() => router.navigate("/History")}
               className="flex-1"
+              variant="secondary"
               icon={<Icon name="time-outline" size={24} className="mr-2" />}
             />
             <AppButton

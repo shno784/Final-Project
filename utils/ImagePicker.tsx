@@ -1,5 +1,5 @@
 import * as ImagePicker from "expo-image-picker";
-import { ProcessImage } from "@/utils/ProcessImage";
+import { processData } from "@/utils/ProcessData";
 import { FoodItem } from "@/types/FoodTypes";
 
 const pickImage = async (insertFoodItem: (food: FoodItem) => Promise<void>) => {
@@ -13,7 +13,7 @@ const pickImage = async (insertFoodItem: (food: FoodItem) => Promise<void>) => {
 
   if (!result.canceled) {
     const newResult = result.assets[0].uri;
-    ProcessImage(newResult, insertFoodItem);
+    processData(newResult, insertFoodItem);
   }
 };
 
