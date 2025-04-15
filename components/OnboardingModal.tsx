@@ -90,7 +90,7 @@ export default function OnboardingModal() {
   if (!visible) return null;
 
   return (
-    <Modal transparent animationType="fade">
+    <Modal transparent animationType="fade" presentationStyle="overFullScreen">
       <View className="flex-1 bg-black/40 justify-center items-center p-5">
         <View className=" bg-white dark:bg-black rounded-[16px] py-5 px-2.5">
           <Carousel

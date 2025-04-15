@@ -1,10 +1,33 @@
-import { useSQLiteContext, type SQLiteDatabase } from "expo-sqlite";
+import * as SQLite from "expo-sqlite";
 import { FoodItem, FoodItemWithId, FoodRow } from "@/types/FoodTypes";
 
-export function useFoodDatabase() {
-  const db = useSQLiteContext() as SQLiteDatabase;
+const openDatabase = () => {
+  const db = SQLite.openDatabaseAsync("food.db", {
+    useNewConnection: true,
+  });
+  return db;
+};
 
+export function useFoodDatabase() {
+  const createTable = async () => {
+    const db = await openDatabase();
+    try {
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS foods (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL UNIQUE,
+          imageUri TEXT,
+          recipe TEXT,
+          nutrients TEXT NOT NULL
+        );
+      `);
+      console.log("Food table has been created or already exists.");
+    } catch (error) {
+      console.error("Error during table creation:", error);
+    }
+  };
   const insertFoodItem = async (food: FoodItem) => {
+    const db = await openDatabase();
     try {
       await db.runAsync(
         `INSERT INTO foods (name, imageUri, recipe, nutrients)
@@ -14,7 +37,6 @@ export function useFoodDatabase() {
           $image: food.imageUri ?? null,
           $recipe: food.recipe ?? null,
           $nutrients: food.nutrients,
-          $ingredients: food.ingredients ?? null,
         }
       );
       console.log("Food item inserted successfully.");
@@ -24,6 +46,7 @@ export function useFoodDatabase() {
   };
 
   const getAllFoodItems = async (): Promise<FoodRow[]> => {
+    const db = await openDatabase();
     try {
       const rows = await db.getAllAsync("SELECT * FROM foods");
       return rows as FoodRow[];
@@ -34,6 +57,7 @@ export function useFoodDatabase() {
   };
 
   const getFoodItemById = async (id: number): Promise<FoodRow | undefined> => {
+    const db = await openDatabase();
     try {
       const row = await db.getFirstAsync("SELECT * FROM foods WHERE id = $id", {
         $id: id,
@@ -45,6 +69,7 @@ export function useFoodDatabase() {
   };
 
   const updateFoodItem = async (food: FoodItemWithId) => {
+    const db = await openDatabase();
     try {
       await db.runAsync(
         `UPDATE foods
@@ -65,6 +90,7 @@ export function useFoodDatabase() {
   };
 
   const deleteFoodItem = async (id: number) => {
+    const db = await openDatabase();
     try {
       await db.runAsync("DELETE FROM foods WHERE id = $id", { $id: id });
     } catch (error) {
@@ -73,6 +99,7 @@ export function useFoodDatabase() {
   };
 
   return {
+    createTable,
     insertFoodItem,
     getAllFoodItems,
     getFoodItemById,

@@ -8,6 +8,7 @@ export interface AppButtonProps {
   onPress?: () => void;
   variant?: "primary" | "secondary" | "danger";
   style?: ViewStyle;
+  disabled?: boolean;
   className?: string;
 }
 
@@ -29,4 +30,23 @@ export interface IconProps {
 export interface ErrorCardProps {
   message: string;
   onDismiss: () => void;
+}
+
+export interface AppState {
+  // State
+  recentSearches: string[];
+  errorMessage: string;
+  hasSeenOnboarding: boolean;
+  isLoading: boolean;
+
+  // Actions
+  addSearch: (query: string) => void;
+  clearSearches: () => void;
+
+  setError: (message: string) => void;
+  clearError: () => void;
+
+  setOnboardingSeen: () => void;
+
+  setLoading: (loading: boolean) => void;
 }

@@ -70,8 +70,6 @@ export default function USDAFoodSearch({
         value={value}
         onChangeText={onChangeText}
         onFocus={() => setIsFocused(true)}
-        // Delay clearing focus to allow onPress events from the suggestions to register
-        onBlur={() => setTimeout(() => setIsFocused(false), 200)}
       />
       {isFocused && suggestions.length > 0 && (
         <FlatList

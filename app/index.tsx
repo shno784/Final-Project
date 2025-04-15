@@ -1,36 +1,55 @@
-// pages/index.tsx (or Home.tsx)
 import { useState } from "react";
-import { View, Text, Keyboard, TouchableWithoutFeedback } from "react-native";
+import {
+  View,
+  Text,
+  Keyboard,
+  TouchableWithoutFeedback,
+  Image,
+} from "react-native";
 import { useRouter } from "expo-router";
 import AppButton from "@/components/AppButton";
-import ImagePicker from "@/utils/ImagePicker";
-import { useFoodDatabase } from "@/utils/FoodDatabase";
+import pickImage from "@/utils/pickImage";
 import OnboardingModal from "@/components/OnboardingModal";
 import { processData } from "@/utils/ProcessData";
 import Icon from "@/components/Icon";
 import USDAFoodSearch from "@/components/USDAFoodSearch";
 import ErrorCard from "@/components/ErrorCard";
+import { useAppState } from "@/utils/Globalstates";
 
 export default function Home() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
-  const { insertFoodItem } = useFoodDatabase();
-  const [errorMessage, setErrorMessage] = useState("");
+  const [searching, setSearching] = useState(false); // New state for tracking search submissions
+
+  const { errorMessage, setError, clearError, addSearch, setLoading } =
+    useAppState();
 
   const handleSearch = async () => {
+    // Prevent multiple submissions by checking the state
+    if (searching) return;
+
+    // Set searching flag to true
+    setSearching(true);
+
     try {
-      if (searchQuery == "") {
+      if (searchQuery === "") {
         console.log("Search query cannot be empty");
-        setErrorMessage("Search query cannot be empty");
+        setError("Search query cannot be empty");
         return;
       }
-      await processData(searchQuery.toLowerCase(), insertFoodItem);
+      addSearch(searchQuery);
+      setLoading(true);
+      await processData(searchQuery.toLowerCase());
       router.push("/History");
       // Clear the search input after the search
       setSearchQuery("");
     } catch (error: any) {
       console.error("Error:", (error as Error)?.message);
-      setErrorMessage("Error processing search");
+      setError("Error processing search");
+    } finally {
+      // Reset the flag regardless of success or failure
+      setSearching(false);
+      setLoading(false);
     }
   };
 
@@ -45,19 +64,17 @@ export default function Home() {
       <View className="flex-1">
         <OnboardingModal />
         <View className="flex-1 p-6 bg-white dark:bg-black justify-start">
-          <View className="mt-[150px] items-center mb-[80px]">
-            <Text className="text-3xl font-bold text-center mb-1 text-text-head dark:text-text-d-head">
-              My Nutrition App
-            </Text>
-            <Text className="text-base text-center text-text-main dark:text-text-d-main">
-              Scan, Search, and Compare Foods
-            </Text>
+          <View className="mt-24 items-center mb-[80px]">
+            <View className="items-center mb-24 max-h-[100px] ">
+              <Image
+                source={require("@/assets/images/logo.png")}
+                className="w-80 h-80 rounded-lg"
+                resizeMode="contain"
+              />
+            </View>
           </View>
           {errorMessage !== "" && (
-            <ErrorCard
-              message={errorMessage}
-              onDismiss={() => setErrorMessage("")}
-            />
+            <ErrorCard message={errorMessage} onDismiss={clearError} />
           )}
           {/* Search bar and button container */}
           <View className="flex-row w-full items-center mb-8">
@@ -70,7 +87,11 @@ export default function Home() {
             />
             <AppButton
               label="Search"
-              onPress={handleSearch}
+              onPress={() => {
+                Keyboard.dismiss();
+                handleSearch();
+              }}
+              disabled={searching} // Disable the button while searching
               className="ml-3"
               icon={<Icon name="search-outline" size={24} className="mr-2" />}
             />
@@ -85,7 +106,7 @@ export default function Home() {
           />
           <AppButton
             label="Add An Image"
-            onPress={() => ImagePicker(insertFoodItem)}
+            onPress={() => pickImage()}
             className="w-full mb-5"
             icon={<Icon name="image-outline" size={24} className="mr-2" />}
           />

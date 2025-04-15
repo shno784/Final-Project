@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import AppButton from "@/components/AppButton";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import OneTimeTip from "@/components/OneTimeTip";
-import ImagePicker from "@/utils/ImagePicker";
+import pickImage from "@/utils/pickImage";
 import { processData } from "@/utils/ProcessData";
 import { useFoodDatabase } from "@/utils/FoodDatabase";
 import { BarcodeScan } from "@/service/OpenFoodFacts";
@@ -11,6 +11,7 @@ import { useRouter } from "expo-router";
 import { BarcodeProps } from "@/types/CameraTypes";
 import Icon from "@/components/Icon";
 import ProccessBarcode from "@/utils/ProccessBarcode";
+import { useAppState } from "@/utils/Globalstates";
 
 const CameraScreen = () => {
   const [permission, requestPermission] = useCameraPermissions();
@@ -20,6 +21,7 @@ const CameraScreen = () => {
   const { insertFoodItem } = useFoodDatabase();
   const router = useRouter();
   let scanning = false;
+  const { setLoading } = useAppState();
 
   if (!permission) {
     // While permissions are loading, return an empty view.
@@ -47,8 +49,9 @@ const CameraScreen = () => {
     console.log("pressed take picture");
     const photo = await cameraRef.current?.takePictureAsync();
     if (photo) {
-      console.log("Processing image...");
-      await processData(photo.uri, insertFoodItem);
+      setLoading(true);
+      await processData(photo.uri);
+      setLoading(false);
       router.replace("/History");
     }
   };
@@ -65,8 +68,9 @@ const CameraScreen = () => {
     scanning = true; // Block further barcode scans.
     if (!hasScanned) {
       setHasScanned(true);
-      ProccessBarcode;
-      BarcodeScan(data);
+      setLoading(true);
+      ProccessBarcode(data, insertFoodItem);
+      setLoading(false);
       router.replace("/History");
     }
   };
@@ -132,8 +136,9 @@ const CameraScreen = () => {
           <AppButton
             icon={<Icon name="image-outline" size={32} className="ml-1" />}
             className="h-20 w-20 mt-4 rounded-full px-3 py-2"
-            onPress={handlePress(() => {
-              ImagePicker(insertFoodItem);
+            onPress={handlePress(async () => {
+              pickImage();
+              router.replace("/History");
             })}
             variant="secondary"
           />

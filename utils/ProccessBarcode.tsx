@@ -13,7 +13,6 @@ const ProcessBarcode = async (
     return null;
   } catch (error) {
     return "Error processing barcode";
-    console.error("Error processing barcode:", error);
   }
 };
 

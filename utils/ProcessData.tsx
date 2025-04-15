@@ -2,19 +2,9 @@ import * as FileSystem from "expo-file-system";
 import { identifyFood } from "@/service/GoogleVision";
 import { fetchFoodData } from "@/service/Usda";
 import { FoodItem } from "@/types/FoodTypes";
-
-/**
- * Process an image: reads the image file as base64, identifies the food in the image,
- * fetches detailed food data from an external API, and stores the data in the database.
- *
- * @param uri - The file URI for the image.
- * @param insertFoodItem - A function that inserts a FoodItem object into the database.
- * @returns The fetched FoodItem on success, or null if an error occurred.
- */
-export async function processData(
-  input: string,
-  insertFoodItem: (food: FoodItem) => Promise<void>
-): Promise<FoodItem | null> {
+import { useFoodDatabase } from "@/utils/FoodDatabase";
+export async function processData(input: string): Promise<FoodItem | null> {
+  const { insertFoodItem } = useFoodDatabase();
   if (isValidUri(input)) {
     try {
       console.log("DATA IS AN IMAGE");

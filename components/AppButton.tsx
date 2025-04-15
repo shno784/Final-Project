@@ -10,6 +10,7 @@ export default function AppButton({
   style,
   className,
   icon,
+  disabled = false,
 }: AppButtonProps) {
   // Choose variant-specific classes for background color and position
   let variantClasses = "";
@@ -29,6 +30,7 @@ export default function AppButton({
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={disabled}
       activeOpacity={0.7}
       className={`py-[14px] px-[16px] rounded-[8px] my-[6px] min-w-[100px] items-center justify-center ${variantClasses} ${
         className ?? ""

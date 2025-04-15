@@ -1,20 +1,32 @@
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router/stack";
 import * as SplashScreen from "expo-splash-screen";
-import { SQLiteProvider } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Asset } from "expo-asset";
 import "@/app/global.css";
+import { useAppState } from "@/utils/Globalstates";
+import { useFoodDatabase } from "@/utils/FoodDatabase";
+import LoadingScreen from "@/components/LoadingScreen";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
+  const { setLoading, isLoading } = useAppState();
+  const { createTable } = useFoodDatabase();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
+
+  useEffect(() => {
+    const createDBTable = async () => {
+      await createTable();
+      console.log("Table created or already exists.");
+    };
+    createDBTable();
+  }, []);
 
   useEffect(() => {
     const prepare = async () => {
@@ -24,6 +36,8 @@ export default function RootLayout() {
       } catch (e) {
         console.warn("Asset preload failed", e);
       } finally {
+        // Set to false when the app starts just incase
+        setLoading(false);
         setReady(true);
       }
     };
@@ -40,30 +54,11 @@ export default function RootLayout() {
   if (!ready || !loaded) return null;
 
   return (
-    <SQLiteProvider
-      databaseName={"food.db"}
-      onInit={async (db) => {
-        try {
-          await db.execAsync(`
-            CREATE TABLE IF NOT EXISTS foods (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT ,
-              imageUri TEXT,
-              recipe TEXT,
-              nutrients TEXT
-            );
-          `);
-          console.log("✅ Food table has been created or already exists.");
-        } catch (error) {
-          console.error("❌ Error during table creation:", error);
-        }
-      }}
-    >
-      <ActionSheetProvider>
-        <GestureHandlerRootView>
-          <Stack screenOptions={{ headerShown: false }} />
-        </GestureHandlerRootView>
-      </ActionSheetProvider>
-    </SQLiteProvider>
+    <ActionSheetProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Stack screenOptions={{ headerShown: false }} />
+        {isLoading && <LoadingScreen />}
+      </GestureHandlerRootView>
+    </ActionSheetProvider>
   );
 }

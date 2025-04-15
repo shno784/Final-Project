@@ -2,6 +2,7 @@
 import axios from "axios";
 import axiosClient from "./Reconnect";
 import { FoodItem } from "@/types/FoodTypes";
+import { capitaliseWords } from "@/utils/capitaliseWords";
 
 const usdaKey = process.env.EXPO_PUBLIC_USDA_API_KEY;
 const usdaBaseURL = "https://api.nal.usda.gov/fdc/v1";
@@ -10,6 +11,7 @@ const unsplashBaseURL = "https://api.unsplash.com";
 
 // Composite function: given a query, it fetches search results then details.
 export async function fetchFoodData(query: string) {
+  query = capitaliseWords(query);
   try {
     // Search USDA foods
     const searchResponse = await axiosClient.get(
@@ -27,8 +29,9 @@ export async function fetchFoodData(query: string) {
     }
 
     // Pick the first result
+    console.log(foods[0]);
     const firstFood = foods[0];
-    console.log("Nutrients: ", firstFood.fdcId, firstFood.description);
+    console.log(firstFood.fdcId);
     // Fetch food details from USDA
     const detailsResponse = await axiosClient.get(
       `${usdaBaseURL}/food/${firstFood.fdcId}`,
@@ -81,10 +84,9 @@ export async function fetchFoodData(query: string) {
     const nutrientAndValues = extractNutrients(nutrients);
     // Construct returned object
     const detailedFoodData = {
-      name: firstFood.description,
+      name: capitaliseWords(firstFood.description),
       imageUri: imageUrl, // from Unsplash
       nutrients: JSON.stringify(nutrientAndValues), // Nutrients from USDA
-      ingredients: detailsResponse.data.ingredients || null,
       recipe: detailsResponse.data.recipe || null,
     };
     return detailedFoodData;
