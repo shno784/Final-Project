@@ -96,7 +96,7 @@ export default function OnboardingModal() {
     // Modal to show onboarding slides
     <Modal transparent animationType="fade" presentationStyle="overFullScreen">
       <View className="flex-1 bg-black/40 justify-center items-center p-5">
-        <View className=" bg-white dark:bg-black rounded-[16px] py-5 px-2.5">
+        <View className=" bg-white dark:bg-black  border border-primary rounded-[16px] py-5 px-2.5">
           <Carousel
             ref={carouselRef}
             data={slides}

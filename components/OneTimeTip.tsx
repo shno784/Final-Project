@@ -37,7 +37,7 @@ export default function OneTimeTip({
   return (
     <Modal visible transparent animationType="fade">
       <View className="flex-1 bg-black/40 justify-center items-center p-6">
-        <View className="w-full max-w-[320px] bg-white dark:bg-black rounded-[16px] p-5 items-center">
+        <View className="w-full max-w-[320px] bg-white dark:bg-black  border border-primary rounded-[16px] p-5 items-center">
           <Text className="text-xl font-semibold mb-[10px] text-text-head dark:text-text-d-head">
             {title}
           </Text>

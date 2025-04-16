@@ -19,7 +19,7 @@
     "@expo/vector-icons": "^14.0.2",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/bottom-tabs": "^7.2.0",
-    "@react-navigation/native": "^7.1.5",
+    "@react-navigation/native": "^7.0.14",
     "axios": "^1.8.4",
     "axios-retry": "^4.5.0",
     "core-js": "^3.41.0",
@@ -71,5 +71,6 @@
     "react-test-renderer": "18.3.1",
     "typescript": "^5.3.3"
   },
-  "private": true
+  "private": true,
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
