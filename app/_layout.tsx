@@ -9,10 +9,13 @@ import "@/app/global.css";
 import { useAppState } from "@/utils/Globalstates";
 import { useFoodDatabase } from "@/utils/FoodDatabase";
 import LoadingScreen from "@/components/LoadingScreen";
+import { useColorScheme } from "nativewind";
+import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const { colorScheme } = useColorScheme();
   const [ready, setReady] = useState(false);
   const { setLoading, isLoading } = useAppState();
   const { createTable } = useFoodDatabase();
@@ -20,6 +23,7 @@ export default function RootLayout() {
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
+  //create the database table when the app starts
   useEffect(() => {
     const createDBTable = async () => {
       await createTable();
@@ -28,6 +32,7 @@ export default function RootLayout() {
     createDBTable();
   }, []);
 
+  // Preload all images (local)
   useEffect(() => {
     const prepare = async () => {
       try {
@@ -49,13 +54,14 @@ export default function RootLayout() {
     if (ready && loaded) {
       SplashScreen.hideAsync();
     }
-  }, [ready, loaded]); // ✅ wait until both are ready
+  }, [ready, loaded]);
 
   if (!ready || !loaded) return null;
 
   return (
     <ActionSheetProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
+        <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
         <Stack screenOptions={{ headerShown: false }} />
         {isLoading && <LoadingScreen />}
       </GestureHandlerRootView>

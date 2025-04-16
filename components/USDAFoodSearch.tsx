@@ -6,10 +6,13 @@ import {
   FlatList,
   TouchableOpacity,
   Text,
+  Pressable,
 } from "react-native";
 import axios from "axios";
 import { USDAFoodSearchProps, USDAFood } from "@/types/FoodTypes";
+import { useAppState } from "@/utils/Globalstates";
 
+// This component is a search bar that fetches food suggestions from the USDA API based on user input.
 export default function USDAFoodSearch({
   value,
   onChangeText,
@@ -22,12 +25,23 @@ export default function USDAFoodSearch({
   const usdaBaseURL = "https://api.nal.usda.gov/fdc/v1";
   const usdaKey = process.env.EXPO_PUBLIC_USDA_API_KEY;
 
+  const { addSearch, recentSearches } = useAppState();
+
+  // This effect runs when the component mounts and whenever the value changes.
   useEffect(() => {
+    // If the input is empty or has less than 3 characters, display recent searches.
     if (!value || value.length < 3) {
-      setSuggestions([]);
+      const recentSuggestions: USDAFood[] = recentSearches.map(
+        (query, index) => ({
+          fdcId: Number(`9000${index}`), // dummy unique id (adjust as needed)
+          description: query,
+        })
+      );
+      setSuggestions(recentSuggestions);
       return;
     }
 
+    // Otherwise, fetch suggestions from the USDA API.
     const fetchSuggestions = async () => {
       try {
         const response = await axios.get(`${usdaBaseURL}/foods/search`, {
@@ -50,19 +64,21 @@ export default function USDAFoodSearch({
 
     const timer = setTimeout(() => {
       fetchSuggestions();
-    }, 300); // simple debounce of 300ms
+    }, 300); // debounce time
 
     return () => clearTimeout(timer);
-  }, [value]);
+  }, [value, recentSearches]);
 
+  // When a suggestion (or recent search) is selected:
   const handleSelect = (item: USDAFood) => {
     onChangeText(item.description);
     setSuggestions([]);
+    addSearch(item.description);
     if (onSuggestionSelect) onSuggestionSelect(item);
+    setIsFocused(false); // Dismiss the suggestions
   };
 
   return (
-    // This container is positioned relative so the absolute FlatList is positioned relative to it
     <View className="relative w-full flex-1">
       <TextInput
         className={inputClassName}
@@ -72,23 +88,40 @@ export default function USDAFoodSearch({
         onFocus={() => setIsFocused(true)}
       />
       {isFocused && suggestions.length > 0 && (
-        <FlatList
-          // Absolute positioning so the suggestion list overlays other content rather than pushing it down
-          className="absolute top-full left-0 right-0 z-10 bg-white dark:bg-black border border-gray-300 rounded-b-lg"
-          data={suggestions}
-          keyExtractor={(item) => item.fdcId.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => handleSelect(item)}
-              className="py-2 px-4 border-b border-gray-200 dark:border-gray-600"
-            >
-              <Text className="text-lg text-text-head dark:text-text-d-head">
-                {item.description}
-              </Text>
-            </TouchableOpacity>
-          )}
-          style={{ maxHeight: 200 }} // limiting height if there are many suggestions
-        />
+        <>
+          {/*
+            This invisible Pressable overlay covers the whole container.
+            Tapping it will dismiss the suggestions.
+          */}
+          <Pressable
+            onPress={() => setIsFocused(false)}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
+          />
+          <FlatList
+            className="absolute top-full left-0 right-0 z-10 bg-white dark:bg-black border border-gray-300 rounded-b-lg"
+            data={suggestions}
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="handled"
+            keyExtractor={(item) => item.fdcId.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => handleSelect(item)}
+                className="py-2 px-4 border-b border-gray-200 dark:border-gray-600"
+              >
+                <Text className="text-lg text-text-head dark:text-text-d-head">
+                  {item.description}
+                </Text>
+              </TouchableOpacity>
+            )}
+            style={{ maxHeight: 200 }}
+          />
+        </>
       )}
     </View>
   );

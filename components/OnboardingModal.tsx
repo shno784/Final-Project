@@ -8,12 +8,11 @@ import {
   Switch,
   TouchableOpacity,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAppState } from "@/utils/Globalstates";
 import Carousel from "react-native-reanimated-carousel";
 import AppButton from "./AppButton";
 import { ReduceMotion } from "react-native-reanimated";
 
-const STORAGE_KEY = "hide_onboarding";
 const { width } = Dimensions.get("window");
 
 const slides = [
@@ -37,29 +36,33 @@ const slides = [
   },
 ];
 
+// Renders an instruction modal when someone first opens the app
 export default function OnboardingModal() {
   const [visible, setVisible] = useState(false);
   const [dontShow, setDontShow] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const { hasSeenOnboarding, setOnboardingSeen } = useAppState();
   const carouselRef = useRef<any>(null);
 
+  // Check if the user has seen the onboarding screen before
   useEffect(() => {
     const check = async () => {
-      const value = await AsyncStorage.getItem(STORAGE_KEY);
-      if (value !== "true") {
+      if (hasSeenOnboarding !== true) {
         setVisible(true);
       }
     };
     check();
   }, []);
 
+  // Set the onboarding screen as seen
   const handleClose = async () => {
     if (dontShow) {
-      await AsyncStorage.setItem(STORAGE_KEY, "true");
+      setOnboardingSeen();
     }
     setVisible(false);
   };
 
+  // Handle the next button click, if user is on last slide, close modal
   const handleNext = () => {
     if (currentSlide < slides.length - 1) {
       carouselRef.current?.scrollTo({
@@ -90,6 +93,7 @@ export default function OnboardingModal() {
   if (!visible) return null;
 
   return (
+    // Modal to show onboarding slides
     <Modal transparent animationType="fade" presentationStyle="overFullScreen">
       <View className="flex-1 bg-black/40 justify-center items-center p-5">
         <View className=" bg-white dark:bg-black rounded-[16px] py-5 px-2.5">

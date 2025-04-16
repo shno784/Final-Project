@@ -1,7 +1,7 @@
 import { FoodCardProps } from "@/types/globalTypes";
-import React from "react";
 import { TouchableOpacity, Text, Image, StyleSheet } from "react-native";
 
+// This component is used to display a food item in a card format.
 const FoodCard = ({
   name,
   imageUri,

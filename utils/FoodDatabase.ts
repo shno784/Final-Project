@@ -1,6 +1,7 @@
 import * as SQLite from "expo-sqlite";
 import { FoodItem, FoodItemWithId, FoodRow } from "@/types/FoodTypes";
 
+// Expo-SQLite database
 const openDatabase = () => {
   const db = SQLite.openDatabaseAsync("food.db", {
     useNewConnection: true,

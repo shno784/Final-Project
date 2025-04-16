@@ -1,3 +1,4 @@
+// Excludes generic labels from the list of labels returned by the Google Vision API
 export default function getBestMeaningfulLabel(labels: any[]): string {
   const genericWords = [
     "food", "dish", "cuisine", "ingredient", "snack", "meal", "fast food",

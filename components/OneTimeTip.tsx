@@ -2,20 +2,15 @@ import { useEffect, useState } from "react";
 import { Modal, View, Text, Switch } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppButton from "./AppButton";
+import { TipProps } from "@/types/globalTypes";
 
-interface Props {
-  tipKey: string;
-  title?: string;
-  message: string;
-  showSwitch?: boolean;
-}
-
+// This component is used to display a one-time tip to the user.
 export default function OneTimeTip({
   tipKey,
   title = "Tip",
   message,
   showSwitch = true,
-}: Props) {
+}: TipProps) {
   const [visible, setVisible] = useState(false);
   const [dontShowAgain, setDontShowAgain] = useState(false);
 
@@ -38,6 +33,7 @@ export default function OneTimeTip({
 
   if (!visible) return null;
 
+  // This is the modal that displays the tip to the user
   return (
     <Modal visible transparent animationType="fade">
       <View className="flex-1 bg-black/40 justify-center items-center p-6">

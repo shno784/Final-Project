@@ -6,7 +6,6 @@ import OneTimeTip from "@/components/OneTimeTip";
 import pickImage from "@/utils/pickImage";
 import { processData } from "@/utils/ProcessData";
 import { useFoodDatabase } from "@/utils/FoodDatabase";
-import { BarcodeScan } from "@/service/OpenFoodFacts";
 import { useRouter } from "expo-router";
 import { BarcodeProps } from "@/types/CameraTypes";
 import Icon from "@/components/Icon";
@@ -44,7 +43,7 @@ const CameraScreen = () => {
     );
   }
 
-  // Function to capture a photo.
+  // Ccapture a photo.
   const takePicture = async () => {
     console.log("pressed take picture");
     const photo = await cameraRef.current?.takePictureAsync();
@@ -56,7 +55,7 @@ const CameraScreen = () => {
     }
   };
 
-  // Helper to turn off torch before executing the action.
+  // Turn off torch before executing the action.
   const handlePress = (action: () => void) => () => {
     setTorch(false);
     action();
@@ -79,6 +78,7 @@ const CameraScreen = () => {
     <View className="flex-1">
       {/* Top portion: Camera view */}
       <View className="flex-1">
+        {/* Main camera view with barcode scanner */}
         <CameraView
           style={{ flex: 1 }}
           facing="back"

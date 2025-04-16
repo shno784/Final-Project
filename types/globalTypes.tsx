@@ -20,7 +20,12 @@ export interface FoodCardProps {
   className?: string;
   imageStyle?: ImageStyle;
 }
-
+export interface TipProps {
+  tipKey: string;
+  title?: string;
+  message: string;
+  showSwitch?: boolean;
+}
 export interface IconProps {
   name: keyof typeof Ionicons.glyphMap;
   size: number;
@@ -41,7 +46,6 @@ export interface AppState {
 
   // Actions
   addSearch: (query: string) => void;
-  clearSearches: () => void;
 
   setError: (message: string) => void;
   clearError: () => void;

@@ -2,6 +2,7 @@ import { Text, StyleSheet } from "react-native";
 import { PacmanIndicator } from "react-native-indicators";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 
+// This component is used to display a loading screen with a Pacman indicator.
 const LoadingScreen = () => {
   return (
     <SafeAreaProvider style={styles.absolute} className="absolute inset-0 z-50">

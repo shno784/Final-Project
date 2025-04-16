@@ -10,6 +10,7 @@ cssInterop(Ionicons, {
     },
   },
 });
+// This component is used to display an icon using Ionicons library while allowing for custom styling and size using Nativewind.
 const Icon = ({ name, size, className }: IconProps) => {
   return (
     <Ionicons

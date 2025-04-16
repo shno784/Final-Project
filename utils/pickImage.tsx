@@ -1,6 +1,7 @@
 import * as ImagePicker from "expo-image-picker";
 import { processData } from "@/utils/ProcessData";
 
+// This function is responsible for picking an image from the device's library and processing it.
 const pickImage = async () => {
   console.log("pickImage function is running...");
 

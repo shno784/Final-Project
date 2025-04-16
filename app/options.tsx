@@ -1,5 +1,5 @@
 import AppButton from "@/components/AppButton";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 import { useColorScheme } from "nativewind";
 
 const options = () => {
@@ -15,9 +15,6 @@ const options = () => {
           Options
         </Text>
         <AppButton label="A button" onPress={toggleTheme} />
-        <Text className="text-base text-black dark:text-white mb-4">
-          MUSTARDDDDDDDDDDDDDDDDD
-        </Text>
       </View>
     </View>
   );

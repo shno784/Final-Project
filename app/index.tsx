@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  View,
-  Text,
-  Keyboard,
-  TouchableWithoutFeedback,
-  Image,
-} from "react-native";
+import { View, Keyboard, TouchableWithoutFeedback, Image } from "react-native";
 import { useRouter } from "expo-router";
 import AppButton from "@/components/AppButton";
 import pickImage from "@/utils/pickImage";
@@ -15,6 +9,7 @@ import Icon from "@/components/Icon";
 import USDAFoodSearch from "@/components/USDAFoodSearch";
 import ErrorCard from "@/components/ErrorCard";
 import { useAppState } from "@/utils/Globalstates";
+import { StatusBar } from "expo-status-bar";
 
 export default function Home() {
   const router = useRouter();
@@ -39,8 +34,10 @@ export default function Home() {
       }
       addSearch(searchQuery);
       setLoading(true);
+
       await processData(searchQuery.toLowerCase());
       router.push("/History");
+
       // Clear the search input after the search
       setSearchQuery("");
     } catch (error: any) {
@@ -52,7 +49,7 @@ export default function Home() {
       setLoading(false);
     }
   };
-
+  // Set the search query when a suggestion is selected
   const handleSuggestionSelect = (foodItem: any) => {
     if (foodItem?.description) {
       setSearchQuery(foodItem.description);
@@ -91,7 +88,7 @@ export default function Home() {
                 Keyboard.dismiss();
                 handleSearch();
               }}
-              disabled={searching} // Disable the button while searching
+              disabled={searching}
               className="ml-3"
               icon={<Icon name="search-outline" size={24} className="mr-2" />}
             />

@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, Dimensions } from "react-native";
+import { View, Text } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import type { ICarouselInstance } from "react-native-reanimated-carousel";
 import { PieChart } from "react-native-chart-kit";
 import { NutritionCarouselProps } from "@/types/FoodTypes";
 import { PanGesture } from "react-native-gesture-handler";
 
-const { width: screenWidth } = Dimensions.get("window");
-
+// This component is used to display a carousel of nutrition information.
 const NutritionCarousel = ({
   screenWidth,
   macroData,

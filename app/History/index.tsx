@@ -29,6 +29,7 @@ const History = () => {
 
   const router = useRouter();
 
+  // Fetch food items from the database when the component mounts
   useEffect(() => {
     const fetchFoodItems = async () => {
       try {
@@ -41,7 +42,7 @@ const History = () => {
     fetchFoodItems();
   }, []);
 
-  // Function to handle the action sheet options
+  // Handle the action sheet options
   const handleLongPress = (food: FoodRow) => {
     showActionSheetWithOptions(
       {
@@ -95,6 +96,7 @@ const History = () => {
     }
   };
 
+  // Handle saving the edited food item
   const handleSave = async () => {
     if (!editingFood) return;
 
@@ -158,20 +160,30 @@ const History = () => {
           </View>
         </View>
 
-        <View className="flex flex-row flex-wrap justify-between">
-          {foodItems.map((food) => (
-            <FoodCard
-              key={food.id}
-              name={food.name}
-              imageUri={food.imageUri}
-              onLongPress={() => handleLongPress(food)}
-              onPress={() => {
-                router.push(`/History/${food.id}`);
-              }}
-              className="w-[45%] my-2.5"
-            />
-          ))}
-        </View>
+        <>
+          {foodItems.length === 0 ? (
+            <View className="flex-1 justify-center items-center">
+              <Text className="text-3xl font-bold mt-56 text-text-head dark:text-text-d-head">
+                No items scanned yet
+              </Text>
+            </View>
+          ) : (
+            <View className="flex flex-row flex-wrap justify-between">
+              {foodItems.map((food) => (
+                <FoodCard
+                  key={food.id}
+                  name={food.name}
+                  imageUri={food.imageUri}
+                  onLongPress={() => handleLongPress(food)}
+                  onPress={() => {
+                    router.push(`/History/${food.id}`);
+                  }}
+                  className="w-[45%] my-2.5"
+                />
+              ))}
+            </View>
+          )}
+        </>
       </ScrollView>
     </View>
   );

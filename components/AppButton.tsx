@@ -1,8 +1,7 @@
-// app/components/CustomBackButton.tsx
-import React from "react";
 import { TouchableOpacity, Text, View } from "react-native";
 import { AppButtonProps } from "@/types/globalTypes";
 
+// This component is a customisable button that can be used throughout the app.
 export default function AppButton({
   label,
   onPress,
@@ -12,7 +11,7 @@ export default function AppButton({
   icon,
   disabled = false,
 }: AppButtonProps) {
-  // Choose variant-specific classes for background color and position
+  // Choose variant-specific classes for background color
   let variantClasses = "";
   switch (variant) {
     case "primary":

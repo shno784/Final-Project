@@ -1,6 +1,7 @@
 import { BarcodeScan } from "@/service/OpenFoodFacts";
 import { FoodItem } from "@/types/FoodTypes";
 
+// This function processes a barcode by scanning it and inserting the food item into the database
 const ProcessBarcode = async (
   barcode: string,
   insertFoodItem: (food: FoodItem) => Promise<void>

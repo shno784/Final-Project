@@ -2,24 +2,22 @@ import { create } from "zustand";
 import { persist, createJSONStorage  } from "zustand/middleware";
 import { AppState } from "@/types/globalTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { capitaliseWords } from "./capitaliseWords";
 
-
+// This is the global state for the app. It uses Zustand for state management and AsyncStorage for persistence.
 export const useAppState = create<AppState>()(
   persist(
     (set, get) => ({
       // Recent Searches
       recentSearches: [],
       addSearch: (query: string) => {
-        const trimmed = query.trim();
-        if (!trimmed) return;
 
         const existing = get().recentSearches.filter(
-          (item) => item.toLowerCase() !== trimmed.toLowerCase()
+          (item) => capitaliseWords(item) !== capitaliseWords(query)
         );
 
-        set({ recentSearches: [trimmed, ...existing].slice(0, 10) });
+        set({ recentSearches: [capitaliseWords(query), ...existing].slice(0, 10) });
       },
-      clearSearches: () => set({ recentSearches: [] }),
 
       // Error Handling
       errorMessage: "",

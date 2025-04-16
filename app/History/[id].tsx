@@ -1,4 +1,3 @@
-// FoodDetailPage.tsx
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -17,6 +16,7 @@ import { useColorScheme } from "nativewind";
 
 const { width: screenWidth } = Dimensions.get("window");
 
+// Define chart configuration for the carousel
 const chartConfig = {
   backgroundColor: "#fff",
   backgroundGradientFrom: "#fff",
@@ -36,6 +36,7 @@ export default function FoodDetailPage() {
   const [selectedGrams, setSelectedGrams] = useState<number>(100);
   const { colorScheme } = useColorScheme();
 
+  // Fetch food item details based on the ID from the URL parameters
   useEffect(() => {
     const fetchItem = async () => {
       if (!id) return;
@@ -62,7 +63,7 @@ export default function FoodDetailPage() {
     console.warn("Failed to parse nutrients JSON", err);
   }
 
-  // Helper: Return nutrient value (ignoring case)
+  // Return nutrient value (ignoring case)
   const getValue = (name: string) => {
     const found = nutrients.find(
       (n) => n.name.toLowerCase() === name.toLowerCase()
@@ -82,6 +83,7 @@ export default function FoodDetailPage() {
   );
   const fatRounded = parseFloat((getValue("fat") * multiplier).toFixed(2));
 
+  // Generate macronutrient data for the carousel
   const macroData: Macronutrient[] = [
     {
       name: "PROTEIN",
@@ -115,6 +117,7 @@ export default function FoodDetailPage() {
   );
   const fiberRounded = parseFloat((getValue("Fiber") * multiplier).toFixed(2));
 
+  // Generate micronutrient data for the carousel
   const micronutrients: Micronutrient[] = [
     {
       name: "Sodium, Na",

@@ -1,3 +1,4 @@
+// Capitalise the first letter of each word in a string
 export const capitaliseWords = (str: string) =>
     str
       .toLowerCase()
