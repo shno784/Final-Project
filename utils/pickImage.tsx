@@ -1,10 +1,9 @@
 import * as ImagePicker from "expo-image-picker";
-import { processData } from "@/utils/ProcessData";
+import { processData } from "@/utils/processData";
+import { FoodItem } from "@/types/FoodTypes";
 
 // This function is responsible for picking an image from the device's library and processing it.
 const pickImage = async () => {
-  console.log("pickImage function is running...");
-
   try {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
@@ -14,11 +13,15 @@ const pickImage = async () => {
     });
     if (!result.canceled && result.assets?.[0]?.uri) {
       const newResult = result.assets[0].uri;
-      await processData(newResult);
+      const data: FoodItem = await processData(newResult);
+      if (!data) {
+        console.error("pickImage: No food data was fetched.");
+        throw new Error("Cannot find food.");
+      }
+      return data;
     }
   } catch (error) {
     console.error("Error picking image:", error);
-  } finally {
   }
 };
 

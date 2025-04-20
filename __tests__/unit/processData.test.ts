@@ -1,9 +1,9 @@
 // tests/unit/processData.test.ts
-import { processData } from '@/utils/ProcessData';
+import { processData } from '@/utils/processData';
 import * as FileSystem from 'expo-file-system';
 import * as GoogleVision from '@/service/GoogleVision';
-import * as Usda from '@/service/Usda';
-import { useFoodDatabase } from '@/utils/FoodDatabase';
+import * as Usda from '@/service/USDA';
+import { useFoodDatabase } from '@/utils/foodDatabase';
 import type { FoodItem } from '@/types/FoodTypes';
 
 jest.mock('@/utils/FoodDatabase', () => ({

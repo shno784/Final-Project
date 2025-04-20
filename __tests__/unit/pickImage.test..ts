@@ -1,6 +1,6 @@
 import pickImage from '@/utils/pickImage';
 import * as ImagePicker from 'expo-image-picker';
-import { processData } from '@/utils/ProcessData';
+import { processData } from '@/utils/processData';
 
 jest.mock('expo-image-picker', () => ({
   launchImageLibraryAsync: jest.fn(),

@@ -9,7 +9,7 @@ const openDatabase = () => {
   return db;
 };
 
-export function useFoodDatabase() {
+export function FoodDatabase() {
   const createTable = async () => {
     const db = await openDatabase();
     try {
@@ -40,9 +40,13 @@ export function useFoodDatabase() {
           $nutrients: food.nutrients,
         }
       );
-      console.log("Food item inserted successfully.");
-    } catch (error) {
-      console.error("Error inserting food item:", error);
+    } catch (err: any) {
+      console.error("DB insert error:", err);
+      // If unique constraint, give a message:
+      if (err?.message?.includes("UNIQUE constraint failed")) {
+        throw new Error("You’ve already added this product.");
+      }
+      throw new Error("Failed to save item. Please try again.");
     }
   };
 

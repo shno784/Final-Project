@@ -1,5 +1,5 @@
 // tests/unit/ProccessBarcode.test.ts
-import ProcessBarcode from '@/utils/ProccessBarcode';
+import ProcessBarcode from '@/utils/proccessBarcode';
 import * as OpenFoodFacts from '@/service/OpenFoodFacts';
 import type { FoodItem } from '@/types/FoodTypes';
 

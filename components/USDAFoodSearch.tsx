@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { USDAFoodSearchProps, USDAFood } from "@/types/FoodTypes";
-import { useAppState } from "@/utils/Globalstates";
+import { useAppState } from "@/utils/globalstates";
 
 // This component is a search bar that fetches food suggestions from the USDA API based on user input.
 export default function USDAFoodSearch({

@@ -2,19 +2,13 @@ import { BarcodeScan } from "@/service/OpenFoodFacts";
 import { FoodItem } from "@/types/FoodTypes";
 
 // This function processes a barcode by scanning it and inserting the food item into the database
-const ProcessBarcode = async (
-  barcode: string,
-  insertFoodItem: (food: FoodItem) => Promise<void>
-) => {
-  try {
-    const data: FoodItem = await BarcodeScan(barcode);
-    console.log("Data from barcode:", data);
-
-    insertFoodItem(data);
-    return null;
-  } catch (error) {
-    return "Error processing barcode";
+const processBarcode = async (barcode: string) => {
+  const data: FoodItem = await BarcodeScan(barcode);
+  if (!data) {
+    console.warn("processBarcode: No food was identified in the barcode.");
+    throw new Error("Product not found.");
   }
+  return data;
 };
 
-export default ProcessBarcode;
+export default processBarcode;

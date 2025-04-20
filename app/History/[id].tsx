@@ -8,9 +8,8 @@ import {
   Dimensions,
 } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import { useFoodDatabase } from "@/utils/FoodDatabase";
+import { FoodDatabase } from "@/utils/foodDatabase";
 import { FoodRow, Macronutrient, Micronutrient } from "@/types/FoodTypes";
-import AppButton from "@/components/AppButton";
 import NutritionCarousel from "@/components/NutritionCarousel";
 import { useColorScheme } from "nativewind";
 
@@ -31,16 +30,16 @@ const chartConfig = {
 
 export default function FoodDetailPage() {
   const { id } = useLocalSearchParams();
-  const { getFoodItemById } = useFoodDatabase();
+  const { getFoodItemById } = FoodDatabase();
   const [foodItem, setFoodItem] = useState<FoodRow | null>(null);
   const [selectedGrams, setSelectedGrams] = useState<number>(100);
   const { colorScheme } = useColorScheme();
-
   // Fetch food item details based on the ID from the URL parameters
   useEffect(() => {
     const fetchItem = async () => {
       if (!id) return;
       const item = await getFoodItemById(parseInt(id as string));
+      console.log(item?.nutrients);
       setFoodItem(item || null);
     };
     fetchItem();
@@ -138,10 +137,24 @@ export default function FoodDetailPage() {
 
   // Generate nutrient-based tags using rounded values
   let tags: string[] = [];
+  // Assuming all “Rounded” values are per-100g:
   if (proteinRounded >= 15) tags.push("💪 High Protein");
+  // Sugar
   if (sugarsRounded <= 5) tags.push("🍬 Low Sugar");
+  if (sugarsRounded > 22) tags.push("🍭 High Sugar");
+  // Fiber
   if (fiberRounded >= 5) tags.push("🌾 High Fiber");
+  if (fiberRounded < 3) tags.push("🌿 Low Fiber");
+  // Fat
   if (fatRounded <= 5) tags.push("🥗 Low Fat");
+  if (fatRounded >= 20) tags.push("🥑 High Fat");
+  // Carbs
+  if (carbsRounded < 15) tags.push("🥔 Low Carbs");
+  if (carbsRounded >= 30) tags.push("🍞 High Carbs");
+  // Sodium (g per 100g)
+  if (sodiumRounded <= 0.12) tags.push("🧂 Low Sodium");
+  if (sodiumRounded >= 0.6) tags.push("🧂 High Sodium");
+  // Keto‑friendly
   if (carbsRounded < 15 && fatRounded > 10) tags.push("🥩 Keto-Friendly");
 
   return (

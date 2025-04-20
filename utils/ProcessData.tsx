@@ -1,53 +1,49 @@
 import * as FileSystem from "expo-file-system";
 import { identifyFood } from "@/service/GoogleVision";
-import { fetchFoodData } from "@/service/Usda";
+import { fetchFoodData } from "@/service/USDA";
 import { FoodItem } from "@/types/FoodTypes";
-import { useFoodDatabase } from "@/utils/FoodDatabase";
 
 // This function processes the input data, which can be either a URI (image) or text (food name).
-export async function processData(input: string): Promise<FoodItem | null> {
-  const { insertFoodItem } = useFoodDatabase();
+export async function processData(input: string) {
   if (isValidUri(input)) {
     try {
-      console.log("DATA IS AN IMAGE");
       // Read the image file as a base64 string.
       const base64 = await FileSystem.readAsStringAsync(input, {
         encoding: FileSystem.EncodingType.Base64,
       });
-      console.log("Image file read as base64.");
 
       // Identify the food using your Google Vision service.
       const foodName: string = await identifyFood(base64);
       if (!foodName) {
-        console.warn("processImage: No food was identified in the image.");
-        return null;
+        console.error("processImage: No food was identified in the image.");
+        throw new Error("Food was not identified.");
       }
       console.log("Identified food name:", foodName);
 
       // Fetch detailed food data from the USDA API.
       const foodData: FoodItem = await fetchFoodData(foodName);
-      console.log("Fetched food data:", foodData);
+      if (!foodData) {
+        console.error("processImage: No food data was fetched.");
+        throw new Error("Cannot find food.");
+      }
+      console.log("INSIDE FUNCTION", foodData);
 
-      // Insert the fetched food data into the local database.
-      await insertFoodItem(foodData);
-      console.log("Food data inserted into the database.");
-
-      // Return the food data so it can be used by the caller if needed.
       return foodData;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error processing image:", error);
-      return null;
+      throw new Error(error.message);
     }
+    // If the input is not a valid URI, treat it as a food name.
   } else {
-    console.log("DATA IS text");
     // Fetch detailed food data from the USDA API.
     const foodData: FoodItem = await fetchFoodData(input);
+    if (!foodData) {
+      console.error("processText: No food data was fetched.");
+      throw new Error("Cannot find food.");
+    }
     console.log("Fetched food data:", foodData);
 
-    // Insert the fetched food data into the local database.
-    await insertFoodItem(foodData);
-    console.log("Food data inserted into the database.");
-    return null;
+    return foodData;
   }
 }
 

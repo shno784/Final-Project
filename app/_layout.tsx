@@ -5,12 +5,13 @@ import { useEffect, useState } from "react";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Asset } from "expo-asset";
-import "@/app/global.css";
-import { useAppState } from "@/utils/Globalstates";
-import { useFoodDatabase } from "@/utils/FoodDatabase";
+import { useAppState } from "@/utils/globalstates";
+import { FoodDatabase } from "@/utils/foodDatabase";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useColorScheme } from "nativewind";
 import { StatusBar } from "expo-status-bar";
+
+import "@/app/global.css";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -18,7 +19,7 @@ export default function RootLayout() {
   const { colorScheme } = useColorScheme();
   const [ready, setReady] = useState(false);
   const { setLoading, isLoading } = useAppState();
-  const { createTable } = useFoodDatabase();
+  const { createTable } = FoodDatabase();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });

@@ -8,7 +8,7 @@ import {
   Switch,
   TouchableOpacity,
 } from "react-native";
-import { useAppState } from "@/utils/Globalstates";
+import { useAppState } from "@/utils/globalstates";
 import Carousel from "react-native-reanimated-carousel";
 import AppButton from "./AppButton";
 import { ReduceMotion } from "react-native-reanimated";

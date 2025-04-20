@@ -10,12 +10,13 @@ import {
 } from "react-native";
 import AppButton from "@/components/AppButton";
 import FoodCard from "@/components/FoodCard";
-import { useFoodDatabase } from "@/utils/FoodDatabase";
+import { FoodDatabase } from "@/utils/foodDatabase";
 import { FoodRow } from "@/types/FoodTypes";
 import { useRouter } from "expo-router";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import * as ImagePicker from "expo-image-picker";
 import OneTimeTip from "@/components/OneTimeTip";
+import { useAppState } from "@/utils/globalstates";
 
 const History = () => {
   const [foodItems, setFoodItems] = useState<FoodRow[]>([]);
@@ -24,8 +25,9 @@ const History = () => {
   const [newName, setNewName] = useState<string>("");
   const [newImageUri, setNewImageUri] = useState<string>("");
 
-  const { updateFoodItem, deleteFoodItem, getAllFoodItems } = useFoodDatabase();
+  const { updateFoodItem, deleteFoodItem, getAllFoodItems } = FoodDatabase();
   const { showActionSheetWithOptions } = useActionSheet();
+  const { errorMessage, setError, clearError } = useAppState();
 
   const router = useRouter();
 

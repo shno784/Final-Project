@@ -2,7 +2,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import USDAFoodSearch from "@/components/USDAFoodSearch";
-import * as api from "@/service/Usda";
+import * as api from "@/service/USDA";
 
 jest.mock("@/service/Usda");
 

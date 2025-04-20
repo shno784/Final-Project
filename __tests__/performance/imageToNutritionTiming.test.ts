@@ -1,8 +1,8 @@
-import { processData } from '@/utils/ProcessData';
+import { processData } from '@/utils/processData';
 import * as FileSystem from 'expo-file-system';
 import * as GoogleVision from '@/service/GoogleVision';
-import * as UsdaService from '@/service/Usda';
-import { useFoodDatabase } from '@/utils/FoodDatabase';
+import * as UsdaService from '@/service/USDA';
+import { useFoodDatabase } from '@/utils/foodDatabase';
 
 // Mock all external dependencies to resolve immediately
 jest.mock('expo-file-system', () => ({

@@ -17,14 +17,25 @@ export async function BarcodeScan(barcode: string) {
 
       //Extract nutrients per 100g
       const nutrientsPer100g = Object.entries(product)
-        .filter(([key, _]) => key.endsWith("_100g"))
-        .reduce((obj: Record<string, any>, [key, value]) => {
-          obj[key] = value;
+        .filter(([key]) => key.endsWith("_100g"))
+        .reduce((obj: Record<string, number>, [key, value]) => {
+          // Remove the last 5 characters ("_100g") by slicing
+          const newKey = key.slice(0, -5);
+          // value is already a number, so store it directly
+          obj[newKey] = value as number;
           return obj;
-        }, {} as Record<string, any>);
-
+        }, {});
+      function extractNutrients(
+        nutrients: Record<string, number>
+      ): { name: string; value: number }[] {
+        return Object.entries(nutrients).map(([name, value]) => ({
+          name,
+          value,
+        }));
+      }
       //Extract nutrients per serving
-      const nutrientsString = JSON.stringify(nutrientsPer100g);
+      const nutrientsString = extractNutrients(nutrientsPer100g);
+      console.log("Extracted nutrients:", nutrientsString);
       const productName =
         response.data.product.product_name || "Unknown Product";
       const productImage = response.data.product.image_url || null;
@@ -32,7 +43,7 @@ export async function BarcodeScan(barcode: string) {
       const productDetails = {
         name: productName,
         imageUri: productImage,
-        nutrients: nutrientsString,
+        nutrients: JSON.stringify(nutrientsString),
       };
       return productDetails;
     } else {

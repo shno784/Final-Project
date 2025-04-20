@@ -1,9 +1,9 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import Home from "@/app/index";
-import { useAppState } from "@/utils/Globalstates";
+import { useAppState } from "@/utils/globalstates";
 import { useRouter } from "expo-router";
-import { processData } from "@/utils/ProcessData";
+import { processData } from "@/utils/processData";
 import pickImage from "@/utils/pickImage";
 
 // Mock everything
