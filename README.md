@@ -1,50 +1,49 @@
-# Welcome to your Expo app 👋
+# FoodFacts
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Getting Started
 
-## Get started
+Follow these steps to get the app running on your device using [Expo](https://expo.dev/).
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### 1. Clone the Repo
 
 ```bash
-npm run reset-project
+git clone https://github.com/shno784/Final-Project.git
+cd Final-Project
+```
+### 2. Install Dependencies
+```
+npm install
+```
+### 3. Start the Project
+```
+npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 📱 Run the App on Your Phone
 
-## Learn more
+### Step 1: Download Expo Go
 
-To learn more about developing your project with Expo, look at the following resources:
+- **Android**: [Download from Google Play](https://play.google.com/store/apps/details?id=host.exp.exponent)
+- **iOS**: [Download from the App Store](https://apps.apple.com/app/expo-go/id982107779)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Step 2: Scan the QR Code
 
-## Join the community
+- **Android**: Open the **Expo Go** app and use the built-in QR code scanner.
+- **iOS**: Open your **Camera app**, point it at the QR code, and tap the link that appears.
 
-Join our community of developers creating universal apps.
+Once scanned, the app will load and run directly on your phone.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Features
+
+- Scan barcodes, photos, add images or search via text to view nutritional information
+- Simple interface
+- No account or login required
+- Lightweight, fast, and easy to use
+
+## Purpose
+
+This app empowers people to make smarter food choices by simplifying nutrition. Tailored especially for elderly users or those unfamiliar with complex nutrition labels, it brings clarity and confidence to everyday decisions.
+
+## Feedback
+
+Feel free to open issues or pull requests if you have suggestions or improvements!
