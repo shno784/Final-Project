@@ -43,14 +43,23 @@ export interface AppState {
   errorMessage: string;
   hasSeenOnboarding: boolean;
   isLoading: boolean;
+  userData: UserFormInputProps | null;
 
   // Actions
   addSearch: (query: string) => void;
-
   setError: (message: string) => void;
   clearError: () => void;
-
   setOnboardingSeen: () => void;
-
   setLoading: (loading: boolean) => void;
+  setUserData: (data: UserFormInputProps) => void;
+  reset: () => void;
+}
+
+export interface UserFormInputProps {
+  gender: "male" | "female" | "";
+  age: number;
+  height: number;
+  weight: number;
+  activityMultiplier: number;
+  unitType: "metric" | "imperial";
 }

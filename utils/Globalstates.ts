@@ -30,6 +30,11 @@ export const useAppState = create<AppState>()(
 
       isLoading: false,
       setLoading: (loading: boolean) => set({ isLoading: loading }),
+
+      //User data
+      userData: null,
+      setUserData: (data) => set({ userData: data }),
+      reset: () => set({ userData: null }),
     }),
     {
       name: "app-storage",
@@ -37,6 +42,7 @@ export const useAppState = create<AppState>()(
       partialize: (state) => ({
         recentSearches: state.recentSearches,
         hasSeenOnboarding: state.hasSeenOnboarding,
+        userData: state.userData,
       }),
     }
   )

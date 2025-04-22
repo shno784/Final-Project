@@ -135,27 +135,28 @@ export default function FoodDetailPage() {
     },
   ];
 
-  // Generate nutrient-based tags using rounded values
-  let tags: string[] = [];
-  // Assuming all “Rounded” values are per-100g:
-  if (proteinRounded >= 15) tags.push("💪 High Protein");
-  // Sugar
-  if (sugarsRounded <= 5) tags.push("🍬 Low Sugar");
-  if (sugarsRounded > 22) tags.push("🍭 High Sugar");
-  // Fiber
-  if (fiberRounded >= 5) tags.push("🌾 High Fiber");
-  if (fiberRounded < 3) tags.push("🌿 Low Fiber");
-  // Fat
-  if (fatRounded <= 5) tags.push("🥗 Low Fat");
-  if (fatRounded >= 20) tags.push("🥑 High Fat");
-  // Carbs
-  if (carbsRounded < 15) tags.push("🥔 Low Carbs");
-  if (carbsRounded >= 30) tags.push("🍞 High Carbs");
-  // Sodium (g per 100g)
-  if (sodiumRounded <= 0.12) tags.push("🧂 Low Sodium");
-  if (sodiumRounded >= 0.6) tags.push("🧂 High Sodium");
-  // Keto‑friendly
-  if (carbsRounded < 15 && fatRounded > 10) tags.push("🥩 Keto-Friendly");
+  // 1) extract per‑100g baselines
+  const baseProtein = getValue("Protein");
+  const baseCarbs = getValue("Carbohydrates");
+  const baseFat = getValue("Fat");
+  const baseSodium = getValue("Sodium");
+  const baseSugars = getValue("Sugars");
+  const baseFiber = getValue("Fiber");
+
+  // 2) generate tags once
+  const tags: string[] = [];
+  if (baseProtein >= 15) tags.push("💪 High Protein");
+  if (baseSugars <= 5) tags.push("🍬 Low Sugar");
+  if (baseSugars > 22) tags.push("🍭 High Sugar");
+  if (baseFiber >= 5) tags.push("🌾 High Fiber");
+  if (baseFiber < 3) tags.push("🌿 Low Fiber");
+  if (baseFat <= 5) tags.push("🥗 Low Fat");
+  if (baseFat >= 20) tags.push("🥑 High Fat");
+  if (baseCarbs < 15) tags.push("🥔 Low Carbs");
+  if (baseCarbs >= 30) tags.push("🍞 High Carbs");
+  if (baseSodium <= 0.12) tags.push("🧂 Low Sodium");
+  if (baseSodium >= 0.6) tags.push("🧂 High Sodium");
+  if (baseCarbs < 15 && baseFat > 10) tags.push("🥩 Keto‑Friendly");
 
   return (
     <ScrollView
