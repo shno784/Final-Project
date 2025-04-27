@@ -6,16 +6,12 @@ import {
   ScrollView,
   ActivityIndicator,
   Dimensions,
-  AccessibilityInfo,
 } from "react-native";
-import * as Speech from "expo-speech";
 import { useLocalSearchParams } from "expo-router";
 import { FoodDatabase } from "@/utils/foodDatabase";
 import { FoodRow, Macronutrient, Micronutrient } from "@/types/FoodTypes";
 import NutritionCarousel from "@/components/NutritionCarousel";
 import { useColorScheme } from "nativewind";
-import AppButton from "@/components/AppButton";
-import Icon from "@/components/Icon";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -36,25 +32,8 @@ export default function FoodDetailPage() {
   const { id } = useLocalSearchParams();
   const { getFoodItemById } = FoodDatabase();
   const [foodItem, setFoodItem] = useState<FoodRow | null>(null);
-  const [isSpeaking, setIsSpeaking] = useState(false);
   const [selectedGrams, setSelectedGrams] = useState<number>(100);
   const { colorScheme } = useColorScheme();
-
-  // Function to handle text-to-speech
-  const speak = (text: string) => {
-    Speech.speak(text, {
-      rate: 0.8,
-      onStart: () => setIsSpeaking(true),
-      onDone: () => setIsSpeaking(false),
-      onError: () => setIsSpeaking(false),
-    });
-  };
-  // Function to stop text-to-speech
-  const stop = () => {
-    Speech.stop();
-    setIsSpeaking(false);
-  };
-
   // Fetch food item details based on the ID from the URL parameters
   useEffect(() => {
     const fetchItem = async () => {
@@ -62,9 +41,6 @@ export default function FoodDetailPage() {
       const item = await getFoodItemById(parseInt(id as string));
       console.log(item?.nutrients);
       setFoodItem(item || null);
-      AccessibilityInfo.announceForAccessibility(
-        `Loaded details for ${item?.name}`
-      );
     };
     fetchItem();
   }, [id]);
@@ -187,7 +163,6 @@ export default function FoodDetailPage() {
       nestedScrollEnabled
       directionalLockEnabled
       className="pt-20 p-4 dark:bg-black bg-white"
-      accessible={true}
     >
       {/* Card Container */}
       <View className="dark:bg-black rounded-xl shadow-lg p-4">
@@ -215,29 +190,7 @@ export default function FoodDetailPage() {
             chartConfig={chartConfig}
           />
         </View>
-        {/* Read Nutrients Button */}
-        <AppButton
-          label={isSpeaking ? "Stop Reading" : "Read Nutrients"}
-          icon={
-            isSpeaking ? (
-              <Icon name="volume-mute-outline" size={24} className="mr-2" />
-            ) : (
-              <Icon name="volume-high-outline" size={24} className="mr-2" />
-            )
-          }
-          onPress={() => {
-            if (isSpeaking) stop();
-            else {
-              const lines = nutrients
-                .map(
-                  (n) => `${n.name}: ${(n.value * multiplier).toFixed(1)} grams`
-                )
-                .join(", ");
-              speak(`Here are the nutrients for ${foodItem.name}: ${lines}`);
-            }
-          }}
-          variant="secondary"
-        />
+
         {/* Nutrients Title with Serving Size Selector */}
         <View className="flex-row justify-between items-center mt-4 mb-2">
           <Text className="text-[20px] font-semibold text-text-head dark:text-text-d-head">

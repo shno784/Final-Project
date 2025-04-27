@@ -4,15 +4,13 @@ import { Ionicons } from "@expo/vector-icons";
 
 export interface AppButtonProps {
   label?: string;
-  icon?: ReactNode;
+  icon?: ReactNode; // Optional icon to show next to label
   onPress?: () => void;
   variant?: "primary" | "secondary" | "danger";
   style?: ViewStyle;
   disabled?: boolean;
   className?: string;
   testID?: string;
-  accessibilityHint?: string; // For screen readers
-  accessible?: boolean; // For accessibility
 }
 
 export interface FoodCardProps {
@@ -22,7 +20,6 @@ export interface FoodCardProps {
   onLongPress?: () => void;
   className?: string;
   imageStyle?: ImageStyle;
-  accessibilityHint?: string;
 }
 export interface TipProps {
   tipKey: string;

@@ -11,12 +11,7 @@ const options = () => {
   };
 
   return (
-    <View
-      style={{ flex: 1 }}
-      accessible
-      accessibilityRole="none"
-      className="bg-white dark:bg-black"
-    >
+    <View style={{ flex: 1 }} className="bg-white dark:bg-black">
       <View style={{ flex: 1, padding: 16, justifyContent: "center" }}>
         <Text className="text-base text-text-main dark:text-text-d-main mb-4">
           Options
@@ -27,13 +22,11 @@ const options = () => {
               ? "Switch to Dark Mode "
               : "Switch to Light Mode"
           }
-          accessibilityHint="Toggles between light and dark themes"
           onPress={toggleTheme}
         />
         <AppButton
           label="Calculate BMI"
           onPress={() => router.navigate("/bmi")}
-          accessibilityHint="Navigates to the BMI calculator screen"
         />
       </View>
     </View>

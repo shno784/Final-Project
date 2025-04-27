@@ -7,7 +7,6 @@ import {
   TextInput,
   Image,
   Alert,
-  AccessibilityInfo,
 } from "react-native";
 import AppButton from "@/components/AppButton";
 import FoodCard from "@/components/FoodCard";
@@ -18,7 +17,6 @@ import { useActionSheet } from "@expo/react-native-action-sheet";
 import * as ImagePicker from "expo-image-picker";
 import OneTimeTip from "@/components/OneTimeTip";
 import { useAppState } from "@/utils/globalstates";
-import ErrorCard from "@/components/ErrorCard";
 
 const History = () => {
   const [foodItems, setFoodItems] = useState<FoodRow[]>([]);
@@ -29,16 +27,21 @@ const History = () => {
 
   const { updateFoodItem, deleteFoodItem, getAllFoodItems } = FoodDatabase();
   const { showActionSheetWithOptions } = useActionSheet();
-  const { errorMessage, clearError } = useAppState();
+  const { errorMessage, setError, clearError } = useAppState();
 
   const router = useRouter();
 
   // Fetch food items from the database when the component mounts
   useEffect(() => {
-    getAllFoodItems().then((items) => {
-      setFoodItems(items);
-      AccessibilityInfo.announceForAccessibility("History loaded");
-    });
+    const fetchFoodItems = async () => {
+      try {
+        const items = await getAllFoodItems();
+        setFoodItems(items);
+      } catch (error) {
+        console.error("Failed to fetch food items:", error);
+      }
+    };
+    fetchFoodItems();
   }, []);
 
   // Handle the action sheet options
@@ -73,9 +76,6 @@ const History = () => {
                   await deleteFoodItem(food.id);
                   const updated = await getAllFoodItems();
                   setFoodItems(updated);
-                  AccessibilityInfo.announceForAccessibility(
-                    `Deleted ${food.name}`
-                  );
                 },
               },
             ],
@@ -114,11 +114,10 @@ const History = () => {
     setFoodItems(updatedList);
     setIsModalVisible(false);
     setEditingFood(null);
-    AccessibilityInfo.announceForAccessibility("Food item updated");
   };
 
   return (
-    <View className="flex-1" accessible={true}>
+    <View className="flex-1">
       {/* Edit modal */}
       <Modal visible={ismodalVisible} animationType="slide" transparent>
         <View className="flex-1 justify-center bg-black/60 p-5">
@@ -128,8 +127,6 @@ const History = () => {
               placeholder="Food name"
               value={newName}
               onChangeText={setNewName}
-              accessible
-              accessibilityLabel="Food name input"
             />
 
             <Image
@@ -143,7 +140,6 @@ const History = () => {
               label="Cancel"
               variant="danger"
               onPress={() => setIsModalVisible(false)}
-              accessibilityHint="Discard changes and close editor"
             />
           </View>
         </View>
@@ -184,7 +180,6 @@ const History = () => {
                   onPress={() => {
                     router.push(`/History/${food.id}`);
                   }}
-                  accessibilityHint="Tap to view details, long press to edit or delete"
                   className="w-[45%] my-2.5"
                 />
               ))}
@@ -192,11 +187,6 @@ const History = () => {
           )}
         </>
       </ScrollView>
-      {errorMessage !== "" && (
-        <View className="absolute inset-0 z-50 justify-center items-center">
-          <ErrorCard message={errorMessage} onDismiss={clearError} />
-        </View>
-      )}
     </View>
   );
 };

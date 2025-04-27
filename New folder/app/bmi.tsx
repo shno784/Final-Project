@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, AccessibilityInfo } from "react-native";
+import { Text, View, Platform } from "react-native";
 import UserInputForm from "@/components/UserInputForm";
 import AppButton from "@/components/AppButton";
 import { UserFormInputProps } from "@/types/globalTypes";
@@ -55,7 +55,6 @@ export default function BMIScreen() {
       keyboardOpeningTime={0}
       keyboardShouldPersistTaps="handled"
       contentContainerStyle={{ flexGrow: 1 }}
-      accessible={true}
     >
       {!userData ? (
         <UserInputForm onSubmit={setUserData} />
@@ -109,7 +108,6 @@ export default function BMIScreen() {
               label="Reset"
               onPress={reset}
               className="mt-6 bg-red-500"
-              accessibilityHint="Clears your BMI settings and returns to input form"
             />
           </View>
         </View>

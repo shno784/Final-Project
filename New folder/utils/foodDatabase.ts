@@ -40,15 +40,13 @@ export function FoodDatabase() {
           $nutrients: food.nutrients,
         }
       );
-    } catch (error) {
-      console.error("DB insert error:", error);
+    } catch (err: any) {
+      console.error("DB insert error:", err);
       // If unique constraint, give a message:
-      if (error instanceof Error) {
-        if (error.message.includes("UNIQUE constraint failed")) {
-          throw new Error("You’ve already added this product.");
-        }
-        throw new Error("Failed to save item. Please try again.");
-      } 
+      if (err?.message?.includes("UNIQUE constraint failed")) {
+        throw new Error("You’ve already added this product.");
+      }
+      throw new Error("Failed to save item. Please try again.");
     }
   };
 

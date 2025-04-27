@@ -54,11 +54,9 @@ const CameraScreen = () => {
         await insertFoodItem(food);
         router.replace("/History");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Scan workflow error:", error);
-      if (error instanceof Error) {
-        setError(error.message);
-      }
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -87,11 +85,9 @@ const CameraScreen = () => {
 
       setHasScanned(true);
       router.replace("/History");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Scan workflow error:", error);
-      if (error instanceof Error) {
-        setError(error.message);
-      }
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -120,7 +116,6 @@ const CameraScreen = () => {
                 ],
               }}
               onBarcodeScanned={hasScanned ? undefined : handleBarcodeScanned}
-              accessibilityHint="Camera preview for scanning food or barcodes"
             >
               <OneTimeTip
                 tipKey="camera"
@@ -151,7 +146,6 @@ const CameraScreen = () => {
                   />
                 }
                 variant="secondary"
-                accessibilityHint="Toggles the camera flash"
                 className="w-20 mt-4 rounded-full px-3 py-2"
                 onPress={() => setTorch((prev) => !prev)}
               />
@@ -161,7 +155,6 @@ const CameraScreen = () => {
                 className="ml-2 h-24 w-24 mr-2 rounded-full"
                 onPress={handlePress(takePicture)}
                 variant="primary"
-                accessibilityHint="Captures a photo for food processing"
               />
               <AppButton
                 testID="pick-image-button"
@@ -172,7 +165,6 @@ const CameraScreen = () => {
                   router.replace("/History");
                 })}
                 variant="secondary"
-                accessibilityHint="Opens image library to select a photo"
               />
             </View>
           </View>

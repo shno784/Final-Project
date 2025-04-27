@@ -11,7 +11,7 @@ axiosRetry(axiosClient, {
   retryCondition: (error) => {
     return (
       axiosRetry.isNetworkOrIdempotentRequestError(error) ||
-      error.response?.status === 429 || // Too Many Requests
+      error.response?.status === 429 || // Rate limit
       (error.response?.status !== undefined && error.response.status >= 500)
     );
   },

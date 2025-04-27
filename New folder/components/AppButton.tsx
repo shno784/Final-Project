@@ -10,22 +10,19 @@ export default function AppButton({
   className,
   icon,
   testID,
-  accessibilityHint,
   disabled = false,
-  accessible,
 }: AppButtonProps) {
   // Choose variant-specific classes for background color
   let variantClasses = "";
   switch (variant) {
     case "primary":
-      variantClasses = "border-[2px] border-black dark:border-white bg-primary";
+      variantClasses = "border-[2px] border-primary";
       break;
     case "secondary":
-      variantClasses =
-        "border-[2px] border-black dark:border-white bg-secondary";
+      variantClasses = "border-[2px] border-secondary";
       break;
     case "danger":
-      variantClasses = "border-[2px] border-black dark:border-white bg-danger";
+      variantClasses = "border-[2px] border-danger";
       break;
     default:
       break;
@@ -35,9 +32,7 @@ export default function AppButton({
       onPress={onPress}
       disabled={disabled}
       testID={testID}
-      accessible={accessible}
       activeOpacity={0.7}
-      accessibilityHint={accessibilityHint}
       className={`py-[14px] px-[16px] rounded-[8px] my-[6px] min-w-[100px] items-center justify-center ${variantClasses} ${
         className ?? ""
       }`}
