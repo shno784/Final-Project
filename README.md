@@ -19,7 +19,7 @@ npm install
 npm start
 ```
 
-## 📱 Run the App on Your Phone
+## Run the App on Your Phone
 
 ### Step 1: Download Expo Go
 
@@ -33,6 +33,15 @@ npm start
 
 Once scanned, the app will load and run directly on your phone.
 
+### Step 3: Reproduce your own .env variables
+create a **.env.sample** at root:
+# Rename this file to .env and fill in each key.
+```
+EXPO_PUBLIC_GOOGLE_VISION_API_KEY=YOUR_KEY_HERE
+EXPO_PUBLIC_USDA_API_KEY=YOUR_KEY_HERE
+EXPO_PUBLIC_UNSPLASH_ACCESS_KEY=YOUR_KEY_HERE
+EXPO_PUBLIC_OPENFOODFACTS_USER_AGENT=MyNutritionScanner/1.0 (your@email)
+```
 ## Features
 
 - Scan barcodes, photos, add images or search via text to view nutritional information
