@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { ViewStyle, ImageStyle } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { TextSize } from "@/utils/textSize";
 
 export interface AppButtonProps {
   label?: string;
@@ -48,6 +49,7 @@ export interface AppState {
   hasSeenOnboarding: boolean;
   isLoading: boolean;
   userData: UserFormInputProps | null;
+  textSize: TextSize;
 
   // Actions
   addSearch: (query: string) => void;
@@ -57,6 +59,7 @@ export interface AppState {
   setLoading: (loading: boolean) => void;
   setUserData: (data: UserFormInputProps) => void;
   reset: () => void;
+  setTextSize: (size: TextSize) => void;
 }
 
 export interface UserFormInputProps {

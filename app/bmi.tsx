@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, AccessibilityInfo } from "react-native";
+import { Text, View } from "react-native";
 import UserInputForm from "@/components/UserInputForm";
 import AppButton from "@/components/AppButton";
 import { UserFormInputProps } from "@/types/globalTypes";
@@ -72,36 +72,36 @@ export default function BMIScreen() {
             </View>
             <View className="flex-row justify-between space-x-4">
               <View className="flex-1 bg-white dark:bg-gray-700 rounded-lg p-4 items-center">
-                <Text className="text-sm font-medium text-red-500 mb-1">
+                <Text className="text-base font-medium text-red-500 mb-1">
                   Lose
                 </Text>
                 <Text className="text-xl font-bold text-head dark:text-text-d-head">
                   {calorieGoals?.lose.toFixed(0)}
                 </Text>
-                <Text className="text-xs text-text-d-head dark:text-text-d-head">
-                  kcal/day
+                <Text className="text-base text-text-d-head dark:text-text-d-head">
+                  cal/day
                 </Text>
               </View>
               <View className="flex-1 bg-white dark:bg-gray-700 rounded-lg p-4 items-center">
-                <Text className="text-sm font-medium text-yellow-500 mb-1">
+                <Text className="text-base font-medium text-yellow-500 mb-1">
                   Maintain
                 </Text>
                 <Text className="text-xl font-bold text-head dark:text-text-d-head">
                   {calorieGoals?.maintain.toFixed(0)}
                 </Text>
-                <Text className="text-xs text-text-d-head dark:text-text-d-head">
-                  kcal/day
+                <Text className="text-base text-text-d-head dark:text-text-d-head">
+                  cal/day
                 </Text>
               </View>
               <View className="flex-1 bg-white dark:bg-gray-700 rounded-lg p-4 items-center">
-                <Text className="text-sm font-medium text-green-500 mb-1">
+                <Text className="text-base font-medium text-green-500 mb-1">
                   Gain
                 </Text>
                 <Text className="text-xl font-bold text-head dark:text-text-d-head">
                   {calorieGoals?.gain.toFixed(0)}
                 </Text>
-                <Text className="text-xs text-text-d-head dark:text-text-d-head">
-                  kcal/day
+                <Text className="text-base text-text-d-head dark:text-text-d-head">
+                  cal/day
                 </Text>
               </View>
             </View>

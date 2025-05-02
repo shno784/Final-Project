@@ -1,5 +1,6 @@
 import { TouchableOpacity, Text, View } from "react-native";
 import { AppButtonProps } from "@/types/globalTypes";
+import AppText from "./AppText";
 
 // This component is a customisable button that can be used throughout the app.
 export default function AppButton({
@@ -45,12 +46,12 @@ export default function AppButton({
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         {icon && <View>{icon}</View>}
-        <Text
-          className={`text-[15.5px] text-center text-text-head dark:text-text-d-head font-bold uppercase`}
+        <AppText
+          className={`text-center text-text-head dark:text-text-d-head font-bold uppercase`}
           numberOfLines={1}
         >
           {label}
-        </Text>
+        </AppText>
       </View>
     </TouchableOpacity>
   );
