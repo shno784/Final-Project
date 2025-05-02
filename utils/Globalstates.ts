@@ -3,6 +3,7 @@ import { persist, createJSONStorage  } from "zustand/middleware";
 import { AppState } from "@/types/globalTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { capitaliseWords } from "./capitaliseWords";
+import { TextSize } from "./textSize";
 
 // This is the global state for the app. It uses Zustand for state management and AsyncStorage for persistence.
 export const useAppState = create<AppState>()(
@@ -35,6 +36,12 @@ export const useAppState = create<AppState>()(
       userData: null,
       setUserData: (data) => set({ userData: data }),
       reset: () => set({ userData: null }),
+
+      // Text Size
+      textSize: "text-base",
+      setTextSize: (size: TextSize) => {
+        set({ textSize: size });
+      },
     }),
     {
       name: "app-storage",
@@ -43,6 +50,7 @@ export const useAppState = create<AppState>()(
         recentSearches: state.recentSearches,
         hasSeenOnboarding: state.hasSeenOnboarding,
         userData: state.userData,
+        textSize: state.textSize,
       }),
     }
   )

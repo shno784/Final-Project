@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  Text,
   ScrollView,
   Modal,
   TextInput,
   Image,
+  Text,
   Alert,
   AccessibilityInfo,
 } from "react-native";
@@ -19,6 +19,7 @@ import * as ImagePicker from "expo-image-picker";
 import OneTimeTip from "@/components/OneTimeTip";
 import { useAppState } from "@/utils/globalstates";
 import ErrorCard from "@/components/ErrorCard";
+import AppText from "@/components/AppText";
 
 const History = () => {
   const [foodItems, setFoodItems] = useState<FoodRow[]>([]);
@@ -169,9 +170,9 @@ const History = () => {
         <>
           {foodItems.length === 0 ? (
             <View className="flex-1 justify-center items-center">
-              <Text className="text-3xl font-bold mt-56 text-text-head dark:text-text-d-head">
+              <AppText className="text-3xl font-bold mt-56 text-text-head dark:text-text-d-head">
                 No items scanned yet
-              </Text>
+              </AppText>
             </View>
           ) : (
             <View className="flex flex-row flex-wrap justify-between">
