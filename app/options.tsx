@@ -1,19 +1,26 @@
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { useColorScheme } from "nativewind";
 import { useRouter } from "expo-router";
 import { setTailwindTextSize, TextSize } from "@/utils/textSize";
 import Icon from "@/components/Icon";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import AppText from "@/components/AppText";
 import AppButton from "@/components/AppButton";
 import { useAppState } from "@/utils/globalstates";
 
 // Define text size options
 const SIZES: { label: string; value: TextSize; icon: string }[] = [
-  { label: "Small", value: "text-base", icon: "text-outline" },
+  { label: "Small", value: "text-base", icon: "text" },
   { label: "Medium", value: "text-lg", icon: "text" },
   { label: "Large", value: "text-xl", icon: "text" },
 ];
+
+// Map each TextSize option to an icon size in number
+const iconSizes: Record<TextSize, number> = {
+  "text-base": 16,
+  "text-lg": 20,
+  "text-xl": 24,
+};
 
 const Options = () => {
   const router = useRouter();
@@ -45,9 +52,9 @@ const Options = () => {
       className="bg-white dark:bg-black"
     >
       <View style={{ flex: 1, padding: 16, justifyContent: "center" }}>
-        <AppText className="font-bold text-text-main dark:text-text-d-main mb-6">
+        <Text className="text-[28px] font-bold text-text-main dark:text-text-d-main mb-6">
           Options
-        </AppText>
+        </Text>
 
         {/* Theme toggle */}
         <AppButton
@@ -78,6 +85,14 @@ const Options = () => {
             <AppButton
               key={size.value}
               label={size.label}
+              icon={
+                <Icon
+                  // Use a fixed icon based solely on the current color scheme instead of the size option
+                  name="text"
+                  size={iconSizes[size.value]}
+                  className="mr-2"
+                />
+              }
               onPress={() => changeTextSize(size.value)}
               variant={textSize === size.value ? "primary" : "secondary"}
               className="mb-2"
