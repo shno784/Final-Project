@@ -1,16 +1,24 @@
-import React from "react";
-import { render, fireEvent, act } from "@testing-library/react-native";
-import type { RenderAPI } from "@testing-library/react-native";
+import {
+  act,
+  fireEvent,
+  render,
+  RenderAPI,
+} from "@testing-library/react-native";
 
 jest.useFakeTimers(); // Use fake timers for async operations
+
+// Mock database so it doesn't use real storage
 jest.mock("expo-sqlite", () => ({
   openDatabaseAsync: jest.fn(),
 }));
 
-//Mock AsyncStorage (must come first)
+// Mock the async-storage so it doesn't use real storage
 jest.mock("@react-native-async-storage/async-storage", () =>
   require("@react-native-async-storage/async-storage/jest/async-storage-mock")
 );
+
+// Load manual mock from zustand.ts
+jest.mock("zustand");
 
 //Mock expo-camera (forward testID & stub takePictureAsync)
 jest.mock("expo-camera", () => {
@@ -41,11 +49,8 @@ jest.mock("expo-router", () => ({
   }),
 }));
 
-//Auto‑mock your Icon
+//Auto‑mock Icon
 jest.mock("@/components/Icon");
-
-//Mock your Zustand store
-jest.mock("@/utils/globalstates");
 
 //Stub OneTimeTip & ErrorCard
 jest.mock("@/components/OneTimeTip", () => () => null);
@@ -68,29 +73,28 @@ jest.mock("@/utils/foodDatabase", () => ({
   }),
 }));
 
-// 6️⃣ Import your screen (after all mocks)
 import CameraScreen from "@/app/camera";
-import * as globalStateModule from "@/utils/globalstates";
-
-const useAppStateMock = jest.mocked(globalStateModule.useAppState);
+import { useAppState } from "@/utils/globalstates";
 
 describe("CameraScreen", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    useAppStateMock.mockReturnValue({
+    useAppState.setState({
       isLoading: false,
       errorMessage: "",
-      setLoading: jest.fn(),
-      setError: jest.fn(),
-      clearError: jest.fn(),
       recentSearches: [],
       addSearch: jest.fn(),
       hasSeenOnboarding: false,
-      setOnboardingSeen: jest.fn(),
       userData: null,
-      setUserData: jest.fn(),
-      reset: jest.fn(),
-    } as any);
+    });
+    // Spy on the zustand store methods
+    jest.spyOn(useAppState.getState(), "setLoading");
+    jest.spyOn(useAppState.getState(), "setError");
+    jest.spyOn(useAppState.getState(), "clearError");
+    jest.spyOn(useAppState.getState(), "addSearch");
+    jest.spyOn(useAppState.getState(), "setOnboardingSeen");
+    jest.spyOn(useAppState.getState(), "setUserData");
+    jest.spyOn(useAppState.getState(), "reset");
   });
 
   it("renders scan overlay", () => {
@@ -128,7 +132,6 @@ describe("CameraScreen additional tests", () => {
     await act(async () => {
       fireEvent.press(screen.getByTestId("pick-image-button"));
     });
-    // pickImage mock returns an object, you can assert insertFoodItem was called
   });
 
   it("handles taking a picture from the camera", async () => {
