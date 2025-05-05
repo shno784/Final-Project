@@ -22,12 +22,19 @@ export async function identifyFood(base64Image: string) {
     // Get labels
     const labels = response.data.responses[0].labelAnnotations;
     //Filter label by common words like "food", "fruit", etc.
-    console.log("Labels: ", labels);
     const label = getBestMeaningfulLabel(labels);
+    console.log(
+      "Labels FOR USDA:",
+      labels.map((label: any) => label.description)
+    );
+    console.log("getBestMeaningfulLabel FOR USDA:", label);
     return label;
   } catch (error) {
-    // Handle Axios errors
     if (axios.isAxiosError(error)) {
+      if (error.code === "ERR_NETWORK") {
+        console.error("No internet connection.");
+        throw new Error("No internet connection. Please check your network.");
+      }
       const code = error.response?.status;
       const message = error.response?.data?.error?.message || error.message;
       console.error("Axios Error Details: ", { code, message });

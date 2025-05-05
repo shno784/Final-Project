@@ -5,18 +5,16 @@ export default function getBestMeaningfulLabel(labels: any[]): string {
     "comfort food", "recipe", "finger food", "side dish", "appetizer",
     "main course", "cooking", "eat", "eating", "delicacy",
     "tableware", "table", "plate", "cutlery", "fork", "spoon", "knife", "bowl",
-    "tray", "table setting", "kitchenware",
+    "tray", "table setting", "kitchenware", "fruit", "vegetable", "technology",
     "natural foods", "produce", "nutrition", "garnish", "vegetarian food",
-    "vegan nutrition", "organic food",
+    "vegan nutrition", "organic food", "natural food", "natural foods",
     "still life", "photography", "snapshot", "image", "art", "photo",
     "photograph", "picture", "still life photography", "object",
     "still life", "still life image", "still life photo",
     "picture", "macro photography", "close-up",
     "cooked", "raw", "prepared", "fresh, roasted", "grilled", "baked",
-    "roast", "grill", "bake", "fry", "boil", "produce"
+    "roast", "grill", "bake", "fry", "boil", "produce", "electronic device", "device", "display", "display device", "gadget",
   ];
-
-  const threshold = 0.85;
 
   const filtered = labels.filter((label) => {
     const desc = label.description.toLowerCase();
@@ -25,7 +23,7 @@ export default function getBestMeaningfulLabel(labels: any[]): string {
       desc.includes(word.toLowerCase())
     );
 
-    return label.score >= threshold && !isGeneric;
+    return !isGeneric;
   });
 
   if (filtered.length > 0) {

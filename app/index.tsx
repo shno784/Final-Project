@@ -1,5 +1,12 @@
-import { useState } from "react";
-import { View, Keyboard, TouchableWithoutFeedback, Image } from "react-native";
+import { useState, useEffect } from "react";
+import {
+  View,
+  Keyboard,
+  TouchableWithoutFeedback,
+  Image,
+  Text,
+} from "react-native";
+import NetInfo from "@react-native-community/netinfo";
 import { useRouter } from "expo-router";
 import AppButton from "@/components/AppButton";
 import pickImage from "@/utils/pickImage";
@@ -10,15 +17,33 @@ import USDAFoodSearch from "@/components/USDAFoodSearch";
 import ErrorCard from "@/components/ErrorCard";
 import { useAppState } from "@/utils/globalstates";
 import { FoodDatabase } from "@/utils/foodDatabase";
+import { isOnline } from "@/utils/network";
 
 export default function Home() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [searching, setSearching] = useState(false);
+  const [isOffline, setIsOffline] = useState(false);
 
-  const { insertFoodItem } = FoodDatabase();
+  const { insertFoodItem, getAllFoodItems } = FoodDatabase();
   const { errorMessage, setError, clearError, addSearch, setLoading } =
     useAppState();
+
+  // Check connectivity and set offline state
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      const offline = !state.isConnected;
+      setIsOffline(offline);
+
+      if (offline) {
+        setError("You are offline. Scan Food and Add an Image are disabled.");
+      } else {
+        // clear the offline error once we’re back online
+        clearError();
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   const handleSearch = async () => {
     if (searching) return;
@@ -32,9 +57,26 @@ export default function Home() {
       addSearch(searchQuery);
       setLoading(true);
 
-      const result = await processData(searchQuery.toLowerCase());
-      await insertFoodItem(result);
-      router.push("/History");
+      if (await isOnline()) {
+        const result = await processData(searchQuery.toLowerCase());
+        await insertFoodItem(result);
+        router.push("/History");
+      } else {
+        // If offline, filter the local database for matching food items
+        const allFoodItems = await getAllFoodItems();
+        const filteredItems = allFoodItems.filter((item) =>
+          item.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        if (filteredItems.length === 0) {
+          setError(
+            "We're sorry, we couldn't find any food items matching your search. Please check your internet connection and try again later."
+          );
+        } else {
+          // Route to the first matching food item's detail page
+          router.push(`/History/${filteredItems[0].id}`);
+        }
+        return filteredItems;
+      }
 
       setSearchQuery("");
     } catch (error) {
@@ -47,7 +89,8 @@ export default function Home() {
       setLoading(false);
     }
   };
-  //Handles processing add image function
+
+  // Handles processing add image function
   const handleImage = async () => {
     try {
       setLoading(true);
@@ -64,6 +107,7 @@ export default function Home() {
       setLoading(false);
     }
   };
+
   const handleSuggestionSelect = (foodItem: any) => {
     if (foodItem?.description) {
       setSearchQuery(foodItem.description);
@@ -117,16 +161,30 @@ export default function Home() {
             <AppButton
               label="Scan Food"
               onPress={() => router.navigate("/camera")}
-              className="w-full mb-5"
-              icon={<Icon name="camera-outline" size={24} className="mr-2" />}
-              accessibilityHint="Opens camera to scan a barcode or take a picture of your food"
+              className={`w-full mb-5 ${isOffline ? "bg-gray-600" : ""}`}
+              icon={
+                isOffline ? (
+                  <Icon name="lock-closed-outline" size={24} className="mr-2" />
+                ) : (
+                  <Icon name="camera-outline" size={24} className="mr-2" />
+                )
+              }
+              accessibilityHint="Opens the camera to scan a barcode or take a picture of your food"
+              disabled={isOffline}
             />
             <AppButton
               label="Add An Image"
               onPress={() => handleImage()}
-              className="w-full mb-5"
-              icon={<Icon name="image-outline" size={24} className="mr-2" />}
+              className={`w-full mb-5 ${isOffline ? "bg-gray-600" : ""}`}
+              icon={
+                isOffline ? (
+                  <Icon name="lock-closed-outline" size={24} className="mr-2" />
+                ) : (
+                  <Icon name="image-outline" size={24} className="mr-2" />
+                )
+              }
               accessibilityHint="Pick a photo from your library to analyse"
+              disabled={isOffline}
             />
 
             {/* Footer Buttons */}

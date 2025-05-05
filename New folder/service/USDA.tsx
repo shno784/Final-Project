@@ -87,8 +87,12 @@ export async function fetchFoodData(query: string) {
       recipe: detailsResponse.data.recipe || null,
     };
     return detailedFoodData;
-  } catch (error: any) {
+  } catch (error) {
     if (axios.isAxiosError(error)) {
+      if (error.code === "ERR_NETWORK") {
+        console.error("No internet connection.");
+        throw new Error("No internet connection. Please check your network.");
+      }
       const code = error.response?.status;
       const message = error.response?.data?.error?.message || error.message;
       console.error("Axios Error Details: ", { code, message });

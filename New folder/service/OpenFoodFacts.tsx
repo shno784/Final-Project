@@ -56,6 +56,10 @@ export async function BarcodeScan(barcode: string) {
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
+      if (error.code === "ERR_NETWORK") {
+        console.error("No internet connection.");
+        throw new Error("No internet connection. Please check your network.");
+      }
       const code = error.response?.status;
       const message =
         error.response?.data?.status?.description || error.message;

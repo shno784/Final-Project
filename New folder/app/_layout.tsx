@@ -10,6 +10,8 @@ import { FoodDatabase } from "@/utils/foodDatabase";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useColorScheme } from "nativewind";
 import { StatusBar } from "expo-status-bar";
+import { initTailwindTextSize } from "@/utils/textSize";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import "@/app/global.css";
 
@@ -49,6 +51,21 @@ export default function RootLayout() {
     };
 
     prepare();
+  }, []);
+
+  // Initialize text size settings
+  useEffect(() => {
+    const loadTextSize = async () => {
+      try {
+        const savedSize = await AsyncStorage.getItem("text-size");
+        initTailwindTextSize((savedSize as any) || "text-base");
+      } catch (error) {
+        console.error("Failed to load text size", error);
+        initTailwindTextSize("text-base");
+      }
+    };
+
+    loadTextSize();
   }, []);
 
   useEffect(() => {

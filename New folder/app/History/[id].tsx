@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  Text,
   Image,
   ScrollView,
   ActivityIndicator,
   Dimensions,
+  Text,
+  AccessibilityInfo,
 } from "react-native";
+import * as Speech from "expo-speech";
 import { useLocalSearchParams } from "expo-router";
 import { FoodDatabase } from "@/utils/foodDatabase";
 import { FoodRow, Macronutrient, Micronutrient } from "@/types/FoodTypes";
 import NutritionCarousel from "@/components/NutritionCarousel";
 import { useColorScheme } from "nativewind";
+import AppButton from "@/components/AppButton";
+import Icon from "@/components/Icon";
+import AppText from "@/components/AppText";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -32,8 +37,25 @@ export default function FoodDetailPage() {
   const { id } = useLocalSearchParams();
   const { getFoodItemById } = FoodDatabase();
   const [foodItem, setFoodItem] = useState<FoodRow | null>(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const [selectedGrams, setSelectedGrams] = useState<number>(100);
   const { colorScheme } = useColorScheme();
+
+  // Function to handle text-to-speech
+  const speak = (text: string) => {
+    Speech.speak(text, {
+      rate: 0.8,
+      onStart: () => setIsSpeaking(true),
+      onDone: () => setIsSpeaking(false),
+      onError: () => setIsSpeaking(false),
+    });
+  };
+  // Function to stop text-to-speech
+  const stop = () => {
+    Speech.stop();
+    setIsSpeaking(false);
+  };
+
   // Fetch food item details based on the ID from the URL parameters
   useEffect(() => {
     const fetchItem = async () => {
@@ -41,6 +63,9 @@ export default function FoodDetailPage() {
       const item = await getFoodItemById(parseInt(id as string));
       console.log(item?.nutrients);
       setFoodItem(item || null);
+      AccessibilityInfo.announceForAccessibility(
+        `Loaded details for ${item?.name}`
+      );
     };
     fetchItem();
   }, [id]);
@@ -49,7 +74,7 @@ export default function FoodDetailPage() {
     return (
       <View className="flex-1 justify-center items-center">
         <ActivityIndicator size="large" color="#333" />
-        <Text className="mt-2">Loading food item...</Text>
+        <AppText className="mt-2">Loading food item...</AppText>
       </View>
     );
   }
@@ -163,14 +188,15 @@ export default function FoodDetailPage() {
       nestedScrollEnabled
       directionalLockEnabled
       className="pt-20 p-4 dark:bg-black bg-white"
+      accessible={true}
     >
       {/* Card Container */}
       <View className="dark:bg-black rounded-xl shadow-lg p-4">
         <View className="relative w-full">
           <View className="mt-2 w-full">
-            <Text className="text-[28px] font-bold text-center text-text-main dark:text-text-d-main">
+            <AppText className="text-[28px] font-bold text-center text-text-main dark:text-text-d-main">
               {foodItem.name}
-            </Text>
+            </AppText>
           </View>
         </View>
 
@@ -190,15 +216,37 @@ export default function FoodDetailPage() {
             chartConfig={chartConfig}
           />
         </View>
-
+        {/* Read Nutrients Button */}
+        <AppButton
+          label={isSpeaking ? "Stop Reading" : "Read Nutrients"}
+          icon={
+            isSpeaking ? (
+              <Icon name="volume-mute-outline" size={24} className="mr-2" />
+            ) : (
+              <Icon name="volume-high-outline" size={24} className="mr-2" />
+            )
+          }
+          onPress={() => {
+            if (isSpeaking) stop();
+            else {
+              const lines = nutrients
+                .map(
+                  (n) => `${n.name}: ${(n.value * multiplier).toFixed(1)} grams`
+                )
+                .join(", ");
+              speak(`Here are the nutrients for ${foodItem.name}: ${lines}`);
+            }
+          }}
+          variant="secondary"
+        />
         {/* Nutrients Title with Serving Size Selector */}
         <View className="flex-row justify-between items-center mt-4 mb-2">
           <Text className="text-[20px] font-semibold text-text-head dark:text-text-d-head">
             Nutrients
           </Text>
-          <View className="flex-row gap-2">
+          <View className="flex-row flex-wrap gap-1">
             {[50, 100, 150, 200].map((gram) => (
-              <Text
+              <AppText
                 key={gram}
                 onPress={() => setSelectedGrams(gram)}
                 className={`px-3 py-1 rounded-full text-sm text-text-main font-semibold ${
@@ -206,38 +254,55 @@ export default function FoodDetailPage() {
                     ? "bg-primary text-white"
                     : "bg-card-light text-gray-800"
                 }`}
+                style={{ maxWidth: "100%" }}
               >
                 {gram}g
-              </Text>
+              </AppText>
             ))}
           </View>
         </View>
 
         {/* List of Nutrients with Adjusted and Rounded Values */}
-        {nutrients.map((nutrient, index) => (
-          <View
-            key={index}
-            className="flex-row justify-between py-1 border-b border-b-gray-300"
-          >
-            <Text className="text-[16px] text-text-main dark:text-text-d-main">
-              {nutrient.name}
-            </Text>
-            <Text className="text-[16px] text-text-main dark:text-text-d-main">
-              {(
-                parseFloat((nutrient.value * multiplier).toFixed(2)) || 0
-              ).toFixed(1)}
-              g
-            </Text>
-          </View>
-        ))}
+        {nutrients.map((nutrient, index) => {
+          const value =
+            (parseFloat((nutrient.value * multiplier).toFixed(2)) || 0).toFixed(
+              1
+            ) + "g";
 
+          return (
+            <View
+              key={index}
+              className="flex-row items-center justify-between py-1 border-b border-b-gray-300"
+            >
+              {/* 1️⃣ Left column: flexes and wraps up to 2 lines */}
+              <View className="flex-1 pr-2">
+                <AppText
+                  className="text-[16px] text-text-main dark:text-text-d-main"
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                >
+                  {nutrient.name}
+                </AppText>
+              </View>
+
+              {/* 2️⃣ Right column: fixed width, right-aligned */}
+              <View className="w-16">
+                <AppText className="text-right text-[16px] text-text-main dark:text-text-d-main">
+                  {value}
+                </AppText>
+              </View>
+            </View>
+          );
+        })}
         {/* Recipe Section */}
         {foodItem.recipe && (
           <>
-            <Text className="text-[20px] font-semibold mt-4 mb-2">Recipe</Text>
-            <Text className="text-[16px] text-[#333] mt-2 leading-[22px]">
+            <AppText className="text-[20px] font-semibold mt-4 mb-2">
+              Recipe
+            </AppText>
+            <AppText className="text-[16px] text-[#333] mt-2 leading-[22px]">
               {foodItem.recipe}
-            </Text>
+            </AppText>
           </>
         )}
       </View>

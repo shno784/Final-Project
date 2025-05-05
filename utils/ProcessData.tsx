@@ -18,7 +18,7 @@ export async function processData(input: string) {
 
       // Fetch detailed food data from the USDA API.
       const foodData: FoodItem = await fetchFoodData(foodName);
-      console.log("INSIDE FUNCTION", foodData);
+
       return foodData;
     } catch (error) {
       console.error("Error processing image:", error);

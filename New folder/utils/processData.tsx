@@ -14,36 +14,28 @@ export async function processData(input: string) {
 
       // Identify the food using your Google Vision service.
       const foodName: string = await identifyFood(base64);
-      if (!foodName) {
-        console.error("processImage: No food was identified in the image.");
-        throw new Error("Food was not identified.");
-      }
       console.log("Identified food name:", foodName);
 
       // Fetch detailed food data from the USDA API.
       const foodData: FoodItem = await fetchFoodData(foodName);
-      if (!foodData) {
-        console.error("processImage: No food data was fetched.");
-        throw new Error("Cannot find food.");
-      }
       console.log("INSIDE FUNCTION", foodData);
-
       return foodData;
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error processing image:", error);
-      throw new Error(error.message);
+      throw new Error((error as Error).message || "Error processing image.");
     }
     // If the input is not a valid URI, treat it as a food name.
   } else {
-    // Fetch detailed food data from the USDA API.
-    const foodData: FoodItem = await fetchFoodData(input);
-    if (!foodData) {
-      console.error("processText: No food data was fetched.");
-      throw new Error("Cannot find food.");
-    }
-    console.log("Fetched food data:", foodData);
+    try {
+      // Fetch detailed food data from the USDA API.
+      const foodData: FoodItem = await fetchFoodData(input);
+      console.log("Fetched food data:", foodData);
 
-    return foodData;
+      return foodData;
+    } catch (error) {
+      console.error("Error processing Food search string:", error);
+      throw new Error((error as Error).message || "Error processing text.");
+    }
   }
 }
 

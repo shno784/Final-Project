@@ -9,11 +9,14 @@ const FoodCard = ({
   onLongPress,
   className,
   imageStyle,
+  accessibilityHint,
 }: FoodCardProps) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`bg-card-light dark:bg-card-dark border-[2px] border-primary rounded-xl shadow p-2 m-2 items-center w-44 ${className}`}
+      accessibilityHint={accessibilityHint}
+      className={`bg-card-light dark:bg-card-dark border-[2px] border-primary rounded-xl shadow p-2 m-2 
+        items-center w-44 ${className}`}
       onLongPress={onLongPress}
     >
       <Image

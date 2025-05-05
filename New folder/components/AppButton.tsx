@@ -1,5 +1,6 @@
 import { TouchableOpacity, Text, View } from "react-native";
 import { AppButtonProps } from "@/types/globalTypes";
+import AppText from "./AppText";
 
 // This component is a customisable button that can be used throughout the app.
 export default function AppButton({
@@ -10,19 +11,22 @@ export default function AppButton({
   className,
   icon,
   testID,
+  accessibilityHint,
   disabled = false,
+  accessible,
 }: AppButtonProps) {
   // Choose variant-specific classes for background color
   let variantClasses = "";
   switch (variant) {
     case "primary":
-      variantClasses = "border-[2px] border-primary";
+      variantClasses = "border-[2px] border-black dark:border-white bg-primary";
       break;
     case "secondary":
-      variantClasses = "border-[2px] border-secondary";
+      variantClasses =
+        "border-[2px] border-black dark:border-white bg-secondary";
       break;
     case "danger":
-      variantClasses = "border-[2px] border-danger";
+      variantClasses = "border-[2px] border-black dark:border-white bg-danger";
       break;
     default:
       break;
@@ -32,7 +36,9 @@ export default function AppButton({
       onPress={onPress}
       disabled={disabled}
       testID={testID}
+      accessible={accessible}
       activeOpacity={0.7}
+      accessibilityHint={accessibilityHint}
       className={`py-[14px] px-[16px] rounded-[8px] my-[6px] min-w-[100px] items-center justify-center ${variantClasses} ${
         className ?? ""
       }`}
@@ -40,12 +46,12 @@ export default function AppButton({
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         {icon && <View>{icon}</View>}
-        <Text
-          className={`text-[15.5px] text-center text-text-head dark:text-text-d-head font-bold uppercase`}
+        <AppText
+          className={`text-center text-text-head dark:text-text-d-head font-bold uppercase`}
           numberOfLines={1}
         >
           {label}
-        </Text>
+        </AppText>
       </View>
     </TouchableOpacity>
   );

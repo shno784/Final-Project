@@ -1,16 +1,19 @@
 import { ReactNode } from "react";
 import { ViewStyle, ImageStyle } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { TextSize } from "@/utils/textSize";
 
 export interface AppButtonProps {
   label?: string;
-  icon?: ReactNode; // Optional icon to show next to label
+  icon?: ReactNode;
   onPress?: () => void;
   variant?: "primary" | "secondary" | "danger";
   style?: ViewStyle;
   disabled?: boolean;
   className?: string;
   testID?: string;
+  accessibilityHint?: string; // For screen readers
+  accessible?: boolean; // For accessibility
 }
 
 export interface FoodCardProps {
@@ -20,6 +23,7 @@ export interface FoodCardProps {
   onLongPress?: () => void;
   className?: string;
   imageStyle?: ImageStyle;
+  accessibilityHint?: string;
 }
 export interface TipProps {
   tipKey: string;
@@ -45,6 +49,7 @@ export interface AppState {
   hasSeenOnboarding: boolean;
   isLoading: boolean;
   userData: UserFormInputProps | null;
+  textSize: TextSize;
 
   // Actions
   addSearch: (query: string) => void;
@@ -54,6 +59,7 @@ export interface AppState {
   setLoading: (loading: boolean) => void;
   setUserData: (data: UserFormInputProps) => void;
   reset: () => void;
+  setTextSize: (size: TextSize) => void;
 }
 
 export interface UserFormInputProps {

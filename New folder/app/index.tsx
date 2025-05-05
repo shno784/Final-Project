@@ -37,10 +37,11 @@ export default function Home() {
       router.push("/History");
 
       setSearchQuery("");
-    } catch (error: any) {
+    } catch (error) {
       console.error("Scan workflow error:", error);
-      // err.message now contains exactly the string you threw
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     } finally {
       setSearching(false);
       setLoading(false);
@@ -48,12 +49,19 @@ export default function Home() {
   };
   //Handles processing add image function
   const handleImage = async () => {
-    const data = await pickImage();
-    if (data) {
-      await insertFoodItem(data);
-      router.push("/History");
-    } else {
-      setError("No image data found");
+    try {
+      setLoading(true);
+      const data = await pickImage();
+      if (data) {
+        await insertFoodItem(data);
+        router.push("/History");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+    } finally {
+      setLoading(false);
     }
   };
   const handleSuggestionSelect = (foodItem: any) => {
@@ -65,7 +73,10 @@ export default function Home() {
   return (
     <>
       {/* Main screen content */}
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={true}>
+      <TouchableWithoutFeedback
+        onPress={Keyboard.dismiss}
+        importantForAccessibility="no"
+      >
         <View className="flex-1">
           <OnboardingModal />
           <View className="flex-1 p-6 bg-white dark:bg-black justify-start">
@@ -98,6 +109,7 @@ export default function Home() {
                 disabled={searching}
                 className="ml-3"
                 icon={<Icon name="search-outline" size={24} className="mr-2" />}
+                accessibilityHint="Performs a food search for the entered term"
               />
             </View>
 
@@ -107,12 +119,14 @@ export default function Home() {
               onPress={() => router.navigate("/camera")}
               className="w-full mb-5"
               icon={<Icon name="camera-outline" size={24} className="mr-2" />}
+              accessibilityHint="Opens camera to scan a barcode or take a picture of your food"
             />
             <AppButton
               label="Add An Image"
               onPress={() => handleImage()}
               className="w-full mb-5"
               icon={<Icon name="image-outline" size={24} className="mr-2" />}
+              accessibilityHint="Pick a photo from your library to analyse"
             />
 
             {/* Footer Buttons */}
@@ -123,6 +137,7 @@ export default function Home() {
                 className="flex-1"
                 variant="secondary"
                 icon={<Icon name="time-outline" size={24} className="mr-2" />}
+                accessibilityHint="View your food history"
               />
               <AppButton
                 label="Settings"
@@ -132,6 +147,7 @@ export default function Home() {
                 icon={
                   <Icon name="settings-outline" size={24} className="mr-2" />
                 }
+                accessibilityHint="Open app settings and preferences"
               />
             </View>
           </View>
