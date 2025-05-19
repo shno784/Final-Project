@@ -19,10 +19,16 @@
       "distribution": "internal"
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_USDA_API_KEY": "EXPO_PUBLIC_USDA_API_KEY",
+        "EXPO_PUBLIC_GOOGLE_VISION_API_KEY": "EXPO_PUBLIC_GOOGLE_VISION_API_KEY",
+        "EXPO_PUBLIC_UNSPLASH_ACCESS_KEY": "EXPO_PUBLIC_UNSPLASH_ACCESS_KEY"
+      }
     }
-  },
-  "submit": {
-    "production": {}
   }
 }

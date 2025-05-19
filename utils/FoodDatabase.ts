@@ -18,7 +18,6 @@ export function FoodDatabase() {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           name TEXT NOT NULL UNIQUE,
           imageUri TEXT,
-          recipe TEXT,
           nutrients TEXT NOT NULL
         );
       `);
@@ -31,12 +30,11 @@ export function FoodDatabase() {
     const db = await openDatabase();
     try {
       await db.runAsync(
-        `INSERT INTO foods (name, imageUri, recipe, nutrients)
-         VALUES ($name, $image, $recipe, $nutrients)`,
+        `INSERT INTO foods (name, imageUri, nutrients)
+         VALUES ($name, $image, $nutrients)`,
         {
           $name: food.name,
           $image: food.imageUri ?? null,
-          $recipe: food.recipe ?? null,
           $nutrients: food.nutrients,
         }
       );
@@ -80,13 +78,12 @@ export function FoodDatabase() {
     try {
       await db.runAsync(
         `UPDATE foods
-         SET name = $name, imageUri = $image, recipe = $recipe, nutrients = $nutrients
+         SET name = $name, imageUri = $image, nutrients = $nutrients
          WHERE id = $id`,
         {
           $id: food.id,
           $name: food.name,
           $image: food.imageUri ?? null,
-          $recipe: food.recipe ?? null,
           $nutrients: food.nutrients,
           $ingredients: food.ingredients ?? null,
         }

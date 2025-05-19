@@ -20,19 +20,19 @@ const slides = [
     key: "slide1",
     title: "Welcome 👋",
     text: "Track what you eat and stay on top of your nutrition goals.",
-    image: require("@/assets/images/placeholder.jpg"),
+    image: require("@/assets/images/onboardwelcome.png"),
   },
   {
     key: "slide2",
     title: "Scan Your Food 📸",
-    text: "Take a picture and we'll recognize your meal automatically.",
-    image: require("@/assets/images/placeholder.jpg"),
+    text: "Take a picture and we'll recognise your meal automatically.",
+    image: require("@/assets/images/onboardscan.png"),
   },
   {
     key: "slide3",
     title: "View Your History 📊",
     text: "Easily check what you've eaten and track your habits.",
-    image: require("@/assets/images/placeholder.jpg"),
+    image: require("@/assets/images/onboardchart.png"),
   },
 ];
 

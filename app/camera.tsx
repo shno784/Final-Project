@@ -124,7 +124,7 @@ const CameraScreen = () => {
             >
               <OneTimeTip
                 tipKey="camera"
-                title="Scan Mode"
+                title="Tip"
                 message="Point your camera at food and take a picture to start analysis."
               />
               {/* Barcode Text */}

@@ -40,7 +40,9 @@ export default function RootLayout() {
     const prepare = async () => {
       try {
         // Preload all images (local)
-        await Asset.loadAsync([require("@/assets/images/placeholder.jpg")]);
+        await Asset.loadAsync([require("@/assets/images/onboardwelcome.png")]);
+        await Asset.loadAsync([require("@/assets/images/onboardscan.png")]);
+        await Asset.loadAsync([require("@/assets/images/onboardchart.png")]);
       } catch (e) {
         console.warn("Asset preload failed", e);
       } finally {

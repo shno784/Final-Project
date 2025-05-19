@@ -1,4 +1,3 @@
-// services/usdaFoodService.ts
 import axios from "axios";
 import axiosClient from "./Reconnect";
 import { capitaliseWords } from "@/utils/capitaliseWords";
@@ -84,7 +83,6 @@ export async function fetchFoodData(query: string) {
       name: capitaliseWords(firstFood.description),
       imageUri: imageUrl, // from Unsplash
       nutrients: JSON.stringify(nutrientAndValues), // Nutrients from USDA
-      recipe: detailsResponse.data.recipe || null,
     };
     return detailedFoodData;
   } catch (error) {
