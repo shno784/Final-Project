@@ -1,6 +1,7 @@
-import { TouchableOpacity, Text, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { AppButtonProps } from "@/types/globalTypes";
 import AppText from "./AppText";
+import * as Haptics from "expo-haptics";
 
 // This component is a customisable button that can be used throughout the app.
 export default function AppButton({
@@ -14,6 +15,7 @@ export default function AppButton({
   accessibilityHint,
   disabled = false,
   accessible,
+  haptic = "selection",
 }: AppButtonProps) {
   // Choose variant-specific classes for background color
   let variantClasses = "";
@@ -31,9 +33,35 @@ export default function AppButton({
     default:
       break;
   }
+
+  // wrapper that fires haptic then calls your onPress
+  const handlePress = async () => {
+    // don’t fire haptic if disabled
+    if (disabled) return;
+
+    // fire selected haptic
+    switch (haptic) {
+      case "selection":
+        await Haptics.selectionAsync();
+        break;
+      case "impactMedium":
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        break;
+      case "impactLight":
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        break;
+      case "notificationSuccess":
+        await Haptics.notificationAsync(
+          Haptics.NotificationFeedbackType.Success
+        );
+        break;
+    }
+    //Then real onPress
+    onPress?.();
+  };
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={handlePress}
       disabled={disabled}
       testID={testID}
       accessible={accessible}

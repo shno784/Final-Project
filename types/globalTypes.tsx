@@ -14,6 +14,7 @@ export interface AppButtonProps {
   testID?: string;
   accessibilityHint?: string; // For screen readers
   accessible?: boolean; // For accessibility
+  haptic?: string;
 }
 
 export interface FoodCardProps {
