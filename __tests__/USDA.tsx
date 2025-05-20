@@ -95,7 +95,6 @@ describe("fetchFoodData()", () => {
         { name: "protein", value: 5 },
         { name: "fat", value: 2 },
       ]),
-      recipe: "Mix well",
     });
   });
 
