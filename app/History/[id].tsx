@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import * as Speech from "expo-speech";
 import { useLocalSearchParams } from "expo-router";
-import { FoodDatabase } from "@/utils/foodDatabase";
+import { useFocusEffect } from "@react-navigation/native";
+import { FoodDatabase } from "@/utils/FoodDatabase";
 import { FoodRow, Macronutrient, Micronutrient } from "@/types/FoodTypes";
 import NutritionCarousel from "@/components/NutritionCarousel";
 import { useColorScheme } from "nativewind";
@@ -55,6 +56,15 @@ export default function FoodDetailPage() {
     Speech.stop();
     setIsSpeaking(false);
   };
+
+  //Whenever the user leaves the page stop any speaking
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        stop();
+      };
+    }, [])
+  );
 
   // Fetch food item details based on the ID from the URL parameters
   useEffect(() => {
@@ -294,17 +304,6 @@ export default function FoodDetailPage() {
             </View>
           );
         })}
-        {/* Recipe Section */}
-        {foodItem.recipe && (
-          <>
-            <AppText className="text-[20px] font-semibold mt-4 mb-2">
-              Recipe
-            </AppText>
-            <AppText className="text-[16px] text-[#333] mt-2 leading-[22px]">
-              {foodItem.recipe}
-            </AppText>
-          </>
-        )}
       </View>
     </ScrollView>
   );

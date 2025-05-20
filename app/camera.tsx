@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Text, View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { processData } from "@/utils/processData";
-import { FoodDatabase } from "@/utils/foodDatabase";
+import { FoodDatabase } from "@/utils/FoodDatabase";
 import { useRouter } from "expo-router";
 import { BarcodeProps } from "@/types/CameraTypes";
 import { useAppState } from "@/utils/globalstates";
@@ -154,6 +154,7 @@ const CameraScreen = () => {
                 accessibilityHint="Toggles the camera flash"
                 className="w-20 mt-4 rounded-full px-3 py-2"
                 onPress={() => setTorch((prev) => !prev)}
+                haptic="impactMedium"
               />
               <AppButton
                 testID="take-picture-button"
@@ -162,6 +163,7 @@ const CameraScreen = () => {
                 onPress={handlePress(takePicture)}
                 variant="primary"
                 accessibilityHint="Captures a photo for food processing"
+                haptic="notificationSuccess"
               />
               <AppButton
                 testID="pick-image-button"
@@ -173,6 +175,7 @@ const CameraScreen = () => {
                 })}
                 variant="secondary"
                 accessibilityHint="Opens image library to select a photo"
+                haptic="impactMedium"
               />
             </View>
           </View>

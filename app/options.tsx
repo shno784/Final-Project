@@ -73,6 +73,7 @@ const Options = () => {
               className="mr-2"
             />
           }
+          haptic="impactMedium"
         />
 
         {/* Text Size Options */}
@@ -97,6 +98,7 @@ const Options = () => {
               variant={textSize === size.value ? "primary" : "secondary"}
               className="mb-2"
               accessibilityHint={`Set text size to ${size.label}`}
+              haptic="impactMedium"
             />
           ))}
         </View>
@@ -106,6 +108,7 @@ const Options = () => {
           onPress={() => router.navigate("/bmi")}
           accessibilityHint="Navigate to BMI calculator"
           icon={<Icon name="calculator-outline" size={24} className="mr-2" />}
+          haptic="impactMedium"
         />
       </View>
     </View>

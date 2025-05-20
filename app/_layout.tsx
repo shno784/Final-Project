@@ -6,7 +6,7 @@ import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Asset } from "expo-asset";
 import { useAppState } from "@/utils/globalstates";
-import { FoodDatabase } from "@/utils/foodDatabase";
+import { FoodDatabase } from "@/utils/FoodDatabase";
 import LoadingScreen from "@/components/LoadingScreen";
 import { useColorScheme } from "nativewind";
 import { StatusBar } from "expo-status-bar";

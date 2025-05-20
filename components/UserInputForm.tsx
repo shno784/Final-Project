@@ -223,6 +223,7 @@ const UserInputForm: React.FC<Props> = ({ onSubmit }) => {
           ) : null
         }
         className={`${!isFormValid ? "bg-gray-400" : ""} mt-6`}
+        haptic="notificationSuccess"
       />
     </View>
   );

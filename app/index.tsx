@@ -10,7 +10,7 @@ import Icon from "@/components/Icon";
 import USDAFoodSearch from "@/components/USDAFoodSearch";
 import ErrorCard from "@/components/ErrorCard";
 import { useAppState } from "@/utils/globalstates";
-import { FoodDatabase } from "@/utils/foodDatabase";
+import { FoodDatabase } from "@/utils/FoodDatabase";
 import { isOnline } from "@/utils/network";
 
 export default function Home() {
@@ -148,6 +148,7 @@ export default function Home() {
                 className="ml-3"
                 icon={<Icon name="search-outline" size={24} className="mr-2" />}
                 accessibilityHint="Performs a food search for the entered term"
+                haptic="notificationSuccess"
               />
             </View>
 
@@ -165,6 +166,7 @@ export default function Home() {
               }
               accessibilityHint="Opens the camera to scan a barcode or take a picture of your food"
               disabled={isOffline}
+              haptic="impactMedium"
             />
             <AppButton
               label="Add An Image"
@@ -179,6 +181,7 @@ export default function Home() {
               }
               accessibilityHint="Pick a photo from your library to analyse"
               disabled={isOffline}
+              haptic="impactMedium"
             />
 
             {/* Footer Buttons */}
@@ -190,6 +193,7 @@ export default function Home() {
                 variant="secondary"
                 icon={<Icon name="time-outline" size={24} className="mr-2" />}
                 accessibilityHint="View your food history"
+                haptic="selection"
               />
               <AppButton
                 label="Settings"
@@ -200,6 +204,7 @@ export default function Home() {
                   <Icon name="settings-outline" size={24} className="mr-2" />
                 }
                 accessibilityHint="Open app settings and preferences"
+                haptic="selection"
               />
             </View>
           </View>

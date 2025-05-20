@@ -110,6 +110,7 @@ export default function BMIScreen() {
               onPress={reset}
               className="mt-6 bg-red-500"
               accessibilityHint="Clears your BMI settings and returns to input form"
+              haptic="notificationSuccess"
             />
           </View>
         </View>

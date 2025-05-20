@@ -34,11 +34,10 @@ export default function AppButton({
       break;
   }
 
-  // wrapper that fires haptic then calls your onPress
+  // wrapper that fires haptic then calls onPress
   const handlePress = async () => {
     // don’t fire haptic if disabled
     if (disabled) return;
-
     // fire selected haptic
     switch (haptic) {
       case "selection":
@@ -46,9 +45,6 @@ export default function AppButton({
         break;
       case "impactMedium":
         await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-        break;
-      case "impactLight":
-        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         break;
       case "notificationSuccess":
         await Haptics.notificationAsync(
