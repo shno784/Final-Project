@@ -10,7 +10,7 @@ import Icon from "@/components/Icon";
 import USDAFoodSearch from "@/components/USDAFoodSearch";
 import ErrorCard from "@/components/ErrorCard";
 import { useAppState } from "@/utils/globalstates";
-import { FoodDatabase } from "@/utils/FoodDatabase";
+import { FoodDatabase } from "@/utils/foodDatabase";
 import { isOnline } from "@/utils/network";
 
 export default function Home() {

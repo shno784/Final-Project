@@ -11,7 +11,7 @@ import {
 import * as Speech from "expo-speech";
 import { useLocalSearchParams } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
-import { FoodDatabase } from "@/utils/FoodDatabase";
+import { FoodDatabase } from "@/utils/foodDatabase";
 import { FoodRow, Macronutrient, Micronutrient } from "@/types/FoodTypes";
 import NutritionCarousel from "@/components/NutritionCarousel";
 import { useColorScheme } from "nativewind";

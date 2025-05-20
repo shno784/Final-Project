@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Text, View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { processData } from "@/utils/processData";
-import { FoodDatabase } from "@/utils/FoodDatabase";
+import { FoodDatabase } from "@/utils/foodDatabase";
 import { useRouter } from "expo-router";
 import { BarcodeProps } from "@/types/CameraTypes";
 import { useAppState } from "@/utils/globalstates";

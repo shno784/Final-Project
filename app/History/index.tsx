@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import AppButton from "@/components/AppButton";
 import FoodCard from "@/components/FoodCard";
-import { FoodDatabase } from "@/utils/FoodDatabase";
+import { FoodDatabase } from "@/utils/foodDatabase";
 import { FoodRow } from "@/types/FoodTypes";
 import { useRouter } from "expo-router";
 import { useActionSheet } from "@expo/react-native-action-sheet";
