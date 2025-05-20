@@ -1,5 +1,3 @@
-import React from "react";
-
 // Mock axios so it doesn't make real network requests
 jest.mock("axios", () => {
   const axiosInstance = {

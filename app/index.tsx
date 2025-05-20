@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  View,
-  Keyboard,
-  TouchableWithoutFeedback,
-  Image,
-  Text,
-} from "react-native";
+import { View, Keyboard, TouchableWithoutFeedback, Image } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { useRouter } from "expo-router";
 import AppButton from "@/components/AppButton";

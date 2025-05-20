@@ -1,6 +1,3 @@
-import React from "react";
-import { act, fireEvent, render } from "@testing-library/react-native";
-
 // Mock axios so it doesn't make real network requests
 jest.mock("axios", () => {
   const axiosInstance = {
