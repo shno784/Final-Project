@@ -8,13 +8,6 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
-      fontSize: {
-        // Define your custom text sizes:
-        base: ["16px", { lineHeight: "24px" }], // Normal text size
-        lg: ["18px", { lineHeight: "26px" }], // Slightly larger
-        xl: ["20px", { lineHeight: "28px" }], // Even larger
-        "2xl": ["24px", { lineHeight: "32px" }], // Largest text size
-      },
       colors: {
         "primary": "#14B8A6",
         "secondary": "#E69F00",
