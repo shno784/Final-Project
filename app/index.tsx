@@ -2,16 +2,16 @@ import { useState, useEffect } from "react";
 import { View, Keyboard, TouchableWithoutFeedback, Image } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { useRouter } from "expo-router";
-import AppButton from "@/components/AppButton";
-import pickImage from "@/utils/pickImage";
-import OnboardingModal from "@/components/OnboardingModal";
-import { processData } from "@/utils/processData";
-import Icon from "@/components/Icon";
-import USDAFoodSearch from "@/components/USDAFoodSearch";
-import ErrorCard from "@/components/ErrorCard";
-import { useAppState } from "@/utils/globalstates";
-import { FoodDatabase } from "@/utils/foodDatabase";
-import { isOnline } from "@/utils/network";
+import AppButton from "../components/AppButton";
+import pickImage from "../utils/pickImage";
+import OnboardingModal from "../components/OnboardingModal";
+import { processData } from "../utils/processData";
+import Icon from "../components/Icon";
+import USDAFoodSearch from "../components/USDAFoodSearch";
+import ErrorCard from "../components/ErrorCard";
+import { useAppState } from "../utils/globalstates";
+import { FoodDatabase } from "../utils/foodDatabase";
+import { isOnline } from "../utils/network";
 
 export default function Home() {
   const router = useRouter();
@@ -122,7 +122,7 @@ export default function Home() {
             <View className="mt-24 items-center mb-[80px]">
               <View className="items-center mb-24 max-h-[100px]">
                 <Image
-                  source={require("@/assets/images/logo.png")}
+                  source={require("../assets/images/logo.png")}
                   className="w-80 h-80 rounded-lg"
                   resizeMode="contain"
                 />

@@ -1,5 +1,5 @@
 import { TouchableOpacity, View } from "react-native";
-import { AppButtonProps } from "@/types/globalTypes";
+import { AppButtonProps } from "../types/globalTypes";
 import AppText from "./AppText";
 import * as Haptics from "expo-haptics";
 

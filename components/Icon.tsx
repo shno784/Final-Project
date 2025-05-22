@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { IconProps } from "@/types/globalTypes";
+import { IconProps } from "../types/globalTypes";
 import { cssInterop } from "nativewind";
 
 cssInterop(Ionicons, {

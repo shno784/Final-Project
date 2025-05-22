@@ -1,5 +1,5 @@
-import { BarcodeScan } from "@/service/OpenFoodFacts";
-import { FoodItem } from "@/types/FoodTypes";
+import { BarcodeScan } from "../service/OpenFoodFacts";
+import { FoodItem } from "../types/FoodTypes";
 
 // This function processes a barcode by scanning it and inserting the food item into the database
 const processBarcode = async (barcode: string) => {

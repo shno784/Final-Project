@@ -8,7 +8,7 @@ import {
   Switch,
   TouchableOpacity,
 } from "react-native";
-import { useAppState } from "@/utils/globalstates";
+import { useAppState } from "../utils/globalstates";
 import Carousel from "react-native-reanimated-carousel";
 import AppButton from "./AppButton";
 import { ReduceMotion } from "react-native-reanimated";
@@ -20,19 +20,19 @@ const slides = [
     key: "slide1",
     title: "Welcome 👋",
     text: "Track what you eat and stay on top of your nutrition goals.",
-    image: require("@/assets/images/onboardwelcome.png"),
+    image: require("../assets/images/onboardwelcome.png"),
   },
   {
     key: "slide2",
     title: "Scan Your Food 📸",
     text: "Take a picture and we'll recognise your meal automatically.",
-    image: require("@/assets/images/onboardscan.png"),
+    image: require("../assets/images/onboardscan.png"),
   },
   {
     key: "slide3",
     title: "View Your History 📊",
     text: "Easily check what you've eaten and track your habits.",
-    image: require("@/assets/images/onboardchart.png"),
+    image: require("../assets/images/onboardchart.png"),
   },
 ];
 

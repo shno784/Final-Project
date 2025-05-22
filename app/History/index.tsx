@@ -9,17 +9,17 @@ import {
   Alert,
   AccessibilityInfo,
 } from "react-native";
-import AppButton from "@/components/AppButton";
-import FoodCard from "@/components/FoodCard";
-import { FoodDatabase } from "@/utils/foodDatabase";
-import { FoodRow } from "@/types/FoodTypes";
+import AppButton from "../../components/AppButton";
+import FoodCard from "../../components/FoodCard";
+import { FoodDatabase } from "../../utils/foodDatabase";
+import { FoodRow } from "../../types/FoodTypes";
 import { useRouter } from "expo-router";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import * as ImagePicker from "expo-image-picker";
-import OneTimeTip from "@/components/OneTimeTip";
-import { useAppState } from "@/utils/globalstates";
-import ErrorCard from "@/components/ErrorCard";
-import AppText from "@/components/AppText";
+import OneTimeTip from "../../components/OneTimeTip";
+import { useAppState } from "../../utils/globalstates";
+import ErrorCard from "../../components/ErrorCard";
+import AppText from "../../components/AppText";
 
 const History = () => {
   const [foodItems, setFoodItems] = useState<FoodRow[]>([]);

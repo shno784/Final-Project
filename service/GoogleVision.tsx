@@ -1,6 +1,6 @@
 import axios from "axios";
 import axiosClient from "./Reconnect";
-import getBestMeaningfulLabel from "@/utils/foodLabels";
+import getBestMeaningfulLabel from "../utils/foodLabels";
 
 const apiKey = process.env.EXPO_PUBLIC_GOOGLE_VISION_API_KEY;
 

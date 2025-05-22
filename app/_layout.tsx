@@ -7,14 +7,14 @@ import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Asset } from "expo-asset";
 import { useAppState } from "../utils/globalstates";
-import { FoodDatabase } from "@/utils/foodDatabase";
-import LoadingScreen from "@/components/LoadingScreen";
+import { FoodDatabase } from "../utils/foodDatabase";
+import LoadingScreen from "../components/LoadingScreen";
 import { useColorScheme } from "nativewind";
 import { StatusBar } from "expo-status-bar";
-import { initTailwindTextSize } from "@/utils/textSize";
+import { initTailwindTextSize } from "../utils/textSize";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import "@/app/global.css";
+import "./global.css";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -41,9 +41,9 @@ export default function RootLayout() {
     const prepare = async () => {
       try {
         // Preload all images (local)
-        await Asset.loadAsync([require("@/assets/images/onboardwelcome.png")]);
-        await Asset.loadAsync([require("@/assets/images/onboardscan.png")]);
-        await Asset.loadAsync([require("@/assets/images/onboardchart.png")]);
+        await Asset.loadAsync([require("../assets/images/onboardwelcome.png")]);
+        await Asset.loadAsync([require("../assets/images/onboardscan.png")]);
+        await Asset.loadAsync([require("../assets/images/onboardchart.png")]);
       } catch (e) {
         console.warn("Asset preload failed", e);
       } finally {

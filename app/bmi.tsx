@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import UserInputForm from "@/components/UserInputForm";
-import AppButton from "@/components/AppButton";
-import { UserFormInputProps } from "@/types/globalTypes";
+import UserInputForm from "../components/UserInputForm";
+import AppButton from "../components/AppButton";
+import { UserFormInputProps } from "../types/globalTypes";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useAppState } from "@/utils/globalstates";
+import { useAppState } from "../utils/globalstates";
 
 export default function BMIScreen() {
   const { userData, setUserData, reset } = useAppState();

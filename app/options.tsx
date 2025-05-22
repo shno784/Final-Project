@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import { useColorScheme } from "nativewind";
 import { useRouter } from "expo-router";
-import { setTailwindTextSize, TextSize } from "@/utils/textSize";
-import Icon from "@/components/Icon";
+import { setTailwindTextSize, TextSize } from "../utils/textSize";
+import Icon from "../components/Icon";
 import { useEffect } from "react";
-import AppText from "@/components/AppText";
-import AppButton from "@/components/AppButton";
-import { useAppState } from "@/utils/globalstates";
+import AppText from "../components/AppText";
+import AppButton from "../components/AppButton";
+import { useAppState } from "../utils/globalstates";
 
 // Define text size options
 const SIZES: { label: string; value: TextSize; icon: string }[] = [

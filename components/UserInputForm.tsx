@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, TextInput } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { UserFormInputProps } from "@/types/globalTypes";
+import { UserFormInputProps } from "../types/globalTypes";
 import { useColorScheme } from "nativewind";
-
-import Icon from "@/components/Icon";
+import Icon from "./Icon";
 import AppButton from "./AppButton";
 
 type Props = {

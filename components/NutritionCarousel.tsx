@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import type { ICarouselInstance } from "react-native-reanimated-carousel";
 import { PieChart } from "react-native-chart-kit";
-import { NutritionCarouselProps } from "@/types/FoodTypes";
+import { NutritionCarouselProps } from "../types/FoodTypes";
 import { PanGesture } from "react-native-gesture-handler";
 
 // This component is used to display a carousel of nutrition information.

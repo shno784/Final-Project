@@ -1,18 +1,18 @@
 import React, { useState, useRef } from "react";
 import { Text, View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
-import { processData } from "@/utils/processData";
-import { FoodDatabase } from "@/utils/foodDatabase";
+import { processData } from "../utils/processData";
+import { FoodDatabase } from "../utils/foodDatabase";
 import { useRouter } from "expo-router";
-import { BarcodeProps } from "@/types/CameraTypes";
-import { useAppState } from "@/utils/globalstates";
+import { BarcodeProps } from "../types/CameraTypes";
+import { useAppState } from "../utils/globalstates";
 
-import AppButton from "@/components/AppButton";
-import OneTimeTip from "@/components/OneTimeTip";
-import ErrorCard from "@/components/ErrorCard";
-import pickImage from "@/utils/pickImage";
-import Icon from "@/components/Icon";
-import ProccessBarcode from "@/utils/processBarcode";
+import AppButton from "../components/AppButton";
+import OneTimeTip from "../components/OneTimeTip";
+import ErrorCard from "../components/ErrorCard";
+import pickImage from "../utils/pickImage";
+import Icon from "../components/Icon";
+import ProccessBarcode from "../utils/processBarcode";
 
 const CameraScreen = () => {
   const [permission, requestPermission] = useCameraPermissions();

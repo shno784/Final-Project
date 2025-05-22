@@ -1,4 +1,4 @@
-import { ErrorCardProps } from "@/types/globalTypes";
+import { ErrorCardProps } from "../types/globalTypes";
 import { View, Text, TouchableOpacity } from "react-native";
 
 // This component is used to display an error message in a card format.

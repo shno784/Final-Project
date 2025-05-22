@@ -1,7 +1,7 @@
 import * as FileSystem from "expo-file-system";
-import { identifyFood } from "@/service/GoogleVision";
-import { fetchFoodData } from "@/service/USDA";
-import { FoodItem } from "@/types/FoodTypes";
+import { identifyFood } from "../service/GoogleVision";
+import { fetchFoodData } from "../service/USDA";
+import { FoodItem } from "../types/FoodTypes";
 
 // This function processes the input data, which can be either a URI (image) or text (food name).
 export async function processData(input: string) {

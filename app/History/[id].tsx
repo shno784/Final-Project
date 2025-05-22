@@ -11,13 +11,13 @@ import {
 import * as Speech from "expo-speech";
 import { useLocalSearchParams } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
-import { FoodDatabase } from "@/utils/foodDatabase";
-import { FoodRow, Macronutrient, Micronutrient } from "@/types/FoodTypes";
-import NutritionCarousel from "@/components/NutritionCarousel";
+import { FoodDatabase } from "../../utils/foodDatabase";
+import { FoodRow, Macronutrient, Micronutrient } from "../../types/FoodTypes";
+import NutritionCarousel from "../../components/NutritionCarousel";
 import { useColorScheme } from "nativewind";
-import AppButton from "@/components/AppButton";
-import Icon from "@/components/Icon";
-import AppText from "@/components/AppText";
+import AppButton from "../../components/AppButton";
+import Icon from "../../components/Icon";
+import AppText from "../../components/AppText";
 
 const { width: screenWidth } = Dimensions.get("window");
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Modal, View, Text, Switch } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppButton from "./AppButton";
-import { TipProps } from "@/types/globalTypes";
+import { TipProps } from "../types/globalTypes";
 
 // This component is used to display a one-time tip to the user.
 export default function OneTimeTip({

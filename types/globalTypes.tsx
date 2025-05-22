@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { ViewStyle, ImageStyle } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { TextSize } from "@/utils/textSize";
+import { TextSize } from "../utils/textSize";
 
 export interface AppButtonProps {
   label?: string;

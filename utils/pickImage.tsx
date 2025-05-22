@@ -1,6 +1,6 @@
 import * as ImagePicker from "expo-image-picker";
-import { processData } from "@/utils/processData";
-import { FoodItem } from "@/types/FoodTypes";
+import { processData } from "../utils/processData";
+import { FoodItem } from "../types/FoodTypes";
 
 // This function is responsible for picking an image from the device's library and processing it.
 const pickImage = async () => {

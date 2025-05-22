@@ -1,6 +1,6 @@
 import axios from "axios";
 import axiosClient from "./Reconnect";
-import { capitaliseWords } from "@/utils/capitaliseWords";
+import { capitaliseWords } from "../utils/capitaliseWords";
 
 const usdaKey = process.env.EXPO_PUBLIC_USDA_API_KEY;
 const usdaBaseURL = "https://api.nal.usda.gov/fdc/v1";
